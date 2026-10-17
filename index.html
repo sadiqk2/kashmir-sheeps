@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="htmlRoot">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kashmir Online Sheeps - Livestock & Farm Marketplace</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-en: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-ur: 'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, Arial, sans-serif;
+    }
+    html[dir="rtl"] body {
+      font-family: var(--font-ur);
+    }
+    html[dir="ltr"] body {
+      font-family: var(--font-en);
+    }
+    .urdu-tight {
+      line-height: 1.85 !important;
+    }
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Toast Animation */
+    @keyframes slideInUp {
+      from { transform: translateY(100%) scale(0.9); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .toast-animate {
+      animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen pb-24 transition-all duration-300">
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4 sm:px-0"></div>
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <header class="bg-emerald-950 text-emerald-100 text-xs py-2 px-4 border-b border-emerald-900/60 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-2">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center justify-center bg-emerald-500 text-white w-2 h-2 rounded-full animate-ping"></span>
+        <span id="topBarTagline" class="font-medium">Direct Sheep Livestock & 100% Pure Byproducts • Doorstep Delivery in Kashmir</span>
+      </div>
+      <div class="flex items-center gap-4 text-[11px]">
+        <button onclick="openTrackModal()" class="hover:underline flex items-center gap-1 text-emerald-200">
+          <span>📦</span> <span id="lblTrackOrder">Track Order</span>
+        </button>
+        <span class="hidden sm:inline">🚚 <span id="topBarDelivery">Free Delivery above ₹1,499</span></span>
+        <span class="bg-emerald-900/90 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-800">
+          📞 <span id="topHelpline">Helpline: +91-94190-SHEEP</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN NAVIGATION BAR -->
+  <nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm px-4 py-3 sticky top-8 z-40">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('all')">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-black text-2xl shadow-lg shadow-emerald-600/30 transform hover:scale-105 transition">
+          🐑
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-black tracking-tight" id="navLogoTitle">Kashmir Sheeps</h1>
+            <span class="text-[10px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full" id="navMarketBadge">
+              Livestock & Store
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400" id="navLogoSub">Live Sheep • Pure Wool • Orchard Manure</p>
+        </div>
+      </div>
+
+      <!-- Center Segmented Pill Switcher (Live Mandi vs Store) -->
+      <div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
+        <button id="navPillAll" onclick="showSection('all')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm">
+          🌟 <span id="lblPillAll">All Catalog</span>
+        </button>
+        <button id="navPillLive" onclick="showSection('live')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">
+          🐏 <span id="lblPillLive">Live Sheep Mandi</span>
+        </button>
+        <button id="navPillStore" onclick="showSection('store')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600 flex items-center gap-1">
+          🛍️ <span id="lblPillStore">Farm Products & Wool</span>
+          <span class="bg-rose-500 text-white text-[9px] px-1.5 py-0.2 rounded-full font-black">NEW</span>
+        </button>
+      </div>
+
+      <!-- Right Action Tools -->
+      <div class="flex items-center gap-2">
+        <!-- Language Switcher -->
+        <button onclick="toggleLanguage()" class="flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border border-emerald-600/30 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 transition shadow-sm" title="Switch Language">
+          <span>🌐</span>
+          <span id="langSwitchLabel">اردو (Urdu)</span>
+        </button>
+
+        <!-- Rate Calculator Tool -->
+        <button onclick="openEstimatorModal()" class="hidden md:flex items-center gap-1.5 text-xs font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 px-3 py-2 rounded-xl transition">
+          ⚖️ <span id="navEstimatorBtn">Rates</span>
+        </button>
+
+        <!-- Wishlist Button -->
+        <button onclick="showWishlistModal()" class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-slate-200 dark:border-slate-700 transition" title="Favorites">
+          <span class="text-base text-rose-500">❤️</span>
+          <span id="wishlistCountBadge" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        </button>
+
+        <!-- Cart Button -->
+        <button onclick="openCartDrawer()" class="relative flex items-center gap-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 border border-slate-200 dark:border-slate-700 px-3.5 py-2 rounded-xl transition shadow-sm">
+          <span class="text-base">🛒</span>
+          <span class="hidden sm:inline" id="navCartLabel">Cart</span>
+          <span id="cartCountBadge" class="bg-emerald-600 text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </button>
+
+        <!-- Post Ad (Farmer) -->
+        <button onclick="openSellModal()" class="hidden sm:flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3.5 py-2 rounded-xl shadow-md shadow-emerald-600/25 transition">
+          <span>➕</span>
+          <span id="navPostBtn">Sell Sheep</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION WITH INTERACTIVE DISCOVERY -->
+  <section class="max-w-7xl mx-auto px-4 pt-5 pb-2">
+    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white p-6 sm:p-10 shadow-2xl border border-emerald-800/50">
+      
+      <!-- Background Ambient Glow -->
+      <div class="absolute -top-24 -left-24 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-teal-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-3xl">
+        <div class="inline-flex items-center gap-2 bg-emerald-800/80 border border-emerald-600/50 rounded-full px-3.5 py-1 text-xs text-emerald-200 mb-3.5 backdrop-blur-sm">
+          <span class="text-amber-400">★</span>
+          <span id="heroBadge">Farm-Gate Rates • Zero Middleman • Express Delivery across J&K</span>
+        </div>
+
+        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-3 leading-tight" id="heroTitle">
+          Kashmir's Premier Online Livestock & Farm Products Store
+        </h2>
+
+        <p class="text-xs sm:text-sm text-emerald-100/90 mb-6 leading-relaxed max-w-2xl" id="heroDesc">
+          Connect directly with local shepherds for pure Kashmir Merino rams, Bakarwali mountain sheep, Qurbani stock, certified orchard manure for high-yield apple trees, raw Merino knitting yarn, and shearing clippers.
+        </p>
+
+        <!-- SMART SEARCH & FILTER BOX -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-2.5 shadow-2xl border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 flex flex-col md:flex-row gap-2">
+          
+          <!-- Text Input -->
+          <div class="flex-1 flex items-center px-3 py-1.5 gap-2.5">
+            <span class="text-emerald-600 text-base">🔍</span>
+            <input id="searchInput" oninput="filterCatalog()" type="text" placeholder="Search sheep breed, orchard manure, wool yarn, tools..." class="w-full text-xs sm:text-sm bg-transparent focus:outline-none placeholder:text-slate-400">
+          </div>
+
+          <!-- District Dropdown -->
+          <div class="border-t md:border-t-0 md:border-l border-slate-200 dark:border-slate-800 flex items-center px-3 py-1.5">
+            <span class="text-emerald-600 text-sm mr-2">📍</span>
+            <select id="districtFilter" onchange="filterCatalog()" class="w-full text-xs sm:text-sm bg-transparent focus:outline-none font-medium text-slate-700 dark:text-slate-200 cursor-pointer">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <button onclick="filterCatalog()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-7 py-3 rounded-xl transition shadow-md shadow-emerald-700/30" id="heroSearchBtn">
+            Search
+          </button>
+        </div>
+
+        <!-- Highlights Strip -->
+        <div class="flex items-center gap-6 mt-6 pt-5 border-t border-emerald-800/60 text-xs flex-wrap">
+          <div class="flex items-center gap-1.5 text-emerald-200">
+            <span>🛡️</span> <span id="h1">Veterinary Health Verified</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-emerald-200">
+            <span>📦</span> <span id="h2">Cash on Delivery & Instant UPI</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-emerald-200">
+            <span>🚜</span> <span id="h3">Tractor Loads for Apple Orchards</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-emerald-200">
+            <span>💬</span> <span id="h4">Direct WhatsApp with Shepherds</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Watermark Sheep Graphic -->
+      <div class="absolute -bottom-6 -right-6 opacity-10 text-[220px] select-none pointer-events-none hidden lg:block">
+        🐑
+      </div>
+    </div>
+  </section>
+
+  <!-- PINCODE DELIVERY CHECKER STRIP -->
+  <section class="max-w-7xl mx-auto px-4 py-2">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center text-lg">
+          🚚
+        </div>
+        <div>
+          <span class="font-bold text-slate-800 dark:text-slate-200 block" id="pinTitle">Check Delivery & Mandi Pickup In Your Area:</span>
+          <p class="text-[11px] text-slate-500" id="pinSub">Enter your J&K Pin code for livestock transport & farm product shipping estimates.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <input id="pincodeInput" type="number" placeholder="e.g. 190001 (Srinagar)" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs w-48 focus:outline-none">
+        <button onclick="checkPincode()" class="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold px-4 py-2 rounded-xl hover:bg-emerald-600 transition" id="pinCheckBtn">
+          Check
+        </button>
+      </div>
+    </div>
+    <div id="pincodeMessage" class="hidden text-xs mt-2 px-3 text-emerald-600 dark:text-emerald-400 font-semibold"></div>
+  </section>
+
+  <!-- CATEGORY PILLS BAR -->
+  <section class="max-w-7xl mx-auto px-4 py-3">
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs sm:text-sm font-semibold" id="categoriesBar">
+      <button onclick="setCategory('all')" class="cat-pill active px-4 py-2 rounded-2xl bg-emerald-600 text-white whitespace-nowrap shadow-sm transition">
+        🌟 <span id="catAll">All Items</span> (<span id="totalBadge">12</span>)
+      </button>
+      <button onclick="setCategory('merino')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+        🐑 <span id="catMerino">Kashmir Merino</span>
+      </button>
+      <button onclick="setCategory('bakarwali')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+        🏔️ <span id="catBakarwali">Bakarwali Mountain Breed</span>
+      </button>
+      <button onclick="setCategory('qurbani')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+        ✨ <span id="catQurbani">Qurbani Ready (2-4 Teeth)</span>
+      </button>
+      <button onclick="setCategory('fertilizer')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+        🍎 <span id="catFertilizer">Apple Orchard Manure (Khad)</span>
+      </button>
+      <button onclick="setCategory('wool')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+        🧶 <span id="catWool">Merino Wool & Blankets</span>
+      </button>
+      <button onclick="setCategory('supplies')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+        ⚙️ <span id="catSupplies">Clippers, Salt & Feed</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- MAIN CATALOG VIEWPORT -->
+  <main class="max-w-7xl mx-auto px-4">
+    <!-- View Switcher & Sort Toolbar -->
+    <div class="flex flex-wrap justify-between items-center mb-4 gap-3 bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
+      <div class="flex items-center gap-3">
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+          <span id="showingText">Showing items:</span>
+          <span id="displayedCount" class="font-extrabold text-emerald-600 dark:text-emerald-400 mx-1">12</span>
+        </p>
+
+        <!-- View Mode: Grid vs List -->
+        <div class="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+          <button onclick="setViewMode('grid')" id="viewBtnGrid" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 text-emerald-600 shadow-sm" title="Grid View">
+            ▦
+          </button>
+          <button onclick="setViewMode('list')" id="viewBtnList" class="px-2.5 py-1 rounded-lg text-xs font-bold text-slate-500 hover:text-emerald-600" title="List View">
+            ≡
+          </button>
+        </div>
+      </div>
+      
+      <!-- Sort and Filter -->
+      <div class="flex items-center gap-2 text-xs">
+        <label class="text-slate-400" id="sortLabel">Sort by:</label>
+        <select id="sortSelect" onchange="sortItems()" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs focus:outline-none cursor-pointer font-medium">
+          <option value="featured" id="optFeatured">Featured First</option>
+          <option value="low" id="optLow">Price: Low to High</option>
+          <option value="high" id="optHigh">Price: High to Low</option>
+          <option value="rating" id="optRating">Customer Rating</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- CARDS CONTAINER (GRID OR LIST) -->
+    <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- Injected via JavaScript -->
+    </div>
+  </main>
+
+  <!-- WISHLIST MODAL -->
+  <div id="wishlistModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button onclick="closeWishlistModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+      
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-2xl text-rose-500">❤️</span>
+        <div>
+          <h3 class="font-black text-lg" id="favTitle">Saved Favorites</h3>
+          <p class="text-xs text-slate-400" id="favSub">Items you have bookmarked to review later.</p>
+        </div>
+      </div>
+
+      <div id="wishlistContent" class="space-y-3">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPPING CART SLIDE-OVER DRAWER -->
+  <div id="cartDrawer" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden transition-opacity flex justify-end">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md h-full flex flex-col shadow-2xl p-6 overflow-y-auto">
+      
+      <!-- Drawer Header -->
+      <div class="flex justify-between items-center pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">🛒</span>
+          <div>
+            <h3 class="font-black text-base sm:text-lg" id="cartTitle">Your Farm Basket</h3>
+            <p class="text-xs text-slate-400" id="cartSub">Sheep products, manure & wool orders</p>
+          </div>
+        </div>
+        <button onclick="closeCartDrawer()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold hover:bg-slate-200">
+          ✕
+        </button>
+      </div>
+
+      <!-- Cart Items List -->
+      <div id="cartItemsList" class="flex-1 py-4 space-y-3 overflow-y-auto">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Drawer Footer & Checkout Summary -->
+      <div class="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+        <div class="space-y-1.5 text-xs">
+          <div class="flex justify-between text-slate-500">
+            <span id="lblSubtotal">Subtotal:</span>
+            <span id="cartSubtotal" class="font-bold text-slate-900 dark:text-slate-100">₹0</span>
+          </div>
+          <div class="flex justify-between text-slate-500">
+            <span id="lblShipping">Kashmir Delivery:</span>
+            <span id="cartShipping" class="font-bold text-emerald-600">FREE</span>
+          </div>
+          <div class="flex justify-between text-base font-black text-slate-900 dark:text-slate-100 pt-2 border-t border-slate-200 dark:border-slate-800">
+            <span id="lblTotal">Total Amount:</span>
+            <span id="cartTotal" class="text-emerald-600">₹0</span>
+          </div>
+        </div>
+
+        <button onclick="openCheckoutModal()" id="btnCheckout" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 rounded-2xl shadow-lg shadow-emerald-700/25 transition text-sm flex items-center justify-center gap-2">
+          <span>🔒</span>
+          <span id="lblProceedCheckout">Proceed to Checkout</span>
+        </button>
+        <p class="text-[11px] text-center text-slate-400">Cash on Delivery (COD) & Instant UPI Accepted across Kashmir</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkoutModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+      
+      <div class="mb-4">
+        <h3 class="text-lg font-black flex items-center gap-2" id="chkTitle">
+          📦 Complete Your Order
+        </h3>
+        <p class="text-xs text-slate-500" id="chkSub">Fast doorstep dispatch from local Kashmiri sheep farmers.</p>
+      </div>
+
+      <form onsubmit="handlePlaceOrder(event)" class="space-y-3.5 text-xs sm:text-sm">
+        <div>
+          <label class="block font-bold mb-1" id="chkLblName">Full Name</label>
+          <input required type="text" id="chkName" placeholder="e.g. Tariq Ahmad Mir" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1" id="chkLblPhone">Phone (WhatsApp)</label>
+            <input required type="tel" id="chkPhone" placeholder="094190XXXXX" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label class="block font-bold mb-1" id="chkLblDistrict">District</label>
+            <select id="chkDistrict" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1" id="chkLblAddress">Village / Delivery Address & Pin Code</label>
+          <textarea required id="chkAddress" rows="2" placeholder="e.g. Near Jamia Masjid, Mattan, Anantnag - 192125" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1" id="chkLblPayment">Payment Method</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center gap-2 p-3 border border-emerald-500/50 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-xl cursor-pointer">
+              <input type="radio" name="paymentMethod" value="Cash on Delivery" checked>
+              <div>
+                <span class="font-bold text-xs block">Cash on Delivery</span>
+                <span class="text-[10px] text-slate-500">Pay on doorstep</span>
+              </div>
+            </label>
+            <label class="flex items-center gap-2 p-3 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer">
+              <input type="radio" name="paymentMethod" value="Instant UPI">
+              <div>
+                <span class="font-bold text-xs block">UPI / GPay / PhonePe</span>
+                <span class="text-[10px] text-slate-500">Instant scan & pay</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1 text-xs">
+          <div class="flex justify-between">
+            <span class="text-slate-500">Items Total:</span>
+            <span id="chkItemsTotal" class="font-bold">₹0</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">Kashmir Express Delivery:</span>
+            <span class="font-bold text-emerald-600">FREE</span>
+          </div>
+          <div class="flex justify-between text-sm font-black pt-1 border-t border-slate-200 dark:border-slate-700">
+            <span>Payable Amount:</span>
+            <span id="chkPayable" class="text-emerald-600">₹0</span>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 rounded-2xl shadow-lg transition text-sm">
+          Confirm & Place Order (آرڈر مکمل کریں)
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ORDER TRACKING TIMELINE MODAL -->
+  <div id="trackModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 relative shadow-2xl">
+      <button onclick="closeTrackModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+
+      <div class="mb-4">
+        <span class="text-3xl">📦</span>
+        <h3 class="font-black text-lg mt-1" id="trackTitle">Track Kashmir Order</h3>
+        <p class="text-xs text-slate-500" id="trackSub">Live status of livestock pickup or product shipping.</p>
+      </div>
+
+      <div class="flex gap-2 mb-4">
+        <input type="text" id="trackInput" value="KS-49201" placeholder="Enter Order ID (e.g. KS-49201)" class="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
+        <button onclick="simulateTracking()" class="bg-emerald-600 text-white font-bold px-4 py-2 rounded-xl text-xs">Track</button>
+      </div>
+
+      <!-- Timeline steps -->
+      <div id="trackTimeline" class="space-y-4 text-xs pt-2">
+        <div class="flex gap-3">
+          <div class="flex flex-col items-center">
+            <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">✓</div>
+            <div class="w-0.5 h-8 bg-emerald-600"></div>
+          </div>
+          <div>
+            <h5 class="font-bold text-slate-900 dark:text-slate-100">Order Placed & Farmer Notified</h5>
+            <p class="text-slate-400 text-[11px]">Farm dispatch confirmed in Pulwama</p>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <div class="flex flex-col items-center">
+            <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">✓</div>
+            <div class="w-0.5 h-8 bg-emerald-600"></div>
+          </div>
+          <div>
+            <h5 class="font-bold text-slate-900 dark:text-slate-100">Veterinary Health & Quality Check</h5>
+            <p class="text-slate-400 text-[11px]">Weight & packaging certified</p>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <div class="flex flex-col items-center">
+            <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold animate-pulse">●</div>
+            <div class="w-0.5 h-8 bg-slate-200 dark:bg-slate-700"></div>
+          </div>
+          <div>
+            <h5 class="font-bold text-emerald-600">In Transit via Kashmir Express</h5>
+            <p class="text-slate-400 text-[11px]">Dispatched on National Highway 44</p>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <div class="flex flex-col items-center">
+            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-400 flex items-center justify-center text-xs">○</div>
+          </div>
+          <div>
+            <h5 class="font-bold text-slate-400">Delivered to Doorstep</h5>
+            <p class="text-slate-400 text-[11px]">Expected delivery today by 4:00 PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PRODUCT DETAIL & INTERACTIVE PHOTO GALLERY -->
+  <div id="detailModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button onclick="closeDetailModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+      <div id="detailModalContent"></div>
+    </div>
+  </div>
+
+  <!-- MODAL: FARMER POST AD -->
+  <div id="sellModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button onclick="closeSellModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+
+      <div class="mb-4">
+        <h3 class="text-lg font-bold flex items-center gap-2" id="sellModalTitle">
+          🐑 Post Live Sheep or Farm Product
+        </h3>
+        <p class="text-xs text-slate-500" id="sellModalSub">
+          Reach buyers directly across Kashmir with zero commissions.
+        </p>
+      </div>
+
+      <form id="sellForm" onsubmit="handlePostAd(event)" class="space-y-3.5 text-xs sm:text-sm">
+        <div>
+          <label class="block font-bold mb-1" id="lblTitle">Product / Sheep Name</label>
+          <input required type="text" id="postTitle" placeholder="e.g. Pure Kashmir Merino Ram (2 Teeth / Doda)" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1" id="lblCategory">Type / Category</label>
+            <select id="postBreed" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none">
+              <!-- Populated in JS -->
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold mb-1" id="lblDistrict">District</label>
+            <select id="postDistrict" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none">
+              <!-- Populated in JS -->
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label class="block font-bold mb-1" id="lblWeight">Weight (Kg / Unit)</label>
+            <input required type="number" id="postWeight" placeholder="55" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold mb-1" id="lblTeeth">Teeth / Spec</label>
+            <input required type="text" id="postTeeth" placeholder="2 Teeth / Grade A" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold mb-1" id="lblPrice">Price (₹)</label>
+            <input required type="number" id="postPrice" placeholder="25000" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1" id="lblFarmerName">Seller Name</label>
+            <input required type="text" id="postFarmer" placeholder="Bashir Ahmad" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold mb-1" id="lblPhone">WhatsApp Number</label>
+            <input required type="tel" id="postPhone" placeholder="94190XXXXX" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1" id="lblDesc">Description</label>
+          <textarea id="postDesc" rows="2" placeholder="Details about sheep health, diet, or wool quality..." class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none"></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl shadow-lg transition" id="btnPublish">
+          Publish Listing Now
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: WEIGHT RATE CALCULATOR -->
+  <div id="estimatorModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 relative shadow-2xl">
+      <button onclick="closeEstimatorModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+
+      <div class="mb-4 text-center">
+        <span class="text-3xl">⚖️</span>
+        <h3 class="text-base sm:text-lg font-bold mt-1" id="calcModalTitle">Kashmir Live-Weight Rate Estimator</h3>
+        <p class="text-xs text-slate-500" id="calcModalSub">Estimate fair farm-gate pricing based on current J&K Mandi live weight rates.</p>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm">
+        <div>
+          <label class="block font-bold mb-1" id="calcBreedLabel">Select Breed Category</label>
+          <select id="calcBreed" onchange="calculateRate()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
+            <!-- Populated in JS -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1" id="calcWeightLabel">Enter Live Body Weight (Kilograms)</label>
+          <input type="number" id="calcWeight" value="52" oninput="calculateRate()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-center text-xl font-black text-emerald-600 focus:outline-none">
+        </div>
+
+        <div class="p-5 bg-emerald-50 dark:bg-emerald-950/40 rounded-2xl border border-emerald-200 dark:border-emerald-800 text-center">
+          <p class="text-xs text-emerald-800 dark:text-emerald-300 font-bold" id="calcResultLabel">Estimated Fair Farm-Gate Rate</p>
+          <div id="calcResult" class="text-3xl font-black text-emerald-700 dark:text-emerald-300 my-1">
+            ₹21,840
+          </div>
+          <p class="text-[11px] text-slate-500" id="calcNote">Final price varies depending on horn symmetry, fleece yield, pedigree, and health.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING BOTTOM NAVIGATION (MOBILE) -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2.5 px-6 flex justify-between items-center z-30 sm:hidden shadow-lg">
+    <button onclick="showSection('live')" class="flex flex-col items-center text-xs font-bold text-emerald-600">
+      <span class="text-base">🐏</span>
+      <span id="botLive">Live Sheep</span>
+    </button>
+    <button onclick="showSection('store')" class="flex flex-col items-center text-xs font-medium text-slate-500">
+      <span class="text-base">🛍️</span>
+      <span id="botStore">Store</span>
+    </button>
+    <button onclick="openCartDrawer()" class="relative flex flex-col items-center text-xs font-bold text-slate-700 dark:text-slate-300">
+      <span class="text-base">🛒</span>
+      <span id="botCart">Cart (<span id="botCartCount">0</span>)</span>
+    </button>
+    <button onclick="showWishlistModal()" class="flex flex-col items-center text-xs font-medium text-rose-500">
+      <span class="text-base">❤️</span>
+      <span>Saved</span>
+    </button>
+    <button onclick="toggleLanguage()" class="flex flex-col items-center text-xs font-medium text-slate-500">
+      <span class="text-base">🌐</span>
+      <span id="botLang">اردو / EN</span>
+    </button>
+  </div>
+
+  <script>
+    // State
+    let currentLang = 'en';
+    let currentCategory = 'all';
+    let currentSection = 'all';
+    let viewMode = 'grid'; // 'grid' or 'list'
+    let cart = [];
+    let wishlist = [];
+
+    // UI Dictionary
+    const translations = {
+      en: {
+        topBarTagline: "Direct Sheep Livestock & 100% Pure Byproducts • Doorstep Delivery in Kashmir",
+        lblTrackOrder: "Track Order",
+        topBarDelivery: "Free Delivery above ₹1,499",
+        topHelpline: "Helpline: +91-94190-SHEEP",
+        navTitle: "Kashmir Sheeps",
+        navMarketBadge: "Livestock & Store",
+        navLogoSub: "Live Sheep • Pure Wool • Orchard Manure",
+        langSwitch: "اردو (Urdu)",
+        navEstimatorBtn: "Rates",
+        navPostBtn: "Sell Sheep",
+        navCartLabel: "Cart",
+        lblPillAll: "All Catalog",
+        lblPillLive: "Live Sheep Mandi",
+        lblPillStore: "Farm Products & Wool",
+        heroBadge: "Farm-Gate Rates • Zero Middleman • Express Delivery across J&K",
+        heroTitle: "Kashmir's Premier Online Livestock & Farm Products Store",
+        heroDesc: "Connect directly with local shepherds for pure Kashmir Merino rams, Bakarwali mountain sheep, Qurbani stock, certified orchard manure for high-yield apple trees, raw Merino knitting yarn, and shearing clippers.",
+        searchPlaceholder: "Search sheep breed, orchard manure, wool yarn, tools...",
+        searchBtn: "Search",
+        h1: "Veterinary Health Verified",
+        h2: "Cash on Delivery & Instant UPI",
+        h3: "Tractor Loads for Apple Orchards",
+        h4: "Direct WhatsApp with Shepherds",
+        pinTitle: "Check Delivery & Mandi Pickup In Your Area:",
+        pinSub: "Enter your J&K Pin code for livestock transport & farm product shipping estimates.",
+        pinCheckBtn: "Check",
+        catAll: "All Items",
+        catMerino: "Kashmir Merino",
+        catBakarwali: "Bakarwali Mountain Breed",
+        catQurbani: "Qurbani Ready (2-4 Teeth)",
+        catFertilizer: "Apple Orchard Manure (Khad)",
+        catWool: "Merino Wool & Blankets",
+        catSupplies: "Clippers, Salt & Feed",
+        showing: "Showing items:",
+        sort: "Sort by:",
+        optFeatured: "Featured First",
+        optLow: "Price: Low to High",
+        optHigh: "Price: High to Low",
+        optRating: "Customer Rating",
+        viewDetails: "View Details",
+        addToCart: "Add to Cart",
+        whatsapp: "WhatsApp",
+        call: "Call Farmer",
+        verifiedHealth: "✓ Health Verified",
+        qurbaniReady: "Qurbani Ready",
+        weightLabel: "Weight:",
+        teethLabel: "Spec / Teeth:",
+        favTitle: "Saved Favorites",
+        favSub: "Items you have bookmarked to review later.",
+        cartTitle: "Your Farm Basket",
+        cartSub: "Sheep products, manure & wool orders",
+        lblSubtotal: "Subtotal:",
+        lblShipping: "Kashmir Delivery:",
+        lblTotal: "Total Amount:",
+        lblProceedCheckout: "Proceed to Checkout",
+        emptyCartMsg: "Your cart is currently empty. Browse our farm products!",
+        emptyWishMsg: "You have no saved favorites yet. Click the heart ❤️ on any item to save it!",
+        chkTitle: "📦 Complete Your Order",
+        chkSub: "Fast doorstep dispatch from local Kashmiri sheep farmers.",
+        chkLblName: "Full Name",
+        chkLblPhone: "Phone (WhatsApp)",
+        chkLblDistrict: "District",
+        chkLblAddress: "Village / Delivery Address & Pin Code",
+        chkLblPayment: "Payment Method",
+        trackTitle: "Track Kashmir Order",
+        trackSub: "Live status of livestock pickup or product shipping.",
+        botLive: "Live Sheep",
+        botStore: "Store",
+        botCart: "Cart",
+        botLang: "اردو (Urdu)"
+      },
+      ur: {
+        topBarTagline: "براہ راست کشمیری بھیڑیں اور خالص بائی پراڈکٹس • گھر کی دہلیز تک ترسیل",
+        lblTrackOrder: "آرڈر ٹریک کریں",
+        topBarDelivery: "1,499 روپے سے زیادہ خریداری پر مفت ہوم ڈیلیوری",
+        topHelpline: "ہیلپ لائن: +91-94190-SHEEP",
+        navTitle: "کشمیر شیپس",
+        navMarketBadge: "لائیو اسٹاک و اسٹور",
+        navLogoSub: "زندہ بھیڑیں • خالص اون • سیب باغات کی کھاد",
+        langSwitch: "English",
+        navEstimatorBtn: "ریٹس",
+        navPostBtn: "اشتہار لگائیں",
+        navCartLabel: "ٹوکری",
+        lblPillAll: "تمام اشیاء",
+        lblPillLive: "زندہ بھیڑ منڈی",
+        lblPillStore: "فارم اشیاء و اون",
+        heroBadge: "فارمر ریٹ • بغیر کمیشن • کشمیر کے ہر ضلع میں ترسیل",
+        heroTitle: "کشمیر کی اولین آن لائن لائیو اسٹاک و فارم پراڈکٹس مارکیٹ",
+        heroDesc: "خالص کشمیر میرینو، بکروال بھیڑیں، قربانی کا اسٹاک، سیبوں کیلئے پرانی نامیاتی کھاد، خالص اون کا دھاگہ، الیکٹرک کترائی مشین اور سالٹ بلاکس براہ راست حاصل کریں۔",
+        searchPlaceholder: "بھیڑ کی نسل، باغاتی کھاد، اون کا دھاگہ یا اوزار تلاش کریں...",
+        searchBtn: "تلاش کریں",
+        h1: "ویٹرنری تصدیق شدہ",
+        h2: "کیش آن ڈیلیوری اور یو پی آئی",
+        h3: "سیب باغات کیلئے ٹریکٹر لوڈ دستیاب",
+        h4: "فارمر سے براہ راست واٹس ایپ رابطہ",
+        pinTitle: "اپنے علاقے میں ڈیلیوری اور پک اپ چیک کریں:",
+        pinSub: "ٹرانسپورٹ اور ڈیلیوری کا وقت معلوم کرنے کیلئے اپنا پن کوڈ درج کریں۔",
+        pinCheckBtn: "چیک کریں",
+        catAll: "تمام اشیاء",
+        catMerino: "کشمیر میرینو",
+        catBakarwali: "بکروال پہاڑی نسل",
+        catQurbani: "قربانی اسپیشل (2-4 دانت)",
+        catFertilizer: "سیب باغات کی کھاد (بھیڈ کھاد)",
+        catWool: "میرینو اون و کمبل",
+        catSupplies: "اون کترنے کے اوزار و خوراک",
+        showing: "دستیاب مصنوعات:",
+        sort: "ترتیب:",
+        optFeatured: "نمایاں پہلے",
+        optLow: "قیمت: کم سے زیادہ",
+        optHigh: "قیمت: زیادہ سے کم",
+        optRating: "بہترین ریٹنگ",
+        viewDetails: "تفصیل دیکھیں",
+        addToCart: "ٹوکری میں ڈالیں",
+        whatsapp: "واٹس ایپ",
+        call: "کال کریں",
+        verifiedHealth: "✓ صحت تصدیق شدہ",
+        qurbaniReady: "قربانی کیلئے تیار",
+        weightLabel: "وزن / سائز:",
+        teethLabel: "دانت / قسم:",
+        favTitle: "پسندیدہ اشیاء (Favorites)",
+        favSub: "آپ کی محفوظ کردہ بھیڑیں اور فارم پراڈکٹس۔",
+        cartTitle: "آپ کی فارم ٹوکری",
+        cartSub: "کھاد، اون اور بائی پراڈکٹس کے آرڈر",
+        lblSubtotal: "کل رقم:",
+        lblShipping: "کشمیر میں ترسیل:",
+        lblTotal: "مکمل ادا شدہ رقم:",
+        lblProceedCheckout: "آرڈر مکمل کرنے کیلئے آگے بڑھیں",
+        emptyCartMsg: "آپ کی ٹوکری خالی ہے۔ فارم پراڈکٹس دیکھ کر شامل کریں!",
+        emptyWishMsg: "آپ کی پسندیدہ فہرست خالی ہے۔ کسی بھی چیز پر دل ❤️ کا نشان دبا کر محفوظ کریں۔",
+        chkTitle: "📦 اپنا آرڈر مکمل کریں",
+        chkSub: "کشمیر کے مقامی کسانوں سے براہ راست تیز ترسیل۔",
+        chkLblName: "مکمل نام",
+        chkLblPhone: "فون نمبر (واٹس ایپ)",
+        chkLblDistrict: "ضلع",
+        chkLblAddress: "گاؤں / پتہ اور پن کوڈ",
+        chkLblPayment: "طریقہ ادائیگی",
+        trackTitle: "کشمیر آرڈر ٹریک کریں",
+        trackSub: "جانور کی روانگی اور پراڈکٹ ڈیلیوری کی لائیو معلومات۔",
+        botLive: "زندہ بھیڑیں",
+        botStore: "اسٹور",
+        botCart: "ٹوکری",
+        botLang: "English"
+      }
+    };
+
+    // Districts Data
+    const districtsData = [
+      { id: "all", en: "All Kashmir Districts", ur: "تمام اضلاع (All Districts)" },
+      { id: "Srinagar", en: "Srinagar", ur: "سرینگر" },
+      { id: "Pulwama", en: "Pulwama", ur: "پلوامہ" },
+      { id: "Anantnag", en: "Anantnag (Islamabad)", ur: "اننت ناگ / اسلام آباد" },
+      { id: "Baramulla", en: "Baramulla", ur: "بارہمولہ" },
+      { id: "Budgam", en: "Budgam", ur: "بڈگام" },
+      { id: "Shopian", en: "Shopian", ur: "شوپیاں" },
+      { id: "Ganderbal", en: "Ganderbal", ur: "گاندربل" },
+      { id: "Kulgam", en: "Kulgam", ur: "کولگام" },
+      { id: "Bandipora", en: "Bandipora", ur: "بانڈی پورہ" },
+      { id: "Kupwara", en: "Kupwara", ur: "کپوارہ" }
+    ];
+
+    // Master Catalog with Real, Authentic Livestock & Product Photography
+    const catalog = [
+      {
+        id: 101,
+        type: "live",
+        category: "merino",
+        titleEn: "Pure Kashmir Merino Breeding Ram (Chhat)",
+        titleUr: "خالص کشمیر میرینو افزائشی مینڈھ (چھٹ)",
+        price: 29500,
+        weight: "66 Kg",
+        specEn: "2 Teeth (Doda)",
+        specUr: "2 دانت (دودا)",
+        districtEn: "Pulwama",
+        districtUr: "پلوامہ",
+        villageEn: "Tral, Pulwama",
+        villageUr: "ترال، پلوامہ",
+        farmerEn: "Ghulam Hassan Lone",
+        farmerUr: "غلام حسن لون",
+        phone: "+919419012345",
+        whatsapp: "919419012345",
+        isQurbani: true,
+        verified: true,
+        rating: 4.9,
+        reviewsCount: 38,
+        descEn: "Champion genetics Kashmir Merino ram with dense fine white fleece and broad frame. Pasture-raised in Tral highlands. Ready for breeding improvement or prime Qurbani.",
+        descUr: "اعلیٰ جینیات کا حامل کشمیری میرینو مینڈھ۔ کثیف سفید اون، چوڑا سینہ اور بہترین افزائشی صلاحیت۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1526030994690-40e26ad32a1c?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1636314923477-f3c10684768b?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1528709024086-98a7672e0b9d?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 102,
+        type: "live",
+        category: "bakarwali",
+        titleEn: "Bakarwali Mountain Qurbani Pair (2 Tall Rams)",
+        titleUr: "بکروال پہاڑی قربانی جوڑی (2 عدد صحتمند مینڈھے)",
+        price: 49000,
+        weight: "108 Kg (Pair)",
+        specEn: "Both 2 Teeth (Doda)",
+        specUr: "دونوں 2 دانت (دودا)",
+        districtEn: "Ganderbal",
+        districtUr: "گاندربل",
+        villageEn: "Kangan, Ganderbal",
+        villageUr: "کنگن، گاندربل",
+        farmerEn: "Mohd Yousuf Paswal",
+        farmerUr: "محمد یوسف پسوال",
+        phone: "+919419088899",
+        whatsapp: "919419088899",
+        isQurbani: true,
+        verified: true,
+        rating: 5.0,
+        reviewsCount: 52,
+        descEn: "Tall, agile Bakarwali rams grazed on Sonamarg alpine meadows. Pure organic diet, flawless curved horns, 100% Qurbani compliant.",
+        descUr: "سونمرگ کی سرسبز چراگاہوں میں چرنے والے بکروال مینڈھے۔ خوبصورت سینگ اور قربانی کیلئے مکمل شرائط کے مطابق۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1528709024086-98a7672e0b9d?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1676600869821-6c1623a4fbfd?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1657846328016-4feb4c014e66?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 201,
+        type: "product",
+        category: "fertilizer",
+        titleEn: "Pure Aged Sheep Manure (Bheed Khad) - 50 Kg Bag",
+        titleUr: "سیب کے باغات کیلئے خالص پرانی بھیڑ کھاد (50 کلو بوری)",
+        price: 380,
+        weight: "50 Kg Bag",
+        specEn: "Decomposed & Dry",
+        specUr: "خشک و نامیاتی",
+        districtEn: "Shopian",
+        districtUr: "شوپیاں",
+        villageEn: "Zainapora, Shopian",
+        villageUr: "زینہ پورہ، شوپیاں",
+        farmerEn: "Farooq Fruit Growers",
+        farmerUr: "فاروق فروٹ گروورز",
+        phone: "+919419077711",
+        whatsapp: "919419077711",
+        isQurbani: false,
+        verified: true,
+        rating: 4.9,
+        reviewsCount: 142,
+        descEn: "100% pure organic decomposed sheep manure. Richest nitrogen & phosphorus source for high-yield Kashmiri apple orchards and saffron fields.",
+        descUr: "100٪ خالص ڈی کمپوزڈ بھیڑ کی کھاد۔ کشمیری سیب اور زعفران کی مٹی کی زرخیزی اور پھل کے رنگ کیلئے بہترین نامیاتی غذا۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 202,
+        type: "product",
+        category: "fertilizer",
+        titleEn: "Apple Orchard Special Manure Bundle (10 Bags + 1 Free)",
+        titleUr: "سیب باغات خصوصی بنڈل (10 بوریاں + 1 بوری مفت)",
+        price: 3600,
+        weight: "550 Kg (11 Bags)",
+        specEn: "Bulk Orchard Discount",
+        specUr: "تھوک رعایت",
+        districtEn: "Pulwama",
+        districtUr: "پلوامہ",
+        villageEn: "Lassipora, Pulwama",
+        villageUr: "لسی پورہ، پلوامہ",
+        farmerEn: "Kashmir Agro Farm Collective",
+        farmerUr: "کشمیر ایگرو فارم",
+        phone: "+919419011122",
+        whatsapp: "919419011122",
+        isQurbani: false,
+        verified: true,
+        rating: 4.8,
+        reviewsCount: 89,
+        descEn: "Special seasonal pack for apple orchard tree bases before winter snowfall. Free pickup or tempo delivery arranged in South & Central Kashmir.",
+        descUr: "برفباری سے قبل سیب کے درختوں کے تھالوں کیلئے مخصوص پیک۔ جنوبی و وسطی کشمیر میں تیز ترسیل۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 203,
+        type: "product",
+        category: "wool",
+        titleEn: "Handspun Pure Kashmir Merino Wool Yarn (500g Skein)",
+        titleUr: "ہاتھ سے کتا ہوا خالص کشمیری میرینو اون کا دھاگہ (500 گرام)",
+        price: 850,
+        weight: "500 Grams",
+        specEn: "2-Ply Extra Soft",
+        specUr: "2 پلائی نرم ریشہ",
+        districtEn: "Bandipora",
+        districtUr: "بانڈی پورہ",
+        villageEn: "Gurez Artisans, Bandipora",
+        villageUr: "گریز دستکار، بانڈی پورہ",
+        farmerEn: "Gurez Women Handloom Society",
+        farmerUr: "گریز ویمن ہینڈ لوم",
+        phone: "+919622099887",
+        whatsapp: "919622099887",
+        isQurbani: false,
+        verified: true,
+        rating: 4.9,
+        reviewsCount: 64,
+        descEn: "100% pure high-altitude Kashmir Merino wool yarn. Unbleached, naturally warm, ideal for traditional hand-knitted sweaters, pheran borders, and caps.",
+        descUr: "خالص ہائی لینڈ کشمیری میرینو اون کا تیار کردہ دھاگہ۔ گرم اور روایتی کشمیری سویٹر اور گرم کپڑوں کیلئے لاجواب۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 204,
+        type: "product",
+        category: "wool",
+        titleEn: "Traditional Handwoven Sheep Wool Chadar (Loi / Blanket)",
+        titleUr: "روایتی ہاتھ سے بنی بھیڑ کی اون کی چادر (لوئی / کمبل)",
+        price: 2850,
+        weight: "1.8 Kg",
+        specEn: "Full Size (90x45 in)",
+        specUr: "فل سائز روایتی",
+        districtEn: "Anantnag",
+        districtUr: "اننت ناگ",
+        villageEn: "Seer Hamdan, Anantnag",
+        villageUr: "سیر ہمدان، اننت ناگ",
+        farmerEn: "Haji Abdul Gani Weavers",
+        farmerUr: "حاجی عبدالغنی بنکر",
+        phone: "+919797011223",
+        whatsapp: "919797011223",
+        isQurbani: false,
+        verified: true,
+        rating: 5.0,
+        reviewsCount: 78,
+        descEn: "Dense, feather-light traditional Kashmiri sheep wool blanket. Natural off-white fleece, retains extreme warmth even in minus 10°C Chillai Kalan.",
+        descUr: "خالص کشمیری بھیڑ کی اون سے بنی روایتی گرم چادر (لوئی)۔ چلہ کلاں کی شدید سردی میں جسم کو مکمل گرم رکھتی ہے۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 205,
+        type: "product",
+        category: "supplies",
+        titleEn: "Himalayan Mineral Salt Lick with Hanging Rope (3-Pack)",
+        titleUr: "بھیڑوں کیلئے ہمالیائی منرل سالٹ بلاک بمعہ رسی (3 عدد)",
+        price: 450,
+        weight: "6 Kg (3x2 Kg)",
+        specEn: "84+ Trace Minerals",
+        specUr: "84+ معدنیات",
+        districtEn: "Srinagar",
+        districtUr: "سرینگر",
+        villageEn: "Nowshera, Srinagar",
+        villageUr: "نوشہرہ، سرینگر",
+        farmerEn: "Valley Livestock Care",
+        farmerUr: "ویلی لائیو اسٹاک کیئر",
+        phone: "+919906012344",
+        whatsapp: "919906012344",
+        isQurbani: false,
+        verified: true,
+        rating: 4.7,
+        reviewsCount: 95,
+        descEn: "100% natural pure rock salt lick blocks. Essential for sheep digestion, preventing pica, increasing water intake, and improving lamb growth rates.",
+        descUr: "خالص قدرتی سالٹ لکس۔ بھیڑوں کے ہاضمے، نمکیات کی کمی پوری کرنے اور میمنوں کی تیز افزائش کیلئے بے حد مفید۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 206,
+        type: "product",
+        category: "supplies",
+        titleEn: "Professional 6-Speed Electric Sheep Shearing Clipper (680W)",
+        titleUr: "پیشہ ورانہ 6 سپیڈ الیکٹرک اون کترائی مشین (680 واٹ)",
+        price: 5499,
+        weight: "3.2 Kg Kit",
+        specEn: "680W High Power + Case",
+        specUr: "تیز بلیڈز بمعہ بکس",
+        districtEn: "Srinagar",
+        districtUr: "سرینگر",
+        villageEn: "Batamaloo Mandi, Srinagar",
+        villageUr: "بٹہ مالو، سرینگر",
+        farmerEn: "JK Shepherd Tools Corp",
+        farmerUr: "جے کے شیپرڈ ٹولز",
+        phone: "+919419055443",
+        whatsapp: "919419055443",
+        isQurbani: false,
+        verified: true,
+        rating: 4.8,
+        reviewsCount: 31,
+        descEn: "Heavy-duty 680-watt motor electric shearing machine with precision high-carbon steel blades. Cuts shearing time per sheep down to 5 minutes.",
+        descUr: "طاقتور 680 واٹ الیکٹرک اون کترنے والی مشین۔ ہر بھیڑ کی اون 5 منٹ کے اندر آسانی اور جانور کو نقصان پہنچائے بغیر کاٹیں۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 207,
+        type: "product",
+        category: "wool",
+        titleEn: "Natural Sheep Milk & Wool Lanolin Cold-Processed Soap (Pack of 3)",
+        titleUr: "بھیڑ کے دودھ اور قدرتی لینولین کا صابن (3 کا پیکٹ)",
+        price: 360,
+        weight: "3 x 100g",
+        specEn: "Organic Skin Care",
+        specUr: "خالص نامیاتی",
+        districtEn: "Pulwama",
+        districtUr: "پلوامہ",
+        villageEn: "Kakapora, Pulwama",
+        villageUr: "کاکاپورہ، پلوامہ",
+        farmerEn: "Pahalgam Herbal Soaps",
+        farmerUr: "پہلگام ہربل سوپس",
+        phone: "+919419088800",
+        whatsapp: "919419088800",
+        isQurbani: false,
+        verified: true,
+        rating: 4.9,
+        reviewsCount: 47,
+        descEn: "Handcrafted moisturizing soap made with rich fresh sheep milk and natural wool lanolin. Heals winter skin dryness and cracked hands.",
+        descUr: "تازہ بھیڑ کے دودھ اور اون کے قدرتی روغن (لینولین) سے تیار صابن۔ سردیوں کی خشکی اور کھردری جلد کیلئے بہترین۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1607006344380-b6775a0824a7?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 208,
+        type: "product",
+        category: "supplies",
+        titleEn: "Fortified Winter Sheep Feed Pellets (25 Kg Sack)",
+        titleUr: "سردیوں کیلئے مقوی بھیڑ فیڈ پیلٹس (25 کلو بوری)",
+        price: 880,
+        weight: "25 Kg Sack",
+        specEn: "18% Protein + Vitamins",
+        specUr: "18٪ پروٹین و کیلشیم",
+        districtEn: "Baramulla",
+        districtUr: "بارہمولہ",
+        villageEn: "Pattan, Baramulla",
+        villageUr: "پٹن، بارہمولہ",
+        farmerEn: "Highland Feed Mills",
+        farmerUr: "ہائی لینڈ فیڈ ملز",
+        phone: "+919622088811",
+        whatsapp: "919622088811",
+        isQurbani: false,
+        verified: true,
+        rating: 4.7,
+        reviewsCount: 56,
+        descEn: "Specially formulated feed pellets with clover hay, crushed corn, soybean meal, and essential minerals to maintain body weight through Kashmir winters.",
+        descUr: "برفباری کے دوران بھیڑوں کا وزن برقرار رکھنے اور قوت مدافعت بڑھانے کیلئے خصوصی دیسی پیلٹ فیڈ۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 103,
+        type: "live",
+        category: "merino",
+        titleEn: "Kashmir Merino Ewe with Male Lamb",
+        titleUr: "کشمیر میرینو مادہ بھیڑ بمعہ نر میمنہ",
+        price: 19500,
+        weight: "50 Kg",
+        specEn: "4 Teeth (Chog)",
+        specUr: "4 دانت (چوگ)",
+        districtEn: "Anantnag",
+        districtUr: "اننت ناگ",
+        villageEn: "Mattan, Anantnag",
+        villageUr: "مٹن، اننت ناگ",
+        farmerEn: "Abdul Rashid Bhat",
+        farmerUr: "عبدالرشید بٹ",
+        phone: "+919797011223",
+        whatsapp: "919797011223",
+        isQurbani: false,
+        verified: true,
+        rating: 4.8,
+        reviewsCount: 19,
+        descEn: "Calm 3-year-old Merino mother sheep with active 1.5-month male lamb. High milk producer, dense fleece coat. Ideal starter flock.",
+        descUr: "3 سالہ صحت مند میرینو بھیڑ بمعہ 1.5 ماہ کا چست نر میمنہ۔ دودھ کی وافر مقدار اور سالانہ 3.2 کلو اون۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1646087783323-c5596fa858d8?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1528709024086-98a7672e0b9d?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 104,
+        type: "live",
+        category: "qurbani",
+        titleEn: "Heavyweight Trophy Ram (Eid Qurbani Showstopper)",
+        titleUr: "شاہی ہیوی ویٹ مینڈھ (عید قربانی خصوصی شو پیس)",
+        price: 39500,
+        weight: "84 Kg",
+        specEn: "4 Teeth (Chog)",
+        specUr: "4 دانت (چوگ)",
+        districtEn: "Budgam",
+        districtUr: "بڈگام",
+        villageEn: "Beerwah, Budgam",
+        villageUr: "بیروہ، بڈگام",
+        farmerEn: "Tariq Ahmad Mir",
+        farmerUr: "طارق احمد میر",
+        phone: "+919906055544",
+        whatsapp: "919906055544",
+        isQurbani: true,
+        verified: true,
+        rating: 5.0,
+        reviewsCount: 27,
+        descEn: "Massive 84kg show-quality ram with majestic curved horns and muscular build. Specially fed on corn meal, mustard cake, and highland clover.",
+        descUr: "84 کلوگرام کا وزنی مینڈھ۔ شاندار گھماؤ دار سینگ، طاقتور ہڈیاں، مکی کا دلیہ اور سبز چارے پر پالا گیا۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1657846328016-4feb4c014e66?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1636314923477-f3c10684768b?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1526030994690-40e26ad32a1c?auto=format&fit=crop&w=800&q=80"
+        ]
+      }
+    ];
+
+    // TOAST NOTIFICATION ENGINE
+    function showToast(message, icon = '✅') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = "toast-animate pointer-events-auto bg-slate-900/95 dark:bg-white/95 text-white dark:text-slate-950 p-3.5 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-700 dark:border-slate-200 text-xs font-bold";
+      toast.innerHTML = `
+        <span class="text-base">${icon}</span>
+        <span class="flex-1">${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // WISHLIST TOGGLE
+    function toggleWishlist(id, event) {
+      if (event) event.stopPropagation();
+      const index = wishlist.indexOf(id);
+      const item = catalog.find(i => i.id === id);
+      const title = currentLang === 'en' ? item.titleEn : item.titleUr;
+
+      if (index > -1) {
+        wishlist.splice(index, 1);
+        showToast(currentLang === 'en' ? `Removed from Favorites: ${title}` : `پسندیدہ سے خارج: ${title}`, '🤍');
+      } else {
+        wishlist.push(id);
+        showToast(currentLang === 'en' ? `Saved to Favorites: ${title}` : `پسندیدہ میں شامل: ${title}`, '❤️');
+      }
+
+      document.getElementById('wishlistCountBadge').textContent = wishlist.length;
+      filterCatalog();
+    }
+
+    function showWishlistModal() {
+      const container = document.getElementById('wishlistContent');
+      const t = translations[currentLang];
+
+      if (wishlist.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-slate-400">
+            <span class="text-4xl block mb-2">🤍</span>
+            <p class="font-bold text-sm text-slate-700 dark:text-slate-300">${t.emptyWishMsg}</p>
+          </div>
+        `;
+      } else {
+        const favItems = catalog.filter(i => wishlist.includes(i.id));
+        container.innerHTML = favItems.map(item => {
+          const title = currentLang === 'en' ? item.titleEn : item.titleUr;
+          return `
+            <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700">
+              <img src="${item.gallery[0]}" alt="${title}" class="w-14 h-14 rounded-xl object-cover">
+              <div class="flex-1 min-w-0">
+                <h5 class="font-bold text-xs line-clamp-1">${title}</h5>
+                <p class="text-xs text-emerald-600 font-black">₹${item.price.toLocaleString('en-IN')}</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="viewItemDetails(${item.id}); closeWishlistModal();" class="text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100">View</button>
+                <button onclick="toggleWishlist(${item.id}); showWishlistModal();" class="text-rose-500 font-bold px-2 py-1">✕</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('wishlistModal').classList.remove('hidden');
+    }
+    function closeWishlistModal() {
+      document.getElementById('wishlistModal').classList.add('hidden');
+    }
+
+    // VIEW MODE (GRID VS LIST)
+    function setViewMode(mode) {
+      viewMode = mode;
+      const gridBtn = document.getElementById('viewBtnGrid');
+      const listBtn = document.getElementById('viewBtnList');
+
+      if (mode === 'grid') {
+        gridBtn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 text-emerald-600 shadow-sm";
+        listBtn.className = "px-2.5 py-1 rounded-lg text-xs font-bold text-slate-500 hover:text-emerald-600";
+      } else {
+        listBtn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 text-emerald-600 shadow-sm";
+        gridBtn.className = "px-2.5 py-1 rounded-lg text-xs font-bold text-slate-500 hover:text-emerald-600";
+      }
+
+      filterCatalog();
+    }
+
+    // SECTION SELECTOR (ALL / LIVE / STORE)
+    function showSection(sec) {
+      currentSection = sec;
+      const pAll = document.getElementById('navPillAll');
+      const pLive = document.getElementById('navPillLive');
+      const pStore = document.getElementById('navPillStore');
+
+      [pAll, pLive, pStore].forEach(p => {
+        p.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600";
+      });
+
+      if (sec === 'live') {
+        pLive.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm";
+      } else if (sec === 'store') {
+        pStore.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm flex items-center gap-1";
+      } else {
+        pAll.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm";
+      }
+
+      filterCatalog();
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.classList.remove('bg-emerald-600', 'text-white');
+        btn.classList.add('bg-white', 'dark:bg-slate-900', 'text-slate-700', 'dark:text-slate-300');
+      });
+      event.currentTarget.classList.add('bg-emerald-600', 'text-white');
+      event.currentTarget.classList.remove('bg-white', 'dark:bg-slate-900', 'text-slate-700', 'dark:text-slate-300');
+      filterCatalog();
+    }
+
+    function filterCatalog() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const dist = document.getElementById('districtFilter').value;
+
+      let filtered = catalog.filter(item => {
+        if (currentSection === 'live' && item.type !== 'live') return false;
+        if (currentSection === 'store' && item.type !== 'product') return false;
+
+        const matchesCategory = (currentCategory === 'all') || 
+                                (currentCategory === 'qurbani' && item.isQurbani) ||
+                                (currentCategory === item.category);
+
+        const matchesDist = (dist === 'all') || 
+                            (item.districtEn.toLowerCase() === dist.toLowerCase()) || 
+                            (item.districtUr.includes(dist));
+
+        const searchTarget = (item.titleEn + " " + item.titleUr + " " + item.specEn + " " + item.specUr + " " + item.descEn + " " + item.descUr).toLowerCase();
+        const matchesSearch = searchTarget.includes(q);
+
+        return matchesCategory && matchesDist && matchesSearch;
+      });
+
+      renderGrid(filtered);
+    }
+
+    function renderGrid(list) {
+      const container = document.getElementById('cardsGrid');
+      const t = translations[currentLang];
+      document.getElementById('displayedCount').textContent = list.length;
+      document.getElementById('totalBadge').textContent = catalog.length;
+
+      if (viewMode === 'list') {
+        container.className = "flex flex-col gap-3";
+      } else {
+        container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5";
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center text-slate-400 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-8">
+            <div class="text-5xl mb-3">🔍</div>
+            <p class="font-bold text-base text-slate-700 dark:text-slate-300">
+              ${currentLang === 'en' ? 'No items found matching your filters.' : 'کوئی پراڈکٹ یا جانور نہیں ملا۔'}
+            </p>
+            <p class="text-xs mt-1">
+              ${currentLang === 'en' ? 'Try changing your search term or selecting All Categories.' : 'براہ کرم تمام کیٹیگریز منتخب کر کے دوبارہ دیکھیں۔'}
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(item => {
+        const title = currentLang === 'en' ? item.titleEn : item.titleUr;
+        const spec = currentLang === 'en' ? item.specEn : item.specUr;
+        const district = currentLang === 'en' ? item.districtEn : item.districtUr;
+        const village = currentLang === 'en' ? item.villageEn : item.villageUr;
+        const desc = currentLang === 'en' ? item.descEn : item.descUr;
+        const isLive = item.type === 'live';
+        const isFav = wishlist.includes(item.id);
+
+        if (viewMode === 'list') {
+          // LIST VIEW LAYOUT
+          return `
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 hover:shadow-md transition flex flex-col sm:flex-row items-center gap-4">
+              <div class="w-full sm:w-36 h-32 rounded-xl overflow-hidden relative flex-shrink-0">
+                <img src="${item.gallery[0]}" alt="${title}" class="w-full h-full object-cover">
+                <button onclick="toggleWishlist(${item.id}, event)" class="absolute top-2 left-2 w-7 h-7 rounded-full bg-white/90 dark:bg-slate-900/90 flex items-center justify-center text-xs shadow">
+                  ${isFav ? '❤️' : '🤍'}
+                </button>
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isLive ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'}">
+                    ${isLive ? 'Live Sheep' : 'Farm Product'}
+                  </span>
+                  <span class="text-xs text-slate-400">📍 ${district}</span>
+                  <span class="text-xs text-amber-500 font-bold ml-auto">★ ${item.rating}</span>
+                </div>
+
+                <h4 class="font-bold text-sm sm:text-base leading-snug line-clamp-1 mb-1">${title}</h4>
+                <p class="text-xs text-slate-500 line-clamp-1 mb-2">${desc}</p>
+                
+                <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
+                  <span><strong>${t.weightLabel}</strong> ${item.weight}</span>
+                  <span>•</span>
+                  <span><strong>${t.teethLabel}</strong> ${spec}</span>
+                </div>
+              </div>
+
+              <div class="text-right flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0">
+                <span class="text-base font-black text-emerald-600">₹${item.price.toLocaleString('en-IN')}</span>
+                <div class="flex items-center gap-2 mt-2">
+                  <button onclick="viewItemDetails(${item.id})" class="text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100">
+                    ${t.viewDetails}
+                  </button>
+                  ${isLive ? `
+                    <a href="https://wa.me/${item.whatsapp}?text=${encodeURIComponent('Hello, I am interested in: ' + title)}" target="_blank" class="bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl">
+                      💬 WhatsApp
+                    </a>
+                  ` : `
+                    <button onclick="addToCart(${item.id})" class="bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl">
+                      🛒 Add
+                    </button>
+                  `}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // GRID VIEW LAYOUT (STANDARD)
+        return `
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden hover:shadow-xl hover:border-emerald-500/50 transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              <!-- Image Banner with Badges -->
+              <div class="h-48 relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+                <img src="${item.gallery[0]}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+                <!-- Favorite Heart Button Top Left/Right -->
+                <button onclick="toggleWishlist(${item.id}, event)" class="absolute top-3 ${currentLang === 'en' ? 'right-3' : 'left-3'} w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 flex items-center justify-center text-sm shadow hover:scale-110 transition z-10" title="Add to Favorites">
+                  ${isFav ? '❤️' : '🤍'}
+                </button>
+
+                <!-- Type Badge Top Opposite -->
+                <div class="absolute top-3 ${currentLang === 'en' ? 'left-3' : 'right-3'} flex flex-col gap-1 items-start">
+                  ${isLive ? 
+                    `<span class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow">🐏 ${currentLang === 'en' ? 'Live Animal' : 'زندہ جانور'}</span>` : 
+                    `<span class="bg-blue-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow">🛍️ ${currentLang === 'en' ? 'Farm Product' : 'فارم پراڈکٹ'}</span>`
+                  }
+                  <span class="bg-black/60 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm flex items-center gap-1">
+                    ★ ${item.rating} <span class="text-white/70">(${item.reviewsCount})</span>
+                  </span>
+                </div>
+
+                <!-- Location Badge Bottom -->
+                <div class="absolute bottom-3 ${currentLang === 'en' ? 'left-3' : 'right-3'} bg-black/60 backdrop-blur-md text-white text-[11px] px-2.5 py-1 rounded-xl font-bold border border-white/10">
+                  📍 ${district}
+                </div>
+
+                <!-- Price Bottom -->
+                <div class="absolute bottom-3 ${currentLang === 'en' ? 'right-3' : 'left-3'} bg-emerald-600 text-white font-black text-base px-3 py-1 rounded-xl shadow-lg border border-emerald-400/40">
+                  ₹${item.price.toLocaleString('en-IN')}
+                </div>
+              </div>
+
+              <!-- Content Body -->
+              <div class="p-4">
+                <h4 class="font-black text-sm sm:text-base leading-snug line-clamp-1 group-hover:text-emerald-600 transition mb-1">${title}</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1">
+                  <span>🏡</span> ${village}
+                </p>
+
+                <!-- Spec Grid -->
+                <div class="grid grid-cols-2 gap-2 text-xs mb-3 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-2xl border border-slate-100 dark:border-slate-800">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-slate-400">${t.weightLabel}</span>
+                    <span class="font-bold text-slate-900 dark:text-slate-100">${item.weight}</span>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-slate-400">${t.teethLabel}</span>
+                    <span class="font-bold text-slate-900 dark:text-slate-100 truncate">${spec}</span>
+                  </div>
+                </div>
+
+                <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                  ${desc}
+                </p>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="p-4 pt-0 border-t border-slate-100 dark:border-slate-800 mt-auto flex items-center gap-2">
+              <button onclick="viewItemDetails(${item.id})" class="flex-1 text-xs font-bold py-2.5 px-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-center text-slate-700 dark:text-slate-200">
+                ${t.viewDetails}
+              </button>
+
+              ${isLive ? `
+                <a href="https://wa.me/${item.whatsapp}?text=${encodeURIComponent((currentLang === 'en' ? 'Hello, I want to book this live sheep: ' : 'سلام علیکم، میں اس بھیڑ کے بارے میں بات کرنا چاہتا ہوں: ') + title)}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3.5 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-700/20 transition">
+                  <span>💬</span>
+                  <span class="hidden sm:inline">${t.whatsapp}</span>
+                </a>
+                <a href="tel:${item.phone}" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center shadow-md transition" title="${t.call}">
+                  <span>📞</span>
+                </a>
+              ` : `
+                <button onclick="addToCart(${item.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3.5 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-700/20 transition">
+                  <span>🛒</span>
+                  <span>${t.addToCart}</span>
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // CART OPERATIONS
+    function addToCart(itemId) {
+      const item = catalog.find(i => i.id === itemId);
+      if (!item) return;
+
+      const existing = cart.find(c => c.id === itemId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...item, qty: 1 });
+      }
+
+      const title = currentLang === 'en' ? item.titleEn : item.titleUr;
+      showToast(currentLang === 'en' ? `Added to Cart: ${title}` : `ٹوکری میں شامل: ${title}`, '🛒');
+
+      updateCartBadge();
+      updateCartDrawer();
+    }
+
+    function changeQty(itemId, delta) {
+      const itemIndex = cart.findIndex(c => c.id === itemId);
+      if (itemIndex > -1) {
+        cart[itemIndex].qty += delta;
+        if (cart[itemIndex].qty <= 0) {
+          cart.splice(itemIndex, 1);
+        }
+      }
+      updateCartBadge();
+      updateCartDrawer();
+    }
+
+    function updateCartBadge() {
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cartCountBadge').textContent = count;
+      document.getElementById('botCartCount').textContent = count;
+    }
+
+    function updateCartDrawer() {
+      const container = document.getElementById('cartItemsList');
+      const t = translations[currentLang];
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-slate-400">
+            <span class="text-4xl block mb-2">🛒</span>
+            <p class="font-bold text-sm text-slate-700 dark:text-slate-300">${t.emptyCartMsg}</p>
+          </div>
+        `;
+        document.getElementById('cartSubtotal').textContent = '₹0';
+        document.getElementById('cartTotal').textContent = '₹0';
+        return;
+      }
+
+      let subtotal = 0;
+      container.innerHTML = cart.map(item => {
+        const title = currentLang === 'en' ? item.titleEn : item.titleUr;
+        const itemTotal = item.price * item.qty;
+        subtotal += itemTotal;
+
+        return `
+          <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-100 dark:border-slate-800">
+            <img src="${item.gallery[0]}" alt="${title}" class="w-14 h-14 rounded-xl object-cover">
+            <div class="flex-1 min-w-0">
+              <h5 class="font-bold text-xs line-clamp-1">${title}</h5>
+              <p class="text-[11px] text-emerald-600 font-black">₹${item.price.toLocaleString('en-IN')}</p>
+              
+              <div class="flex items-center gap-2 mt-1.5">
+                <button onclick="changeQty(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-xs">-</button>
+                <span class="text-xs font-black px-1">${item.qty}</span>
+                <button onclick="changeQty(${item.id}, 1)" class="w-6 h-6 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-xs">+</button>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-black block">₹${itemTotal.toLocaleString('en-IN')}</span>
+              <button onclick="changeQty(${item.id}, -${item.qty})" class="text-[10px] text-rose-500 hover:underline mt-2">Remove</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('cartSubtotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
+      document.getElementById('cartTotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
+    }
+
+    function openCartDrawer() {
+      document.getElementById('cartDrawer').classList.remove('hidden');
+    }
+    function closeCartDrawer() {
+      document.getElementById('cartDrawer').classList.add('hidden');
+    }
+
+    // CHECKOUT MODAL
+    function openCheckoutModal() {
+      if (cart.length === 0) {
+        showToast(currentLang === 'en' ? 'Your cart is empty! Add products first.' : 'آپ کی ٹوکری خالی ہے۔', '⚠️');
+        return;
+      }
+      closeCartDrawer();
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      document.getElementById('chkItemsTotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
+      document.getElementById('chkPayable').textContent = '₹' + subtotal.toLocaleString('en-IN');
+      document.getElementById('checkoutModal').classList.remove('hidden');
+    }
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').classList.add('hidden');
+    }
+
+    function handlePlaceOrder(e) {
+      e.preventDefault();
+      const name = document.getElementById('chkName').value;
+      const orderId = 'KS-' + Math.floor(100000 + Math.random() * 900000);
+      closeCheckoutModal();
+
+      cart = [];
+      updateCartBadge();
+      updateCartDrawer();
+
+      showToast(currentLang === 'en' ? `Order Confirmed: #${orderId}` : `آرڈر بک ہو چکا ہے: #${orderId}`, '🎉');
+      
+      // Auto open tracking
+      document.getElementById('trackInput').value = orderId;
+      setTimeout(() => openTrackModal(), 1000);
+    }
+
+    // TRACKING MODAL
+    function openTrackModal() {
+      document.getElementById('trackModal').classList.remove('hidden');
+    }
+    function closeTrackModal() {
+      document.getElementById('trackModal').classList.add('hidden');
+    }
+    function simulateTracking() {
+      showToast(currentLang === 'en' ? "Status updated! Shipment is moving on NH44." : "اسٹیٹس اپ ڈیٹ: آرڈر روانہ ہو چکا ہے۔", '🚚');
+    }
+
+    // PINCODE CHECKER
+    function checkPincode() {
+      const pin = document.getElementById('pincodeInput').value;
+      const msg = document.getElementById('pincodeMessage');
+      msg.classList.remove('hidden');
+
+      if (!pin || pin.length < 6) {
+        msg.className = "text-xs mt-2 px-3 text-rose-500 font-semibold";
+        msg.textContent = currentLang === 'en' ? "⚠️ Please enter a valid 6-digit postal pin code." : "⚠️ برائے مہربانی درست 6 ہندسوں کا پن کوڈ درج کریں۔";
+        return;
+      }
+
+      msg.className = "text-xs mt-2 px-3 text-emerald-600 dark:text-emerald-400 font-semibold";
+      msg.textContent = currentLang === 'en' ? 
+        `✅ Delivery Available for Pin ${pin}! Express Mandi pickup & doorstep dispatch guaranteed.` : 
+        `✅ پن کوڈ ${pin} پر تیز رفتار ڈیلیوری اور فارم پک اپ دستیاب ہے!`;
+    }
+
+    // DETAIL MODAL WITH PHOTO GALLERY SWITCHER
+    let currentModalPhoto = 0;
+    let currentModalItem = null;
+
+    function viewItemDetails(id) {
+      const item = catalog.find(i => i.id === id);
+      if (!item) return;
+
+      currentModalItem = item;
+      currentModalPhoto = 0;
+      renderDetailModalContent();
+      document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    function switchModalPhoto(index) {
+      currentModalPhoto = index;
+      renderDetailModalContent();
+    }
+
+    function renderDetailModalContent() {
+      const item = currentModalItem;
+      const title = currentLang === 'en' ? item.titleEn : item.titleUr;
+      const spec = currentLang === 'en' ? item.specEn : item.specUr;
+      const district = currentLang === 'en' ? item.districtEn : item.districtUr;
+      const village = currentLang === 'en' ? item.villageEn : item.villageUr;
+      const desc = currentLang === 'en' ? item.descEn : item.descUr;
+      const farmer = currentLang === 'en' ? item.farmerEn : item.farmerUr;
+      const isLive = item.type === 'live';
+
+      document.getElementById('detailModalContent').innerHTML = `
+        <!-- Main Featured Image -->
+        <div class="rounded-2xl overflow-hidden mb-3 shadow-md h-60 relative bg-slate-100 dark:bg-slate-800">
+          <img src="${item.gallery[currentModalPhoto]}" alt="${title}" class="w-full h-full object-cover">
+          <div class="absolute bottom-3 ${currentLang === 'en' ? 'left-3' : 'right-3'} bg-black/70 backdrop-blur-md text-white text-xs px-3 py-1 rounded-xl font-bold">
+            📍 ${village} (${district})
+          </div>
+        </div>
+
+        <!-- Thumbnails Gallery Row -->
+        ${item.gallery.length > 1 ? `
+          <div class="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
+            ${item.gallery.map((img, idx) => `
+              <button onclick="switchModalPhoto(${idx})" class="w-14 h-14 rounded-xl overflow-hidden border-2 transition ${idx === currentModalPhoto ? 'border-emerald-600 scale-105' : 'border-transparent opacity-60'}">
+                <img src="${img}" class="w-full h-full object-cover">
+              </button>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <div class="mb-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold px-2.5 py-0.5 rounded-full">
+              ${isLive ? 'Live Sheep Livestock' : 'Kashmir Farm Product'}
+            </span>
+            <span class="text-xs font-bold text-amber-500">★ ${item.rating} (${item.reviewsCount} reviews)</span>
+          </div>
+          <h3 class="text-lg font-black mt-2 leading-snug">${title}</h3>
+        </div>
+
+        <div class="bg-slate-50 dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 mb-4 space-y-2 text-xs">
+          <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-1.5">
+            <span class="text-slate-400">Price:</span>
+            <span class="text-lg font-black text-emerald-600">₹${item.price.toLocaleString('en-IN')}</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-1.5">
+            <span class="text-slate-400">Weight / Size:</span>
+            <span class="font-extrabold">${item.weight}</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-1.5">
+            <span class="text-slate-400">Specification:</span>
+            <span class="font-bold text-amber-600">${spec}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Seller / Producer:</span>
+            <span class="font-bold text-blue-600">${farmer}</span>
+          </div>
+        </div>
+
+        <div class="mb-5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+          <h4 class="font-bold text-xs uppercase text-slate-400 mb-1">Product Description:</h4>
+          ${desc}
+        </div>
+
+        <div class="flex gap-2">
+          ${isLive ? `
+            <a href="https://wa.me/${item.whatsapp}?text=${encodeURIComponent('Hello, I want to book this sheep: ' + title)}" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-3 rounded-2xl flex items-center justify-center gap-2 text-xs transition">
+              💬 WhatsApp Farmer
+            </a>
+            <a href="tel:${item.phone}" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-2xl flex items-center justify-center gap-2 text-xs transition">
+              📞 Direct Call
+            </a>
+          ` : `
+            <button onclick="addToCart(${item.id}); closeDetailModal();" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-3 rounded-2xl flex items-center justify-center gap-2 text-xs transition">
+              🛒 Add to Cart (₹${item.price})
+            </button>
+            <button onclick="addToCart(${item.id}); closeDetailModal(); openCheckoutModal();" class="flex-1 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold py-3 px-3 rounded-2xl flex items-center justify-center gap-2 text-xs transition">
+              ⚡ Buy Now
+            </button>
+          `}
+        </div>
+      `;
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detailModal').classList.add('hidden');
+    }
+
+    // SELL MODAL
+    function openSellModal() {
+      document.getElementById('sellModal').classList.remove('hidden');
+    }
+    function closeSellModal() {
+      document.getElementById('sellModal').classList.add('hidden');
+    }
+
+    function handlePostAd(e) {
+      e.preventDefault();
+      const title = document.getElementById('postTitle').value;
+      const category = document.getElementById('postBreed').value;
+      const district = document.getElementById('postDistrict').value;
+      const weight = document.getElementById('postWeight').value;
+      const teeth = document.getElementById('postTeeth').value;
+      const price = parseFloat(document.getElementById('postPrice').value) || 20000;
+      const farmer = document.getElementById('postFarmer').value;
+      const phone = document.getElementById('postPhone').value;
+      const desc = document.getElementById('postDesc').value || "Quality farm stock directly from Kashmir.";
+
+      const isLive = ['merino', 'bakarwali', 'qurbani'].includes(category);
+
+      const newItem = {
+        id: Date.now(),
+        type: isLive ? 'live' : 'product',
+        category: category,
+        titleEn: title,
+        titleUr: title,
+        price: price,
+        weight: weight + (isNaN(weight) ? '' : ' Kg'),
+        specEn: teeth,
+        specUr: teeth,
+        districtEn: district,
+        districtUr: district,
+        villageEn: district + " Center",
+        villageUr: district + " مرکز",
+        farmerEn: farmer,
+        farmerUr: farmer,
+        phone: phone,
+        whatsapp: phone.replace(/[^0-9]/g, ''),
+        isQurbani: teeth.toLowerCase().includes('2') || teeth.toLowerCase().includes('4') || teeth.includes('دودا'),
+        verified: true,
+        rating: 5.0,
+        reviewsCount: 1,
+        descEn: desc,
+        descUr: desc,
+        gallery: [
+          isLive ? 
+            "https://images.unsplash.com/photo-1526030994690-40e26ad32a1c?auto=format&fit=crop&w=800&q=80" : 
+            "https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80"
+        ]
+      };
+
+      catalog.unshift(newItem);
+      closeSellModal();
+      document.getElementById('sellForm').reset();
+      filterCatalog();
+      showToast(currentLang === 'en' ? "Listing Published successfully!" : "اشتہار کامیابی کے ساتھ شائع ہو چکا ہے!", "✅");
+    }
+
+    // CALCULATOR
+    function openEstimatorModal() {
+      document.getElementById('estimatorModal').classList.remove('hidden');
+      calculateRate();
+    }
+    function closeEstimatorModal() {
+      document.getElementById('estimatorModal').classList.add('hidden');
+    }
+    function calculateRate() {
+      const ratePerKg = parseFloat(document.getElementById('calcBreed').value) || 420;
+      const weight = parseFloat(document.getElementById('calcWeight').value) || 0;
+      const total = ratePerKg * weight;
+      document.getElementById('calcResult').textContent = '₹' + total.toLocaleString('en-IN');
+    }
+
+    function sortItems() {
+      const s = document.getElementById('sortSelect').value;
+      if (s === 'low') catalog.sort((a,b) => a.price - b.price);
+      else if (s === 'high') catalog.sort((a,b) => b.price - a.price);
+      else if (s === 'rating') catalog.sort((a,b) => b.rating - a.rating);
+      else catalog.sort((a,b) => a.id - b.id);
+      filterCatalog();
+    }
+
+    // LANGUAGE SWITCH
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'ur' : 'en';
+      applyLanguage();
+    }
+
+    function applyLanguage() {
+      const root = document.getElementById('htmlRoot');
+      const t = translations[currentLang];
+
+      if (currentLang === 'ur') {
+        root.setAttribute('dir', 'rtl');
+        root.setAttribute('lang', 'ur');
+        document.body.classList.add('urdu-tight');
+      } else {
+        root.setAttribute('dir', 'ltr');
+        root.setAttribute('lang', 'en');
+        document.body.classList.remove('urdu-tight');
+      }
+
+      document.getElementById('topBarTagline').textContent = t.topBarTagline;
+      document.getElementById('lblTrackOrder').textContent = t.lblTrackOrder;
+      document.getElementById('topBarDelivery').textContent = t.topBarDelivery;
+      document.getElementById('topHelpline').textContent = t.topHelpline;
+      document.getElementById('navLogoTitle').textContent = t.navTitle;
+      document.getElementById('navMarketBadge').textContent = t.navMarketBadge;
+      document.getElementById('navLogoSub').textContent = t.navLogoSub;
+      document.getElementById('langSwitchLabel').textContent = t.langSwitch;
+      document.getElementById('navEstimatorBtn').textContent = t.navEstimatorBtn;
+      document.getElementById('navPostBtn').textContent = t.navPostBtn;
+      document.getElementById('navCartLabel').textContent = t.navCartLabel;
+      document.getElementById('lblPillAll').textContent = t.lblPillAll;
+      document.getElementById('lblPillLive').textContent = t.lblPillLive;
+      document.getElementById('lblPillStore').textContent = t.lblPillStore;
+
+      document.getElementById('heroBadge').textContent = t.heroBadge;
+      document.getElementById('heroTitle').textContent = t.heroTitle;
+      document.getElementById('heroDesc').textContent = t.heroDesc;
+      document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+      document.getElementById('heroSearchBtn').textContent = t.searchBtn;
+      document.getElementById('h1').textContent = t.h1;
+      document.getElementById('h2').textContent = t.h2;
+      document.getElementById('h3').textContent = t.h3;
+      document.getElementById('h4').textContent = t.h4;
+
+      document.getElementById('pinTitle').textContent = t.pinTitle;
+      document.getElementById('pinSub').textContent = t.pinSub;
+      document.getElementById('pinCheckBtn').textContent = t.pinCheckBtn;
+
+      document.getElementById('catAll').textContent = t.catAll;
+      document.getElementById('catMerino').textContent = t.catMerino;
+      document.getElementById('catBakarwali').textContent = t.catBakarwali;
+      document.getElementById('catQurbani').textContent = t.catQurbani;
+      document.getElementById('catFertilizer').textContent = t.catFertilizer;
+      document.getElementById('catWool').textContent = t.catWool;
+      document.getElementById('catSupplies').textContent = t.catSupplies;
+
+      document.getElementById('showingText').textContent = t.showing;
+      document.getElementById('sortLabel').textContent = t.sort;
+      document.getElementById('optFeatured').textContent = t.optFeatured;
+      document.getElementById('optLow').textContent = t.optLow;
+      document.getElementById('optHigh').textContent = t.optHigh;
+      document.getElementById('optRating').textContent = t.optRating;
+
+      document.getElementById('favTitle').textContent = t.favTitle;
+      document.getElementById('favSub').textContent = t.favSub;
+
+      document.getElementById('cartTitle').textContent = t.cartTitle;
+      document.getElementById('cartSub').textContent = t.cartSub;
+      document.getElementById('lblSubtotal').textContent = t.lblSubtotal;
+      document.getElementById('lblShipping').textContent = t.lblShipping;
+      document.getElementById('lblTotal').textContent = t.lblTotal;
+      document.getElementById('lblProceedCheckout').textContent = t.lblProceedCheckout;
+
+      document.getElementById('chkTitle').textContent = t.chkTitle;
+      document.getElementById('chkSub').textContent = t.chkSub;
+      document.getElementById('chkLblName').textContent = t.chkLblName;
+      document.getElementById('chkLblPhone').textContent = t.chkLblPhone;
+      document.getElementById('chkLblDistrict').textContent = t.chkLblDistrict;
+      document.getElementById('chkLblAddress').textContent = t.chkLblAddress;
+      document.getElementById('chkLblPayment').textContent = t.chkLblPayment;
+
+      document.getElementById('trackTitle').textContent = t.trackTitle;
+      document.getElementById('trackSub').textContent = t.trackSub;
+
+      document.getElementById('botLive').textContent = t.botLive;
+      document.getElementById('botStore').textContent = t.botStore;
+      document.getElementById('botCart').textContent = t.botCart;
+      document.getElementById('botLang').textContent = t.botLang;
+
+      populateDropdowns();
+      filterCatalog();
+      updateCartDrawer();
+    }
+
+    function populateDropdowns() {
+      const curDist = document.getElementById('districtFilter').value || 'all';
+      document.getElementById('districtFilter').innerHTML = districtsData.map(d => `
+        <option value="${d.id}" ${d.id === curDist ? 'selected' : ''}>
+          ${currentLang === 'en' ? d.en : d.ur}
+        </option>
+      `).join('');
+
+      document.getElementById('chkDistrict').innerHTML = districtsData.filter(d => d.id !== 'all').map(d => `
+        <option value="${d.id}">${currentLang === 'en' ? d.en : d.ur}</option>
+      `).join('');
+
+      document.getElementById('postDistrict').innerHTML = districtsData.filter(d => d.id !== 'all').map(d => `
+        <option value="${d.id}">${currentLang === 'en' ? d.en : d.ur}</option>
+      `).join('');
+
+      document.getElementById('postBreed').innerHTML = `
+        <option value="merino">${currentLang === 'en' ? 'Kashmir Merino' : 'کشمیر میرینو'}</option>
+        <option value="bakarwali">${currentLang === 'en' ? 'Bakarwali Mountain Breed' : 'بکروال پہاڑی'}</option>
+        <option value="qurbani">${currentLang === 'en' ? 'Qurbani Special' : 'قربانی اسپیشل'}</option>
+        <option value="fertilizer">${currentLang === 'en' ? 'Apple Orchard Manure (Khad)' : 'سیب باغات کی کھاد'}</option>
+        <option value="wool">${currentLang === 'en' ? 'Merino Wool & Blankets' : 'میرینو اون و کمبل'}</option>
+        <option value="supplies">${currentLang === 'en' ? 'Clippers, Salt & Feed' : 'اوزار و سالٹ لکس'}</option>
+      `;
+
+      document.getElementById('calcBreed').innerHTML = `
+        <option value="420">${currentLang === 'en' ? 'Kashmir Merino (Avg ₹420 - ₹460 / kg live weight)' : 'کشمیر میرینو (اوسط ₹420 - ₹460 فی کلو لائیو)'}</option>
+        <option value="450">${currentLang === 'en' ? 'Bakarwali Mountain Breed (Avg ₹440 - ₹480 / kg live weight)' : 'بکروال پہاڑی بھیڑ (اوسط ₹440 - ₹480 فی کلو)'}</option>
+        <option value="520">${currentLang === 'en' ? 'Eid Qurbani Special Ram (Avg ₹500 - ₹560 / kg live weight)' : 'عید قربانی اسپیشل مینڈھ (اوسط ₹500 - ₹560 فی کلو)'}</option>
+      `;
+    }
+
+    // Init on load
+    applyLanguage();
+  </script>
+</body>
+</html>
