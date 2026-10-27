@@ -48,16 +48,21 @@
   <header class="bg-emerald-950 text-emerald-100 text-xs py-2 px-4 border-b border-emerald-900/60 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-2">
       <div class="flex items-center gap-2">
-        <span class="inline-flex items-center justify-center bg-emerald-500 text-white w-2 h-2 rounded-full animate-ping"></span>
-        <span id="topBarTagline" class="font-medium">Direct Sheep Livestock & 100% Pure Byproducts • Doorstep Delivery in Kashmir</span>
+        <span class="inline-flex items-center justify-center bg-amber-400 text-slate-950 w-2 h-2 rounded-full animate-ping"></span>
+        <span id="topBarTagline" class="font-medium">🏛️ HADP Project 24 & 27 Active: 50% Subsidy on Commercial Sheep Farms & Shearing • SKUAST-K Certified</span>
       </div>
-      <div class="flex items-center gap-4 text-[11px]">
+      <div class="flex items-center gap-3 text-[11px]">
+        <button onclick="openHadpModal('subsidies')" class="hover:underline flex items-center gap-1 text-amber-300 font-bold">
+          <span>🏛️</span> <span id="topHADPBadge">HADP 50% Subsidy</span>
+        </button>
+        <button onclick="openPassportModal()" class="hover:underline flex items-center gap-1 text-emerald-300">
+          <span>📋</span> <span id="topPassportBadge">INAPH Passport</span>
+        </button>
         <button onclick="openTrackModal()" class="hover:underline flex items-center gap-1 text-emerald-200">
           <span>📦</span> <span id="lblTrackOrder">Track Order</span>
         </button>
-        <span class="hidden sm:inline">🚚 <span id="topBarDelivery">Free Delivery above ₹1,499</span></span>
-        <span class="bg-emerald-900/90 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-800">
-          📞 <span id="topHelpline">Helpline: +91-94190-SHEEP</span>
+        <span class="bg-red-900/80 text-rose-200 px-2.5 py-0.5 rounded-full border border-red-700 font-bold">
+          🚑 <span id="topVetHelpline">Emergency Vet: 1962</span>
         </span>
       </div>
     </div>
@@ -76,14 +81,14 @@
           <div class="flex items-center gap-2">
             <h1 class="text-base sm:text-lg font-black tracking-tight" id="navLogoTitle">Kashmir Sheeps</h1>
             <span class="text-[10px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full" id="navMarketBadge">
-              Livestock & Store
+              Livestock & HADP Hub
             </span>
           </div>
           <p class="text-[11px] text-slate-500 dark:text-slate-400" id="navLogoSub">Live Sheep • Pure Wool • Orchard Manure</p>
         </div>
       </div>
 
-      <!-- Center Segmented Pill Switcher (Live Mandi vs Store) -->
+      <!-- Center Segmented Pill Switcher (Live Mandi vs Store vs HADP) -->
       <div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
         <button id="navPillAll" onclick="showSection('all')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm">
           🌟 <span id="lblPillAll">All Catalog</span>
@@ -93,7 +98,10 @@
         </button>
         <button id="navPillStore" onclick="showSection('store')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600 flex items-center gap-1">
           🛍️ <span id="lblPillStore">Farm Products & Wool</span>
-          <span class="bg-rose-500 text-white text-[9px] px-1.5 py-0.2 rounded-full font-black">NEW</span>
+        </button>
+        <button id="navPillHadp" onclick="openHadpModal('subsidies')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition text-amber-700 dark:text-amber-400 hover:text-amber-600 flex items-center gap-1">
+          🏛️ <span id="lblPillHadp">HADP Subsidies</span>
+          <span class="bg-amber-500 text-slate-950 text-[9px] px-1.5 py-0.2 rounded-full font-black">50% DBT</span>
         </button>
       </div>
 
@@ -103,6 +111,12 @@
         <button onclick="toggleLanguage()" class="flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border border-emerald-600/30 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 transition shadow-sm" title="Switch Language">
           <span>🌐</span>
           <span id="langSwitchLabel">اردو (Urdu)</span>
+        </button>
+
+        <!-- HADP Direct Button -->
+        <button onclick="openHadpModal('subsidies')" class="hidden sm:flex items-center gap-1.5 text-xs font-bold border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-300 px-3 py-2 rounded-xl transition shadow-sm">
+          <span>🏛️</span>
+          <span id="navHadpBtn">HADP Schemes</span>
         </button>
 
         <!-- Rate Calculator Tool -->
@@ -200,6 +214,61 @@
     </div>
   </section>
 
+  <!-- HADP J&K GOVERNMENT SCHEMES & SCIENTIFIC COMMAND CENTER -->
+  <section class="max-w-7xl mx-auto px-4 py-2">
+    <div class="bg-gradient-to-r from-amber-950/85 via-emerald-950/90 to-slate-900 border border-amber-500/40 rounded-3xl p-4 sm:p-5 text-white shadow-xl relative overflow-hidden">
+      <!-- Glow decoration -->
+      <div class="absolute -right-16 -top-16 w-56 h-56 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10">
+        <!-- Title & Badges -->
+        <div class="max-w-xl">
+          <div class="flex items-center gap-2 flex-wrap mb-1.5">
+            <span class="bg-amber-400 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow">
+              Govt of J&K Flagship
+            </span>
+            <span class="bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 font-bold text-[10px] px-2.5 py-0.5 rounded-full">
+              HADP Project 24 & 27 • SKUAST-K Verified
+            </span>
+          </div>
+          <h3 class="text-base sm:text-lg font-black tracking-tight flex items-center gap-2" id="hadpBannerTitle">
+            🏛️ Holistic Agriculture Development Program (HADP) & Livestock Scientific Hub
+          </h3>
+          <p class="text-xs text-amber-100/80 mt-1 leading-relaxed" id="hadpBannerDesc">
+            50% DBT Capital Subsidy on Commercial Sheep Farms & Mechanical Shearing • 12-Digit INAPH Ear Tag Passports • Alpine Bahak Migration Tracking • SKUAST-K Certified Winter Nutrition.
+          </p>
+        </div>
+
+        <!-- 4 Fast Action Buttons -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <button onclick="openHadpModal('subsidies')" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-xl mb-1 group-hover:scale-110 transition">💰</span>
+            <span class="text-xs font-black text-amber-300" id="btnHubSubsidy">50% Subsidy</span>
+            <span class="text-[10px] text-amber-200/70" id="btnHubSubsidySub">Project 24 & 27</span>
+          </button>
+
+          <button onclick="openPassportModal()" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-xl mb-1 group-hover:scale-110 transition">📋</span>
+            <span class="text-xs font-black text-emerald-300" id="btnHubPassport">Health Passport</span>
+            <span class="text-[10px] text-emerald-200/70" id="btnHubPassportSub">INAPH Ear Tags</span>
+          </button>
+
+          <button onclick="openMigrationModal()" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-teal-500/15 hover:bg-teal-500/25 border border-teal-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-xl mb-1 group-hover:scale-110 transition">🏔️</span>
+            <span class="text-xs font-black text-teal-300" id="btnHubMigration">Bahak Migration</span>
+            <span class="text-[10px] text-teal-200/70" id="btnHubMigrationSub">Pasture Corridors</span>
+          </button>
+
+          <button onclick="openNutritionModal()" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-xl mb-1 group-hover:scale-110 transition">❄️</span>
+            <span class="text-xs font-black text-sky-300" id="btnHubNutrition">Winter Feed</span>
+            <span class="text-[10px] text-sky-200/70" id="btnHubNutritionSub">SKUAST-K Silage</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PINCODE DELIVERY CHECKER STRIP -->
   <section class="max-w-7xl mx-auto px-4 py-2">
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs shadow-sm">
@@ -227,6 +296,9 @@
     <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs sm:text-sm font-semibold" id="categoriesBar">
       <button onclick="setCategory('all')" class="cat-pill active px-4 py-2 rounded-2xl bg-emerald-600 text-white whitespace-nowrap shadow-sm transition">
         🌟 <span id="catAll">All Items</span> (<span id="totalBadge">12</span>)
+      </button>
+      <button onclick="setCategory('hadp')" class="cat-pill px-4 py-2 rounded-2xl bg-amber-500/10 dark:bg-amber-950/40 border border-amber-500/40 text-amber-700 dark:text-amber-300 hover:border-amber-500 whitespace-nowrap transition">
+        🏛️ <span id="catHadp">HADP & SKUAST Units</span>
       </button>
       <button onclick="setCategory('merino')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
         🐑 <span id="catMerino">Kashmir Merino</span>
@@ -614,27 +686,457 @@
     </div>
   </div>
 
+  <!-- MODAL: HADP GOVERNMENT SCHEMES & DBT SUBSIDY HUB -->
+  <div id="hadpModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-amber-500/30 rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button onclick="closeHadpModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+
+      <!-- Institutional Header -->
+      <div class="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 to-amber-500 text-white flex items-center justify-center font-black text-2xl shadow-lg shadow-amber-600/30">
+          🏛️
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-black bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full uppercase">Govt of J&K Flagship</span>
+            <span class="text-[10px] text-slate-400 font-bold">HADP Project 24 & 27</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-black" id="hadpModalTitle">Holistic Agriculture Development Program (HADP)</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400" id="hadpModalSub">50% Capital Subsidy • Mutton Self-Sufficiency • Wool Modernization • Kisan Sathi Portal</p>
+        </div>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl mt-4 mb-4 overflow-x-auto text-xs font-bold scrollbar-none">
+        <button id="tabHadpSubsidies" onclick="switchHadpTab('subsidies')" class="flex-1 py-2 px-3 rounded-xl transition bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm whitespace-nowrap">
+          💰 <span id="lblTabHadpSubsidies">50% Subsidies</span>
+        </button>
+        <button id="tabHadpCalc" onclick="switchHadpTab('calculator')" class="flex-1 py-2 px-3 rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-amber-600 whitespace-nowrap">
+          🧮 <span id="lblTabHadpCalc">DBT Calculator</span>
+        </button>
+        <button id="tabHadpApply" onclick="switchHadpTab('apply')" class="flex-1 py-2 px-3 rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-amber-600 whitespace-nowrap">
+          📝 <span id="lblTabHadpApply">Kisan Sathi Apply</span>
+        </button>
+        <button id="tabHadpDaksh" onclick="switchHadpTab('daksh')" class="flex-1 py-2 px-3 rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-amber-600 whitespace-nowrap">
+          🎓 <span id="lblTabHadpDaksh">Daksh Kisan LMS</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: SUBSIDIES OVERVIEW -->
+      <div id="hadpPaneSubsidies" class="space-y-4 text-xs">
+        <div class="p-3.5 bg-amber-50 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-800/50">
+          <h4 class="font-bold text-amber-900 dark:text-amber-300 text-sm mb-1 flex items-center gap-1.5">
+            <span>🎯</span> <span id="hadpGoalTitle">Mission: Self-Sufficiency in Mutton & Wool Production</span>
+          </h4>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed" id="hadpGoalDesc">
+            Jammu & Kashmir consumes ~1,400+ crore of imported livestock annually. HADP provides 50% capital subsidies for youth, women SHGs, and progressive farmers to establish commercial sheep farms, high-altitude shelters, and automated shearing facilities.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Card 1 -->
+          <div class="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-lg">🐑</span>
+              <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-black text-[10px] px-2 py-0.5 rounded-full">50% Subsidy</span>
+            </div>
+            <h5 class="font-bold text-sm mb-1" id="hScheme1Title">Commercial 50-Ewe Sheep Farm</h5>
+            <p class="text-slate-500 text-[11px] mb-2" id="hScheme1Desc">Establishment of 50-ewe + 2-ram breeding unit with Kashmir Merino / Bakarwali genetics.</p>
+            <div class="text-[11px] font-bold text-slate-700 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between">
+              <span>Govt Subsidy:</span>
+              <span class="text-emerald-600 font-black">₹2,50,000 (Max)</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-lg">🛖</span>
+              <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-black text-[10px] px-2 py-0.5 rounded-full">50% Subsidy</span>
+            </div>
+            <h5 class="font-bold text-sm mb-1" id="hScheme2Title">High-Altitude Kotha / Dhok Shelter</h5>
+            <p class="text-slate-500 text-[11px] mb-2" id="hScheme2Desc">Predator-proof chainlink paddocks and night shelter for migratory herders in alpine pastures (Bahaks).</p>
+            <div class="text-[11px] font-bold text-slate-700 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between">
+              <span>Govt Subsidy:</span>
+              <span class="text-emerald-600 font-black">₹1,00,000 (Max)</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-lg">✂️</span>
+              <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-black text-[10px] px-2 py-0.5 rounded-full">50% Subsidy</span>
+            </div>
+            <h5 class="font-bold text-sm mb-1" id="hScheme3Title">Mechanical Shearing Clipper Kit</h5>
+            <p class="text-slate-500 text-[11px] mb-2" id="hScheme3Desc">Professional 6-speed electric shearing clippers to modernize wool harvesting (Project 27).</p>
+            <div class="text-[11px] font-bold text-slate-700 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between">
+              <span>Govt Subsidy:</span>
+              <span class="text-emerald-600 font-black">₹5,000 per kit</span>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-lg">🌾</span>
+              <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-black text-[10px] px-2 py-0.5 rounded-full">50% Subsidy</span>
+            </div>
+            <h5 class="font-bold text-sm mb-1" id="hScheme4Title">Silage Bunker / Fodder Bank</h5>
+            <p class="text-slate-500 text-[11px] mb-2" id="hScheme4Desc">Anaerobic silage pit construction and high-density wrapper for harsh winter stall-feeding.</p>
+            <div class="text-[11px] font-bold text-slate-700 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between">
+              <span>Govt Subsidy:</span>
+              <span class="text-emerald-600 font-black">₹30,000 per pit</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end">
+          <button onclick="switchHadpTab('calculator')" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded-xl transition flex items-center gap-1.5 shadow">
+            <span>Calculate Your Subsidy</span> <span>➔</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 2: DBT SUBSIDY CALCULATOR -->
+      <div id="hadpPaneCalc" class="hidden space-y-4 text-xs">
+        <div>
+          <label class="block font-bold mb-1" id="hadpCalcSchemeLabel">Select HADP Scheme Component</label>
+          <select id="hadpCalcScheme" onchange="runHadpCalculator()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none">
+            <option value="farm50">Project 24: Commercial 50-Ewe Sheep Farm (Unit Cost: ₹5,00,000)</option>
+            <option value="kotha">Project 24: High-Altitude Kotha / Dhok Shelter (Unit Cost: ₹2,00,000)</option>
+            <option value="clipper">Project 27: Mechanical Wool Shearing Kit (Unit Cost: ₹10,000)</option>
+            <option value="silage">Project 24: Silage Pit / Winter Fodder Bunker (Unit Cost: ₹60,000)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1" id="hadpCalcCatLabel">Beneficiary Category</label>
+          <select id="hadpCalcCat" onchange="runHadpCalculator()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none">
+            <option value="youth">Educated Unemployed Youth (18-40 Years)</option>
+            <option value="shg">Women Self-Help Group (SHG) / FPO</option>
+            <option value="individual">Individual Traditional Shepherd (Chopan / Gujjar / Bakarwal)</option>
+            <option value="farmer">Progressive Livestock Farmer</option>
+          </select>
+        </div>
+
+        <div class="p-5 bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-amber-950/30 dark:to-emerald-950/30 rounded-2xl border border-amber-300 dark:border-amber-800 space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-slate-600 dark:text-slate-300 font-bold">Total Scheme Capital Cost:</span>
+            <span id="hadpCalcTotal" class="text-sm font-black">₹5,00,000</span>
+          </div>
+          <div class="flex justify-between items-center text-emerald-700 dark:text-emerald-400">
+            <span class="font-bold flex items-center gap-1"><span>🏛️</span> Govt 50% DBT Subsidy:</span>
+            <span id="hadpCalcSubsidy" class="text-base font-black">₹2,50,000</span>
+          </div>
+          <div class="flex justify-between items-center text-slate-600 dark:text-slate-300">
+            <span class="font-bold">Beneficiary Margin (10% Equity):</span>
+            <span id="hadpCalcMargin" class="font-black">₹50,000</span>
+          </div>
+          <div class="flex justify-between items-center text-blue-700 dark:text-blue-400 pt-2 border-t border-slate-200 dark:border-slate-700">
+            <span class="font-bold flex items-center gap-1"><span>🏦</span> Bank Financing / KCC Loan:</span>
+            <span id="hadpCalcLoan" class="text-sm font-black">₹2,00,000</span>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-500 leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+          💡 <strong>Scientific Note:</strong> Sheep purchased under this scheme must be RFID ear-tagged in INAPH / Bharat Pashudhan and verified by the designated Veterinary Assistant Surgeon (VAS) before subsidy release.
+        </div>
+
+        <button onclick="switchHadpTab('apply')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl transition shadow text-xs flex items-center justify-center gap-2">
+          <span>Apply Online via Kisan Sathi Form</span> <span>➔</span>
+        </button>
+      </div>
+
+      <!-- TAB 3: KISAN SATHI PRE-SCREENING APPLICATION -->
+      <div id="hadpPaneApply" class="hidden space-y-3 text-xs">
+        <div class="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-2xl border border-blue-200 dark:border-blue-800 text-[11px] text-blue-800 dark:text-blue-300">
+          ℹ️ Complete this pre-application to generate your **HADP Beneficiary Pre-Approval Slip** for submission at your local **Kisan Khidmat Ghar (KKG)** or District Sheep Husbandry Office.
+        </div>
+
+        <form id="hadpApplyForm" onsubmit="handleHadpApply(event)" class="space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1">Applicant Name</label>
+              <input required type="text" id="hadpName" placeholder="e.g. Parvaiz Ahmad Dar" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Aadhaar / KCC No.</label>
+              <input required type="text" id="hadpAadhaar" placeholder="XXXX-XXXX-XXXX" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1">District</label>
+              <select id="hadpDistrict" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+                <option value="Pulwama">Pulwama</option>
+                <option value="Srinagar">Srinagar</option>
+                <option value="Anantnag">Anantnag</option>
+                <option value="Baramulla">Baramulla</option>
+                <option value="Budgam">Budgam</option>
+                <option value="Shopian">Shopian</option>
+                <option value="Ganderbal">Ganderbal</option>
+                <option value="Kulgam">Kulgam</option>
+                <option value="Bandipora">Bandipora</option>
+                <option value="Kupwara">Kupwara</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Mobile (WhatsApp)</label>
+              <input required type="tel" id="hadpPhone" placeholder="094190XXXXX" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold mb-1">Target Scheme</label>
+              <select id="hadpTargetScheme" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+                <option value="50-Ewe Farm">Project 24: 50-Ewe Commercial Farm</option>
+                <option value="Alpine Kotha">Project 24: Alpine Pasture Kotha / Dhok</option>
+                <option value="Shearing Clipper">Project 27: Mechanical Shearing Clipper Kit</option>
+                <option value="Silage Pit">Project 24: Silage Pit / Fodder Bunker</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold mb-1">Daksh Kisan SKUAST-K Course Status</label>
+              <select id="hadpTraining" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+                <option value="Certified">Completed Certified Course (Priority DBT)</option>
+                <option value="Enrolled">Currently Enrolled in Daksh Kisan</option>
+                <option value="New">New Applicant (Will Enroll via Portal)</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-black py-3 rounded-xl transition shadow text-xs">
+            Generate Pre-Approval Application Slip (کیسان ساتھی درخواست)
+          </button>
+        </form>
+
+        <!-- Acknowledgment Slip Container -->
+        <div id="hadpAckSlip" class="hidden p-4 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-dashed border-emerald-500 rounded-2xl space-y-2">
+          <div class="flex items-center justify-between pb-2 border-b border-emerald-200 dark:border-emerald-800">
+            <span class="font-black text-emerald-800 dark:text-emerald-300">✅ KISAN SATHI ACKNOWLEDGMENT</span>
+            <span id="ackRefNo" class="bg-emerald-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full">HADP-JK-SHP-89210</span>
+          </div>
+          <div class="text-[11px] space-y-1 text-slate-700 dark:text-slate-300" id="ackSlipContent">
+            <!-- Dynamic Content -->
+          </div>
+          <div class="pt-2 flex gap-2">
+            <button onclick="window.print()" class="flex-1 bg-slate-900 text-white font-bold py-1.5 px-3 rounded-xl text-[11px]">🖨️ Print Slip</button>
+            <button onclick="shareAckWhatsApp()" class="flex-1 bg-emerald-600 text-white font-bold py-1.5 px-3 rounded-xl text-[11px]">💬 WhatsApp</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: DAKSH KISAN LMS -->
+      <div id="hadpPaneDaksh" class="hidden space-y-3 text-xs">
+        <div class="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-800/50">
+          <h4 class="font-bold text-emerald-900 dark:text-emerald-300 mb-1 flex items-center gap-1.5">
+            <span>🎓</span> <span>SKUAST-Kashmir Free Digital Certification Courses</span>
+          </h4>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-[11px]">
+            To qualify for maximum HADP subsidies, applicants undergo free training via the J&K Government's **Daksh Kisan LMS** developed in partnership with SKUAST-Kashmir.
+          </p>
+        </div>
+
+        <div class="space-y-2.5">
+          <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+            <div>
+              <h5 class="font-bold text-xs">1. Self-Sufficiency in Mutton Production (Project 24)</h5>
+              <p class="text-[11px] text-slate-400">Breed selection, lamb brooding, housing, and disease management • 4 Weeks</p>
+            </div>
+            <a href="https://hadp.jk.gov.in" target="_blank" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] whitespace-nowrap">Enroll Free</a>
+          </div>
+
+          <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+            <div>
+              <h5 class="font-bold text-xs">2. Modern Wool Harvesting & Clipper Operation (Project 27)</h5>
+              <p class="text-[11px] text-slate-400">Machine shearing, staple preservation, and wool grading • 2 Weeks</p>
+            </div>
+            <a href="https://hadp.jk.gov.in" target="_blank" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] whitespace-nowrap">Enroll Free</a>
+          </div>
+
+          <div class="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 flex justify-between items-center">
+            <div>
+              <h5 class="font-bold text-xs">3. Scientific Winter Feeding & Silage Making in Cold Climates</h5>
+              <p class="text-[11px] text-slate-400">Silage pits, UMMB blocks, and Chillai Kalan stall nutrition • 3 Weeks</p>
+            </div>
+            <a href="https://hadp.jk.gov.in" target="_blank" class="bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] whitespace-nowrap">Enroll Free</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DIGITAL LIVESTOCK HEALTH PASSPORT (INAPH / BHARAT PASHUDHAN) -->
+  <div id="passportModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-emerald-500/30 rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button onclick="closePassportModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+
+      <!-- Government Passport Badge -->
+      <div class="text-center pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div class="inline-flex items-center gap-1.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-3 py-1 rounded-full text-[10px] font-black uppercase mb-1">
+          <span>🏛️</span> Govt of Jammu & Kashmir • Sheep Husbandry Dept & SKUAST-K
+        </div>
+        <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100" id="passportTitle">
+          Official Digital Livestock Health Passport
+        </h3>
+        <p class="text-[11px] text-slate-500">Bharat Pashudhan (INAPH) 12-Digit RFID Identification & Veterinary Certification</p>
+      </div>
+
+      <!-- Quick Animal Switcher -->
+      <div class="my-3">
+        <label class="block text-[11px] font-bold text-slate-500 mb-1">Select Animal from Catalog:</label>
+        <select id="passportAnimalSelect" onchange="loadPassportForAnimal(this.value)" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-xs font-bold focus:outline-none">
+          <!-- Populated in JS -->
+        </select>
+      </div>
+
+      <!-- PASSPORT CONTENT CARD -->
+      <div id="passportCardContent" class="space-y-4">
+        <!-- Rendered dynamically via renderPassport() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: HIGHLAND BAHAK MIGRATION & TRANSHUMANCE TRACKER -->
+  <div id="migrationModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-teal-500/30 rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button onclick="closeMigrationModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+
+      <div class="flex items-center gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
+        <div class="w-11 h-11 rounded-2xl bg-teal-600 text-white flex items-center justify-center text-xl font-bold shadow-md">
+          🏔️
+        </div>
+        <div>
+          <h3 class="text-base sm:text-lg font-black" id="migrationTitle">Alpine Pasture (*Bahak*) Migration Tracker</h3>
+          <p class="text-xs text-slate-500" id="migrationSub">Live pastoral transit corridors, mobile vet vans (1962), dipping vats & transit camps.</p>
+        </div>
+      </div>
+
+      <!-- Route Selector Pills -->
+      <div class="flex items-center gap-1.5 overflow-x-auto py-3 scrollbar-none text-xs font-bold">
+        <button onclick="selectMigrationRoute('mughal')" id="mRouteMughal" class="px-3 py-1.5 rounded-xl bg-teal-600 text-white whitespace-nowrap shadow-sm">
+          Peer Ki Gali / Mughal Road
+        </button>
+        <button onclick="selectMigrationRoute('sonamarg')" id="mRouteSonamarg" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 whitespace-nowrap">
+          Sonamarg - Minamarg
+        </button>
+        <button onclick="selectMigrationRoute('tosamaidan')" id="mRouteTosamaidan" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 whitespace-nowrap">
+          Tosamaidan Highland
+        </button>
+        <button onclick="selectMigrationRoute('gurez')" id="mRouteGurez" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 whitespace-nowrap">
+          Gurez - Tulail Pass
+        </button>
+      </div>
+
+      <!-- Route Details Container -->
+      <div id="migrationRouteContent" class="space-y-3.5 text-xs">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SKUAST-K WINTER NUTRITION & FEEDING CALCULATOR -->
+  <div id="nutritionModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 border border-sky-500/30 rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+      <button onclick="closeNutritionModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+
+      <div class="flex items-center gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
+        <div class="w-11 h-11 rounded-2xl bg-sky-600 text-white flex items-center justify-center text-xl font-bold shadow-md">
+          ❄️
+        </div>
+        <div>
+          <h3 class="text-base sm:text-lg font-black" id="nutritionTitle">SKUAST-K Scientific Winter Feeding Planner</h3>
+          <p class="text-xs text-slate-500" id="nutritionSub">Chillai Kalan stall feeding balance: Silage, UMMB blocks, dry hay & concentrate ration.</p>
+        </div>
+      </div>
+
+      <div class="space-y-4 my-4 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1" id="lblFlockSize">Total Flock Size (Head)</label>
+            <input type="number" id="nutFlockSize" value="30" min="5" max="1000" oninput="runNutritionCalculator()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-center font-black text-sky-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold mb-1" id="lblStage">Physiological Stage</label>
+            <select id="nutStage" onchange="runNutritionCalculator()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+              <option value="gestation">Pregnant Ewes (Late Gestation)</option>
+              <option value="lactating">Nursing Ewes (Lactating with Lambs)</option>
+              <option value="maintenance">Maintenance (Dry Ewes & Rams)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1" id="lblSeasonSeverity">Winter Severity Period</label>
+          <select id="nutSeason" onchange="runNutritionCalculator()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 focus:outline-none">
+            <option value="chillaikalan">Chillai Kalan (Severe Freeze, 100% Stall Fed)</option>
+            <option value="autumn">Late Autumn Transition (Partial Grazing)</option>
+            <option value="spring">Early Spring Lambing (Turnout Transition)</option>
+          </select>
+        </div>
+
+        <!-- Calculated Daily Ration Output Card -->
+        <div class="p-4 bg-sky-50 dark:bg-sky-950/30 rounded-2xl border border-sky-200 dark:border-sky-800 space-y-2.5">
+          <div class="flex items-center justify-between pb-2 border-b border-sky-200 dark:border-sky-800">
+            <span class="font-bold text-sky-950 dark:text-sky-200">Daily Flock Ration Requirements</span>
+            <span id="nutFlockLabel" class="font-black text-sky-600">30 Sheep Flock</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="p-2 bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-sky-900">
+              <span class="text-slate-400 block">Meadow Hay (*Gaas*):</span>
+              <span id="nutHay" class="font-black text-sm text-slate-800 dark:text-slate-200">45 Kg / day</span>
+            </div>
+            <div class="p-2 bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-sky-900">
+              <span class="text-slate-400 block">Maize Silage:</span>
+              <span id="nutSilage" class="font-black text-sm text-emerald-600">60 Kg / day</span>
+            </div>
+            <div class="p-2 bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-sky-900">
+              <span class="text-slate-400 block">SKUAST Concentrate Mix:</span>
+              <span id="nutConcentrate" class="font-black text-sm text-amber-600">12 Kg / day</span>
+            </div>
+            <div class="p-2 bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-sky-900">
+              <span class="text-slate-400 block">UMMB Lick Blocks:</span>
+              <span id="nutUMMB" class="font-black text-sm text-blue-600">6 Blocks / month</span>
+            </div>
+          </div>
+
+          <div class="pt-2 text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed border-t border-sky-200 dark:border-sky-800">
+            🌾 <strong>Scientist Recommendation:</strong> Supplement with dried willow tree leaves (*Vier pan*) and apple pomace to boost rumen microbial activity during freezing weather.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- FLOATING BOTTOM NAVIGATION (MOBILE) -->
-  <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2.5 px-6 flex justify-between items-center z-30 sm:hidden shadow-lg">
-    <button onclick="showSection('live')" class="flex flex-col items-center text-xs font-bold text-emerald-600">
+  <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 py-2 px-3 flex justify-between items-center z-30 sm:hidden shadow-lg">
+    <button onclick="showSection('live')" class="flex flex-col items-center text-[10px] font-bold text-emerald-600">
       <span class="text-base">🐏</span>
       <span id="botLive">Live Sheep</span>
     </button>
-    <button onclick="showSection('store')" class="flex flex-col items-center text-xs font-medium text-slate-500">
+    <button onclick="showSection('store')" class="flex flex-col items-center text-[10px] font-medium text-slate-500">
       <span class="text-base">🛍️</span>
       <span id="botStore">Store</span>
     </button>
-    <button onclick="openCartDrawer()" class="relative flex flex-col items-center text-xs font-bold text-slate-700 dark:text-slate-300">
+    <button onclick="openHadpModal('subsidies')" class="flex flex-col items-center text-[10px] font-black text-amber-600">
+      <span class="text-base">🏛️</span>
+      <span id="botHadp">HADP</span>
+    </button>
+    <button onclick="openPassportModal()" class="flex flex-col items-center text-[10px] font-medium text-emerald-600">
+      <span class="text-base">📋</span>
+      <span id="botPassport">Passport</span>
+    </button>
+    <button onclick="openCartDrawer()" class="relative flex flex-col items-center text-[10px] font-bold text-slate-700 dark:text-slate-300">
       <span class="text-base">🛒</span>
       <span id="botCart">Cart (<span id="botCartCount">0</span>)</span>
     </button>
-    <button onclick="showWishlistModal()" class="flex flex-col items-center text-xs font-medium text-rose-500">
-      <span class="text-base">❤️</span>
-      <span>Saved</span>
-    </button>
-    <button onclick="toggleLanguage()" class="flex flex-col items-center text-xs font-medium text-slate-500">
+    <button onclick="toggleLanguage()" class="flex flex-col items-center text-[10px] font-medium text-slate-500">
       <span class="text-base">🌐</span>
-      <span id="botLang">اردو / EN</span>
+      <span id="botLang">اردو</span>
     </button>
   </div>
 
@@ -650,20 +1152,35 @@
     // UI Dictionary
     const translations = {
       en: {
-        topBarTagline: "Direct Sheep Livestock & 100% Pure Byproducts • Doorstep Delivery in Kashmir",
+        topBarTagline: "🏛️ HADP Project 24 & 27 Active: 50% Subsidy on Commercial Sheep Farms & Shearing • SKUAST-K Certified",
+        topHADPBadge: "HADP 50% Subsidy",
+        topPassportBadge: "INAPH Passport",
+        topVetHelpline: "Emergency Vet: 1962",
         lblTrackOrder: "Track Order",
         topBarDelivery: "Free Delivery above ₹1,499",
         topHelpline: "Helpline: +91-94190-SHEEP",
         navTitle: "Kashmir Sheeps",
-        navMarketBadge: "Livestock & Store",
+        navMarketBadge: "Livestock & HADP Hub",
         navLogoSub: "Live Sheep • Pure Wool • Orchard Manure",
         langSwitch: "اردو (Urdu)",
+        navHadpBtn: "HADP Schemes",
         navEstimatorBtn: "Rates",
         navPostBtn: "Sell Sheep",
         navCartLabel: "Cart",
         lblPillAll: "All Catalog",
         lblPillLive: "Live Sheep Mandi",
         lblPillStore: "Farm Products & Wool",
+        lblPillHadp: "HADP Subsidies",
+        hadpBannerTitle: "🏛️ Holistic Agriculture Development Program (HADP) & Livestock Scientific Hub",
+        hadpBannerDesc: "50% DBT Capital Subsidy on Commercial Sheep Farms & Mechanical Shearing • 12-Digit INAPH Ear Tag Passports • Alpine Bahak Migration Tracking • SKUAST-K Certified Winter Nutrition.",
+        btnHubSubsidy: "50% Subsidy",
+        btnHubSubsidySub: "Project 24 & 27",
+        btnHubPassport: "Health Passport",
+        btnHubPassportSub: "INAPH Ear Tags",
+        btnHubMigration: "Bahak Migration",
+        btnHubMigrationSub: "Pasture Corridors",
+        btnHubNutrition: "Winter Feed",
+        btnHubNutritionSub: "SKUAST-K Silage",
         heroBadge: "Farm-Gate Rates • Zero Middleman • Express Delivery across J&K",
         heroTitle: "Kashmir's Premier Online Livestock & Farm Products Store",
         heroDesc: "Connect directly with local shepherds for pure Kashmir Merino rams, Bakarwali mountain sheep, Qurbani stock, certified orchard manure for high-yield apple trees, raw Merino knitting yarn, and shearing clippers.",
@@ -677,6 +1194,7 @@
         pinSub: "Enter your J&K Pin code for livestock transport & farm product shipping estimates.",
         pinCheckBtn: "Check",
         catAll: "All Items",
+        catHadp: "HADP & SKUAST Units",
         catMerino: "Kashmir Merino",
         catBakarwali: "Bakarwali Mountain Breed",
         catQurbani: "Qurbani Ready (2-4 Teeth)",
@@ -690,6 +1208,7 @@
         optHigh: "Price: High to Low",
         optRating: "Customer Rating",
         viewDetails: "View Details",
+        viewPassport: "Health Passport",
         addToCart: "Add to Cart",
         whatsapp: "WhatsApp",
         call: "Call Farmer",
@@ -718,24 +1237,52 @@
         trackSub: "Live status of livestock pickup or product shipping.",
         botLive: "Live Sheep",
         botStore: "Store",
+        botHadp: "HADP",
+        botPassport: "Passport",
         botCart: "Cart",
-        botLang: "اردو (Urdu)"
+        botLang: "اردو (Urdu)",
+        hadpModalTitle: "Holistic Agriculture Development Program (HADP)",
+        hadpModalSub: "50% Capital Subsidy • Mutton Self-Sufficiency • Wool Modernization • Kisan Sathi Portal",
+        lblTabHadpSubsidies: "50% Subsidies",
+        lblTabHadpCalc: "DBT Calculator",
+        lblTabHadpApply: "Kisan Sathi Apply",
+        lblTabHadpDaksh: "Daksh Kisan LMS",
+        passportTitle: "Official Digital Livestock Health Passport",
+        migrationTitle: "Alpine Pasture (*Bahak*) Migration Tracker",
+        migrationSub: "Live pastoral transit corridors, mobile vet vans (1962), dipping vats & transit camps.",
+        nutritionTitle: "SKUAST-K Scientific Winter Feeding Planner",
+        nutritionSub: "Chillai Kalan stall feeding balance: Silage, UMMB blocks, dry hay & concentrate ration."
       },
       ur: {
-        topBarTagline: "براہ راست کشمیری بھیڑیں اور خالص بائی پراڈکٹس • گھر کی دہلیز تک ترسیل",
+        topBarTagline: "🏛️ ہادپ پروجیکٹ 24 و 27: تجارتی شیپ فارمز اور کترائی مشینوں پر 50٪ سبسڈی فعال • اسکواسٹ تصدیق شدہ",
+        topHADPBadge: "ہادپ 50٪ سبسڈی",
+        topPassportBadge: "ایناف پاسپورٹ",
+        topVetHelpline: "ہنگامی ویٹ: 1962",
         lblTrackOrder: "آرڈر ٹریک کریں",
         topBarDelivery: "1,499 روپے سے زیادہ خریداری پر مفت ہوم ڈیلیوری",
         topHelpline: "ہیلپ لائن: +91-94190-SHEEP",
         navTitle: "کشمیر شیپس",
-        navMarketBadge: "لائیو اسٹاک و اسٹور",
+        navMarketBadge: "لائیو اسٹاک و ہادپ مرکز",
         navLogoSub: "زندہ بھیڑیں • خالص اون • سیب باغات کی کھاد",
         langSwitch: "English",
+        navHadpBtn: "ہادپ اسکیمیں",
         navEstimatorBtn: "ریٹس",
         navPostBtn: "اشتہار لگائیں",
         navCartLabel: "ٹوکری",
         lblPillAll: "تمام اشیاء",
         lblPillLive: "زندہ بھیڑ منڈی",
         lblPillStore: "فارم اشیاء و اون",
+        lblPillHadp: "ہادپ سبسڈیز",
+        hadpBannerTitle: "🏛️ جامع زرعی ترقیاتی پروگرام (ہادپ) و لائیو اسٹاک سائنسی مرکز",
+        hadpBannerDesc: "تجارتی بھیڑ فارمز اور مشین کترائی پر 50٪ ڈی بی ٹی سبسڈی • 12 ہندسوں کا ایناف ہیلتھ پاسپورٹ • ہائی لینڈ چراگاہ ٹریکر • اسکواسٹ مصدقہ سردیوں کی خوراک۔",
+        btnHubSubsidy: "50% سبسڈی",
+        btnHubSubsidySub: "پروجیکٹ 24 و 27",
+        btnHubPassport: "ہیلتھ پاسپورٹ",
+        btnHubPassportSub: "ایناف ائیر ٹیگز",
+        btnHubMigration: "چراگاہوں کی ہجرت",
+        btnHubMigrationSub: "پہاڑی راستے",
+        btnHubNutrition: "سردیوں کی خوراک",
+        btnHubNutritionSub: "اسکواسٹ سائیلیج",
         heroBadge: "فارمر ریٹ • بغیر کمیشن • کشمیر کے ہر ضلع میں ترسیل",
         heroTitle: "کشمیر کی اولین آن لائن لائیو اسٹاک و فارم پراڈکٹس مارکیٹ",
         heroDesc: "خالص کشمیر میرینو، بکروال بھیڑیں، قربانی کا اسٹاک، سیبوں کیلئے پرانی نامیاتی کھاد، خالص اون کا دھاگہ، الیکٹرک کترائی مشین اور سالٹ بلاکس براہ راست حاصل کریں۔",
@@ -749,6 +1296,7 @@
         pinSub: "ٹرانسپورٹ اور ڈیلیوری کا وقت معلوم کرنے کیلئے اپنا پن کوڈ درج کریں۔",
         pinCheckBtn: "چیک کریں",
         catAll: "تمام اشیاء",
+        catHadp: "ہادپ و اسکواسٹ یونٹس",
         catMerino: "کشمیر میرینو",
         catBakarwali: "بکروال پہاڑی نسل",
         catQurbani: "قربانی اسپیشل (2-4 دانت)",
@@ -762,6 +1310,7 @@
         optHigh: "قیمت: زیادہ سے کم",
         optRating: "بہترین ریٹنگ",
         viewDetails: "تفصیل دیکھیں",
+        viewPassport: "ہیلتھ پاسپورٹ",
         addToCart: "ٹوکری میں ڈالیں",
         whatsapp: "واٹس ایپ",
         call: "کال کریں",
@@ -790,8 +1339,21 @@
         trackSub: "جانور کی روانگی اور پراڈکٹ ڈیلیوری کی لائیو معلومات۔",
         botLive: "زندہ بھیڑیں",
         botStore: "اسٹور",
+        botHadp: "ہادپ",
+        botPassport: "پاسپورٹ",
         botCart: "ٹوکری",
-        botLang: "English"
+        botLang: "English",
+        hadpModalTitle: "جامع زرعی ترقیاتی پروگرام (HADP)",
+        hadpModalSub: "50٪ کیپیٹل سبسڈی • گوشت میں خود کفالت • جدید اون کترائی • کیسان ساتھی پورٹل",
+        lblTabHadpSubsidies: "50% سبسڈیز",
+        lblTabHadpCalc: "سبسڈی کیلکولیٹر",
+        lblTabHadpApply: "کیسان ساتھی درخواست",
+        lblTabHadpDaksh: "دکش کیسان کورسز",
+        passportTitle: "سرکاری ڈیجیٹل لائیو اسٹاک ہیلتھ پاسپورٹ",
+        migrationTitle: "ہائی لینڈ چراگاہ (بہک) ٹرانزٹ و ہجرت ٹریکر",
+        migrationSub: "بکروال و چوپان ہجرتی راستے، موبائل ویٹرنری ایمبولینس (1962)، اینٹی اسکاب ٹینک اور کیمپس۔",
+        nutritionTitle: "اسکواسٹ کشمیر سائنسی ونٹر فیڈنگ پلانر",
+        nutritionSub: "چلہ کلاں کی سردی کیلئے سائنسی فارمولیشن: سائیلیج، یو ایم ایم بی بلاکس، خشک گھاس اور کنسنٹریٹ۔"
       }
     };
 
@@ -813,6 +1375,89 @@
     // Master Catalog with Real, Authentic Livestock & Product Photography
     const catalog = [
       {
+        id: 105,
+        type: "live",
+        category: "merino",
+        titleEn: "SKUAST-K Certified Elite Kashmir Merino Breeding Ram",
+        titleUr: "اسکواسٹ کشمیر مصدقہ ایلیٹ میرینو افزائشی مینڈھ",
+        price: 34500,
+        weight: "72 Kg",
+        specEn: "2 Teeth (Doda) • Progeny Tested",
+        specUr: "2 دانت (دودا) • شجرہ مصدقہ",
+        districtEn: "Srinagar",
+        districtUr: "سرینگر",
+        villageEn: "Shalimar Livestock Station, Srinagar",
+        villageUr: "شالیمار ریسرچ اسٹیشن، سرینگر",
+        farmerEn: "SKUAST-Kashmir Genetics Division",
+        farmerUr: "اسکواسٹ کشمیر جینیٹکس ڈویژن",
+        phone: "+919419019620",
+        whatsapp: "919419019620",
+        isQurbani: true,
+        hadpEligible: true,
+        inaphTag: "1901-4455-6677",
+        sireLine: "Soviet Merino × Rambouillet Pedigree (Progeny Index 118)",
+        woolMicron: "19.8 Microns (Superfine Cashmere-Grade Fleece)",
+        vetOfficer: "Prof. Dr. M. Iqbal, Head Animal Genetics SKUAST-K",
+        deworming: "Ivermectin + Oxyclozanide (15-Oct-2026)",
+        dipping: "Deltamethrin Complete Dip Vat (01-Sep-2026)",
+        vaccinations: [
+          { name: "Enterotoxaemia (ETV)", date: "28-Mar-2026", status: "Protected", batch: "ETV-SK26" },
+          { name: "Sheep Pox (Kashmir)", date: "15-May-2026", status: "Protected", batch: "SP-SK26" },
+          { name: "PPR Live Attenuated", date: "10-Jan-2025", status: "Immune (Lifelong)", batch: "PPR-K" },
+          { name: "FMD Tetravalent", date: "25-Sep-2026", status: "Protected", batch: "FMD-T4" }
+        ],
+        verified: true,
+        rating: 5.0,
+        reviewsCount: 41,
+        descEn: "Progeny-tested elite stud ram developed under HADP Project 24 genetic upgradation mission. Guaranteed 3.8 kg annual fine fleece yield (19.8 microns) and high daily weight gain.",
+        descUr: "ہادپ پروجیکٹ 24 کے تحت اسکواسٹ کا مصدقہ افزائشی مینڈھ۔ بہترین اون اور گوشت کی پیداوار بڑھانے کیلئے تحقیق شدہ شجرہ۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1526030994690-40e26ad32a1c?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1636314923477-f3c10684768b?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 106,
+        type: "live",
+        category: "merino",
+        titleEn: "HADP Project 24 Commercial Starter Flock (10 Ewes + 1 Ram)",
+        titleUr: "ہادپ پروجیکٹ 24 تجارتی شیپ فلاک (10 مادہ بھیڑیں + 1 مینڈھ)",
+        price: 145000,
+        weight: "540 Kg Total Flock",
+        specEn: "50% DBT Subsidy Eligible (HADP Project 24)",
+        specUr: "50٪ حکومتی سبسڈی کا اہل",
+        districtEn: "Pulwama",
+        districtUr: "پلوامہ",
+        villageEn: "Dachigam Sheep Farm Extension, Pulwama",
+        villageUr: "داچھی گام شیپ فارم ایکسٹینشن، پلوامہ",
+        farmerEn: "J&K Sheep Husbandry Progressive Breeders",
+        farmerUr: "جے کے شیپ ہسبنڈری بریڈرز",
+        phone: "+919419012345",
+        whatsapp: "919419012345",
+        isQurbani: false,
+        hadpEligible: true,
+        inaphTag: "1904-FLOCK-UNIT-24",
+        sireLine: "Certified 50-Ewe Commercial Foundation Stock",
+        woolMicron: "20.5 Microns Average",
+        vetOfficer: "Dr. Ghulam Nabi, Joint Director Sheep Husbandry J&K",
+        deworming: "Fenbendazole Flock Drench (02-Oct-2026)",
+        dipping: "Cypermethrin Dip Tank (Dachigam)",
+        vaccinations: [
+          { name: "Enterotoxaemia (ETV)", date: "15-Apr-2026", status: "Flock Vaccinated", batch: "ETV-24B" },
+          { name: "Sheep Pox", date: "10-Jun-2026", status: "Flock Vaccinated", batch: "SP-K24" },
+          { name: "PPR Live", date: "All Ewes Vaccinated", status: "Protected", batch: "PPR-IVRI" }
+        ],
+        verified: true,
+        rating: 4.9,
+        reviewsCount: 29,
+        descEn: "Official starter flock unit pre-screened for HADP Project 24 commercial farm subsidies. All 10 ewes are synchronized and pregnant with progeny-tested Soviet Merino semen. Ear-tagged and vet-certified.",
+        descUr: "ہادپ پروجیکٹ 24 کے تحت 50٪ سبسڈی کیلئے تیار تجارتی فلاک۔ 10 صحت مند مادہ بھیڑیں اور 1 اعلیٰ افزائشی مینڈھ۔ تمام جانور ویکسینیٹڈ اور ٹیگ شدہ۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1528709024086-98a7672e0b9d?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1646087783323-c5596fa858d8?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
         id: 101,
         type: "live",
         category: "merino",
@@ -831,6 +1476,19 @@
         phone: "+919419012345",
         whatsapp: "919419012345",
         isQurbani: true,
+        hadpEligible: true,
+        inaphTag: "1904-8821-4412",
+        sireLine: "87.5% Soviet Merino × Rambouillet Lineage",
+        woolMicron: "20.4 Microns (Grade A Fine Fleece)",
+        vetOfficer: "Dr. M. A. Shah, B.V.Sc & A.H. (VAS Pulwama, Reg: KVC-1842)",
+        deworming: "Fenbendazole + Oxyclozanide (04-Oct-2026)",
+        dipping: "Deltamethrin 1% Dip Vat (Tral)",
+        vaccinations: [
+          { name: "Enterotoxaemia (ETV)", date: "15-Mar-2026", status: "Protected", batch: "ETV-24B" },
+          { name: "Sheep Pox", date: "10-May-2026", status: "Protected", batch: "SP-K24" },
+          { name: "PPR (Peste des Petits)", date: "02-Jul-2025", status: "Immune (Lifelong)", batch: "PPR-IVRI" },
+          { name: "FMD (Foot & Mouth)", date: "18-Sep-2026", status: "Protected", batch: "FMD-O99" }
+        ],
         verified: true,
         rating: 4.9,
         reviewsCount: 38,
@@ -861,6 +1519,18 @@
         phone: "+919419088899",
         whatsapp: "919419088899",
         isQurbani: true,
+        hadpEligible: true,
+        inaphTag: "1902-7711-9034",
+        sireLine: "Pure Bakarwali Mountain Heavy-Bone Genetics",
+        woolMicron: "32.0 Microns (Coarse Carpet & Namda)",
+        vetOfficer: "Dr. S. K. Wani, B.V.Sc (VAS Kangan, Reg: KVC-1402)",
+        deworming: "Albendazole Oral Drench (12-Sep-2026)",
+        dipping: "Cypermethrin Dip Tank (Ganderbal)",
+        vaccinations: [
+          { name: "Enterotoxaemia (ETV)", date: "20-Mar-2026", status: "Protected", batch: "ETV-24B" },
+          { name: "Sheep Pox", date: "14-May-2026", status: "Protected", batch: "SP-K24" },
+          { name: "PPR", date: "15-Aug-2025", status: "Immune", batch: "PPR-IVRI" }
+        ],
         verified: true,
         rating: 5.0,
         reviewsCount: 52,
@@ -870,6 +1540,122 @@
           "https://images.unsplash.com/photo-1528709024086-98a7672e0b9d?auto=format&fit=crop&w=800&q=80",
           "https://images.unsplash.com/photo-1676600869821-6c1623a4fbfd?auto=format&fit=crop&w=800&q=80",
           "https://images.unsplash.com/photo-1657846328016-4feb4c014e66?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 209,
+        type: "product",
+        category: "supplies",
+        titleEn: "SKUAST-K Urea Molasses Mineral Block (UMMB) - 5 Kg Lick",
+        titleUr: "اسکواسٹ یوریا مولاسس منرل بلاک (5 کلو چاٹنے والا بلاک)",
+        price: 320,
+        weight: "5 Kg Block",
+        specEn: "HADP Project 24 Winter Supplement",
+        specUr: "سردیوں کیلئے نائٹروجن و منرل سپلیمنٹ",
+        districtEn: "Srinagar",
+        districtUr: "سرینگر",
+        villageEn: "Animal Nutrition Division, SKUAST-K",
+        villageUr: "شعبہ غذائیات، اسکواسٹ شالیمار",
+        farmerEn: "SKUAST-Kashmir Agro Extension",
+        farmerUr: "اسکواسٹ ایگرو ایکسٹینشن",
+        phone: "+919419055443",
+        whatsapp: "919419055443",
+        isQurbani: false,
+        hadpEligible: true,
+        verified: true,
+        rating: 5.0,
+        reviewsCount: 84,
+        descEn: "Scientifically formulated cold-process lick block providing non-protein nitrogen (NPN), molasses energy, calcium, phosphorus, and zinc. Prevents rumen compaction and maintains body weight during sub-zero snowbound months.",
+        descUr: "برفباری میں بھیڑوں کے ہاضمے اور توانائی کو برقرار رکھنے کیلئے اسکواسٹ کا تیار کردہ سائنسی نمکیاتی بلاک۔ میمنوں کی شرح اموات کو کم کرتا ہے۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 210,
+        type: "product",
+        category: "supplies",
+        titleEn: "HADP High-Density Wrapped Sweet Corn Silage (100 Kg Bale)",
+        titleUr: "ہادپ ہائی ڈینسٹی سویٹ کارن سائیلیج بیل (100 کلو بیگ)",
+        price: 1150,
+        weight: "100 Kg Bale",
+        specEn: "Lactic Fermented • pH 3.9",
+        specUr: "خالص سبز چارہ سائیلیج",
+        districtEn: "Baramulla",
+        districtUr: "بارہمولہ",
+        villageEn: "Hygam Agro Cluster, Baramulla",
+        villageUr: "ہائیگام، بارہمولہ",
+        farmerEn: "Kashmir Silage & Fodder Co-Op",
+        farmerUr: "کشمیر سائیلیج کوآپریٹو",
+        phone: "+919622088811",
+        whatsapp: "919622088811",
+        isQurbani: false,
+        hadpEligible: true,
+        verified: true,
+        rating: 4.9,
+        reviewsCount: 63,
+        descEn: "6-layer vacuum-wrapped fermented green fodder silage with 8.8% crude protein. Essential green succulent fodder substitute during Chillai Kalan when fresh pasture is buried under snow.",
+        descUr: "چلہ کلاں کے دوران جب سبز چارہ میسر نہیں ہوتا، تو یہ ویکیوم پیکڈ سائیلیج جانوروں کو تر و تازہ چارے کی تمام غذائیت فراہم کرتا ہے۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 211,
+        type: "product",
+        category: "supplies",
+        titleEn: "HADP Approved 6-Speed Electric Shearing Clipper (50% Subsidy Voucher)",
+        titleUr: "ہادپ منظور شدہ 6 سپیڈ الیکٹرک اون کترائی مشین (50٪ واؤچر)",
+        price: 5500,
+        weight: "3.5 Kg Kit",
+        specEn: "50% Subsidy Voucher Available",
+        specUr: "50٪ سبسڈی واؤچر دستیاب",
+        districtEn: "Srinagar",
+        districtUr: "سرینگر",
+        villageEn: "Batamaloo Mandi, Srinagar",
+        villageUr: "بٹہ مالو، سرینگر",
+        farmerEn: "JK Modern Livestock Tools",
+        farmerUr: "جے کے لائیو اسٹاک ٹولز",
+        phone: "+919419055443",
+        whatsapp: "919419055443",
+        isQurbani: false,
+        hadpEligible: true,
+        verified: true,
+        rating: 4.9,
+        reviewsCount: 52,
+        descEn: "Approved under HADP Project 27 (Wool Modernization). Reduces shearing time to 4 minutes per sheep and eliminates skin cuts. Eligible farmers receive 50% subsidy via Kisan Sathi DBT.",
+        descUr: "ہادپ پروجیکٹ 27 کے تحت منظور شدہ اون کترنے والی مشین۔ کسان ساتھی پورٹل کے ذریعے اس پر 50٪ کیپیٹل سبسڈی حاصل کی جا سکتی ہے۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: 212,
+        type: "product",
+        category: "wool",
+        titleEn: "SKUAST-K Graded Kashmir Merino Raw Fleece Wool (4 Kg Braid)",
+        titleUr: "اسکواسٹ مصدقہ خالص کشمیری میرینو خام اون (4 کلو گچھا)",
+        price: 1400,
+        weight: "4 Kg Braid",
+        specEn: "Lab Tested: 20.4 Microns • <1.5% VM",
+        specUr: "لیبارٹری ٹیسٹ شدہ 20.4 مائیکرون",
+        districtEn: "Budgam",
+        districtUr: "بڈگام",
+        villageEn: "Beerwah Artisans, Budgam",
+        villageUr: "بیروہ دستکار، بڈگام",
+        farmerEn: "Kashmir Wool Growers Federation",
+        farmerUr: "کشمیر وول فیڈریشن",
+        phone: "+919906055544",
+        whatsapp: "919906055544",
+        isQurbani: false,
+        hadpEligible: true,
+        verified: true,
+        rating: 5.0,
+        reviewsCount: 37,
+        descEn: "Clean scoured, laboratory-certified Kashmir Merino wool with 20.4 micron fineness and 78mm staple length. Directly procured from high-altitude flocks.",
+        descUr: "ہادپ کوالٹی اسٹینڈرڈز کے مطابق ٹیسٹ شدہ خالص کشمیری میرینو اون۔ 20.4 مائیکرون نرمی، شالوں اور گرم لوئی کیلئے شاندار۔",
+        gallery: [
+          "https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1?auto=format&fit=crop&w=800&q=80"
         ]
       },
       {
@@ -891,6 +1677,7 @@
         phone: "+919419077711",
         whatsapp: "919419077711",
         isQurbani: false,
+        hadpEligible: false,
         verified: true,
         rating: 4.9,
         reviewsCount: 142,
@@ -920,6 +1707,7 @@
         phone: "+919419011122",
         whatsapp: "919419011122",
         isQurbani: false,
+        hadpEligible: false,
         verified: true,
         rating: 4.8,
         reviewsCount: 89,
@@ -949,6 +1737,7 @@
         phone: "+919622099887",
         whatsapp: "919622099887",
         isQurbani: false,
+        hadpEligible: true,
         verified: true,
         rating: 4.9,
         reviewsCount: 64,
@@ -977,6 +1766,7 @@
         phone: "+919797011223",
         whatsapp: "919797011223",
         isQurbani: false,
+        hadpEligible: false,
         verified: true,
         rating: 5.0,
         reviewsCount: 78,
@@ -1005,6 +1795,7 @@
         phone: "+919906012344",
         whatsapp: "919906012344",
         isQurbani: false,
+        hadpEligible: false,
         verified: true,
         rating: 4.7,
         reviewsCount: 95,
@@ -1033,6 +1824,7 @@
         phone: "+919419055443",
         whatsapp: "919419055443",
         isQurbani: false,
+        hadpEligible: true,
         verified: true,
         rating: 4.8,
         reviewsCount: 31,
@@ -1061,6 +1853,7 @@
         phone: "+919419088800",
         whatsapp: "919419088800",
         isQurbani: false,
+        hadpEligible: false,
         verified: true,
         rating: 4.9,
         reviewsCount: 47,
@@ -1089,6 +1882,7 @@
         phone: "+919622088811",
         whatsapp: "919622088811",
         isQurbani: false,
+        hadpEligible: false,
         verified: true,
         rating: 4.7,
         reviewsCount: 56,
@@ -1117,6 +1911,17 @@
         phone: "+919797011223",
         whatsapp: "919797011223",
         isQurbani: false,
+        hadpEligible: true,
+        inaphTag: "1903-5544-1290",
+        sireLine: "SKUAST-K Shalimar Fine-Wool Ewe Line",
+        woolMicron: "21.2 Microns",
+        vetOfficer: "Dr. Farooq Ahmad Mir, M.V.Sc (VAS Anantnag, Reg: KVC-1994)",
+        deworming: "Fenbendazole (01-Oct-2026)",
+        dipping: "Flumethrin Dip Vat (Mattan)",
+        vaccinations: [
+          { name: "Enterotoxaemia (ETV)", date: "18-Mar-2026", status: "Protected", batch: "ETV-24B" },
+          { name: "Sheep Pox", date: "22-May-2026", status: "Protected", batch: "SP-K24" }
+        ],
         verified: true,
         rating: 4.8,
         reviewsCount: 19,
@@ -1146,6 +1951,17 @@
         phone: "+919906055544",
         whatsapp: "919906055544",
         isQurbani: true,
+        hadpEligible: true,
+        inaphTag: "1905-2233-8819",
+        sireLine: "Champion Beerwah Breeding Ram Genetics",
+        woolMicron: "22.5 Microns",
+        vetOfficer: "Dr. Nazir Ahmad Lone, B.V.Sc (VAS Budgam, Reg: KVC-1650)",
+        deworming: "Triclabendazole (Liver Fluke Prophylaxis)",
+        dipping: "Deltamethrin Dip Tank",
+        vaccinations: [
+          { name: "ETV Booster", date: "12-Apr-2026", status: "Protected", batch: "ETV-24B" },
+          { name: "Sheep Pox", date: "10-Jun-2026", status: "Protected", batch: "SP-K24" }
+        ],
         verified: true,
         rating: 5.0,
         reviewsCount: 27,
@@ -1293,13 +2109,14 @@
 
         const matchesCategory = (currentCategory === 'all') || 
                                 (currentCategory === 'qurbani' && item.isQurbani) ||
+                                (currentCategory === 'hadp' && item.hadpEligible) ||
                                 (currentCategory === item.category);
 
         const matchesDist = (dist === 'all') || 
                             (item.districtEn.toLowerCase() === dist.toLowerCase()) || 
                             (item.districtUr.includes(dist));
 
-        const searchTarget = (item.titleEn + " " + item.titleUr + " " + item.specEn + " " + item.specUr + " " + item.descEn + " " + item.descUr).toLowerCase();
+        const searchTarget = (item.titleEn + " " + item.titleUr + " " + item.specEn + " " + item.specUr + " " + item.descEn + " " + item.descUr + (item.inaphTag || '')).toLowerCase();
         const matchesSearch = searchTarget.includes(q);
 
         return matchesCategory && matchesDist && matchesSearch;
@@ -1356,10 +2173,11 @@
               </div>
 
               <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2 mb-1">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
                   <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isLive ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300'}">
                     ${isLive ? 'Live Sheep' : 'Farm Product'}
                   </span>
+                  ${item.hadpEligible ? `<span class="bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-[10px] font-black px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-700">🏛️ 50% HADP</span>` : ''}
                   <span class="text-xs text-slate-400">📍 ${district}</span>
                   <span class="text-xs text-amber-500 font-bold ml-auto">★ ${item.rating}</span>
                 </div>
@@ -1367,10 +2185,11 @@
                 <h4 class="font-bold text-sm sm:text-base leading-snug line-clamp-1 mb-1">${title}</h4>
                 <p class="text-xs text-slate-500 line-clamp-1 mb-2">${desc}</p>
                 
-                <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
+                <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400 flex-wrap">
                   <span><strong>${t.weightLabel}</strong> ${item.weight}</span>
                   <span>•</span>
                   <span><strong>${t.teethLabel}</strong> ${spec}</span>
+                  ${isLive ? `<span>•</span> <span class="text-emerald-600 font-mono font-bold">🏷️ ${item.inaphTag || 'INAPH-JK'}</span>` : ''}
                 </div>
               </div>
 
@@ -1381,6 +2200,9 @@
                     ${t.viewDetails}
                   </button>
                   ${isLive ? `
+                    <button onclick="openPassportModal(${item.id})" class="text-xs font-bold px-2.5 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 flex items-center gap-1">
+                      <span>📋</span> <span class="hidden sm:inline">${t.viewPassport}</span>
+                    </button>
                     <a href="https://wa.me/${item.whatsapp}?text=${encodeURIComponent('Hello, I am interested in: ' + title)}" target="_blank" class="bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl">
                       💬 WhatsApp
                     </a>
@@ -1433,6 +2255,19 @@
 
               <!-- Content Body -->
               <div class="p-4">
+                ${isLive ? `
+                  <div class="flex items-center justify-between text-[11px] bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-500/30 rounded-xl px-2.5 py-1 mb-2 font-bold text-emerald-800 dark:text-emerald-300">
+                    <span class="flex items-center gap-1 font-mono"><span>🏷️</span> ${item.inaphTag || '1904-8821'}</span>
+                    <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">✓ Vaccinated</span>
+                  </div>
+                ` : ''}
+
+                ${item.hadpEligible ? `
+                  <div class="text-[10px] bg-amber-500/15 border border-amber-500/40 text-amber-700 dark:text-amber-300 font-black rounded-lg px-2 py-0.5 mb-2 inline-flex items-center gap-1">
+                    <span>🏛️</span> <span>${currentLang === 'en' ? '50% HADP Subsidy Eligible' : '50٪ ہادپ سبسڈی کا اہل'}</span>
+                  </div>
+                ` : ''}
+
                 <h4 class="font-black text-sm sm:text-base leading-snug line-clamp-1 group-hover:text-emerald-600 transition mb-1">${title}</h4>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1">
                   <span>🏡</span> ${village}
@@ -1463,11 +2298,15 @@
               </button>
 
               ${isLive ? `
-                <a href="https://wa.me/${item.whatsapp}?text=${encodeURIComponent((currentLang === 'en' ? 'Hello, I want to book this live sheep: ' : 'سلام علیکم، میں اس بھیڑ کے بارے میں بات کرنا چاہتا ہوں: ') + title)}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3.5 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-emerald-700/20 transition">
+                <button onclick="openPassportModal(${item.id})" class="text-xs font-bold py-2.5 px-2.5 rounded-xl border border-emerald-600/40 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition flex items-center justify-center gap-1" title="View Official Health Passport">
+                  <span>📋</span>
+                  <span class="hidden sm:inline">${t.viewPassport}</span>
+                </button>
+                <a href="https://wa.me/${item.whatsapp}?text=${encodeURIComponent((currentLang === 'en' ? 'Hello, I want to book this live sheep: ' : 'سلام علیکم، میں اس بھیڑ کے بارے میں بات کرنا چاہتا ہوں: ') + title)}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center gap-1 shadow-md shadow-emerald-700/20 transition">
                   <span>💬</span>
                   <span class="hidden sm:inline">${t.whatsapp}</span>
                 </a>
-                <a href="tel:${item.phone}" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2.5 px-3 rounded-xl flex items-center justify-center shadow-md transition" title="${t.call}">
+                <a href="tel:${item.phone}" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2.5 px-2.5 rounded-xl flex items-center justify-center shadow-md transition" title="${t.call}">
                   <span>📞</span>
                 </a>
               ` : `
@@ -1707,16 +2546,40 @@
             <span class="text-slate-400">Specification:</span>
             <span class="font-bold text-amber-600">${spec}</span>
           </div>
+          ${isLive ? `
+            <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-1.5">
+              <span class="text-slate-400">INAPH Ear Tag UID:</span>
+              <span class="font-mono font-bold text-emerald-600">🏷️ ${item.inaphTag || '1904-8821-4412'}</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-1.5">
+              <span class="text-slate-400">Breed Genetics:</span>
+              <span class="font-bold">${item.sireLine || 'SKUAST-K Lineage'}</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-1.5">
+              <span class="text-slate-400">Wool Fineness:</span>
+              <span class="font-bold text-amber-600">${item.woolMicron || '20.4 Microns (Grade A)'}</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-200 dark:border-slate-700 pb-1.5">
+              <span class="text-slate-400">Certifying Veterinarian:</span>
+              <span class="font-bold text-blue-600">${item.vetOfficer || 'Dr. M. A. Shah, VAS Pulwama'}</span>
+            </div>
+          ` : ''}
           <div class="flex justify-between">
             <span class="text-slate-400">Seller / Producer:</span>
             <span class="font-bold text-blue-600">${farmer}</span>
           </div>
         </div>
 
-        <div class="mb-5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        <div class="mb-4 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
           <h4 class="font-bold text-xs uppercase text-slate-400 mb-1">Product Description:</h4>
           ${desc}
         </div>
+
+        ${isLive ? `
+          <button onclick="closeDetailModal(); openPassportModal(${item.id});" class="w-full mb-3 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 border border-emerald-600/30 rounded-2xl py-2.5 px-3 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+            <span>📋</span> <span>${translations[currentLang].viewPassport} & Prophylaxis Record</span>
+          </button>
+        ` : ''}
 
         <div class="flex gap-2">
           ${isLive ? `
@@ -1740,6 +2603,388 @@
 
     function closeDetailModal() {
       document.getElementById('detailModal').classList.add('hidden');
+    }
+
+    // ==========================================
+    // HADP J&K GOVERNMENT SCHEMES ENGINE
+    // ==========================================
+    function openHadpModal(tab) {
+      document.getElementById('hadpModal').classList.remove('hidden');
+      switchHadpTab(tab || 'subsidies');
+    }
+    function closeHadpModal() {
+      document.getElementById('hadpModal').classList.add('hidden');
+    }
+    function switchHadpTab(tab) {
+      const tabs = ['subsidies', 'calc', 'apply', 'daksh'];
+      const btnMap = {
+        subsidies: 'tabHadpSubsidies',
+        calc: 'tabHadpCalc',
+        calculator: 'tabHadpCalc',
+        apply: 'tabHadpApply',
+        daksh: 'tabHadpDaksh'
+      };
+      const activeKey = tab === 'calculator' ? 'calc' : tab;
+
+      tabs.forEach(t => {
+        const btn = document.getElementById(btnMap[t]);
+        const pane = document.getElementById(t === 'subsidies' ? 'hadpPaneSubsidies' : (t === 'calc' ? 'hadpPaneCalc' : (t === 'apply' ? 'hadpPaneApply' : 'hadpPaneDaksh')));
+        if (t === activeKey) {
+          btn.className = "flex-1 py-2 px-3 rounded-xl transition bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm whitespace-nowrap";
+          pane.classList.remove('hidden');
+        } else {
+          btn.className = "flex-1 py-2 px-3 rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-amber-600 whitespace-nowrap";
+          pane.classList.add('hidden');
+        }
+      });
+
+      if (activeKey === 'calc') runHadpCalculator();
+    }
+
+    function runHadpCalculator() {
+      const scheme = document.getElementById('hadpCalcScheme').value;
+      let total = 500000;
+      let subsidy = 250000;
+      let margin = 50000;
+      let loan = 200000;
+
+      if (scheme === 'farm50') {
+        total = 500000; subsidy = 250000; margin = 50000; loan = 200000;
+      } else if (scheme === 'kotha') {
+        total = 200000; subsidy = 100000; margin = 20000; loan = 80000;
+      } else if (scheme === 'clipper') {
+        total = 10000; subsidy = 5000; margin = 1000; loan = 4000;
+      } else if (scheme === 'silage') {
+        total = 60000; subsidy = 30000; margin = 6000; loan = 24000;
+      }
+
+      document.getElementById('hadpCalcTotal').textContent = '₹' + total.toLocaleString('en-IN');
+      document.getElementById('hadpCalcSubsidy').textContent = '₹' + subsidy.toLocaleString('en-IN');
+      document.getElementById('hadpCalcMargin').textContent = '₹' + margin.toLocaleString('en-IN');
+      document.getElementById('hadpCalcLoan').textContent = '₹' + loan.toLocaleString('en-IN');
+    }
+
+    let lastAckData = null;
+    function handleHadpApply(e) {
+      e.preventDefault();
+      const name = document.getElementById('hadpName').value;
+      const aadhaar = document.getElementById('hadpAadhaar').value;
+      const dist = document.getElementById('hadpDistrict').value;
+      const phone = document.getElementById('hadpPhone').value;
+      const scheme = document.getElementById('hadpTargetScheme').value;
+      const training = document.getElementById('hadpTraining').value;
+      const refNo = 'HADP-JK-SHP-' + Math.floor(10000 + Math.random() * 90000);
+
+      lastAckData = { name, aadhaar, dist, phone, scheme, training, refNo };
+
+      const slip = document.getElementById('hadpAckSlip');
+      slip.classList.remove('hidden');
+      document.getElementById('ackRefNo').textContent = refNo;
+      document.getElementById('ackSlipContent').innerHTML = `
+        <p><strong>Beneficiary:</strong> ${name} (Aadhaar: ${aadhaar})</p>
+        <p><strong>Target Component:</strong> ${scheme} (50% DBT Capital Subsidy)</p>
+        <p><strong>District:</strong> ${dist} • <strong>Contact:</strong> ${phone}</p>
+        <p><strong>Daksh Kisan Status:</strong> <span class="text-emerald-600 font-bold">${training}</span></p>
+        <p class="text-[10px] text-slate-500 pt-1">Please take this pre-approval slip to your nearest <strong>Kisan Khidmat Ghar (KKG)</strong> or District Sheep Husbandry Officer (DSHO) for physical spot inspection and e-KYC DBT disbursement.</p>
+      `;
+
+      showToast(currentLang === 'en' ? `Pre-Application Generated: ${refNo}` : `کیسان ساتھی رسید جاری: ${refNo}`, '🏛️');
+    }
+
+    function shareAckWhatsApp() {
+      if (!lastAckData) return;
+      const msg = `HADP J&K Beneficiary Pre-Application: Ref No ${lastAckData.refNo}. Applicant: ${lastAckData.name}, Scheme: ${lastAckData.scheme}, District: ${lastAckData.dist}. Verified under Project 24/27.`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // ==========================================
+    // DIGITAL LIVESTOCK HEALTH PASSPORT ENGINE
+    // ==========================================
+    function openPassportModal(animalId) {
+      document.getElementById('passportModal').classList.remove('hidden');
+      const liveAnimals = catalog.filter(i => i.type === 'live');
+      const select = document.getElementById('passportAnimalSelect');
+      select.innerHTML = liveAnimals.map(a => `
+        <option value="${a.id}" ${animalId && a.id === animalId ? 'selected' : ''}>
+          ${currentLang === 'en' ? a.titleEn : a.titleUr} (Tag: ${a.inaphTag || '1904-8821'})
+        </option>
+      `).join('');
+
+      const targetId = animalId || (liveAnimals.length > 0 ? liveAnimals[0].id : null);
+      if (targetId) loadPassportForAnimal(targetId);
+    }
+    function closePassportModal() {
+      document.getElementById('passportModal').classList.add('hidden');
+    }
+    function loadPassportForAnimal(animalId) {
+      const item = catalog.find(i => i.id === parseInt(animalId));
+      if (item) renderPassport(item);
+    }
+    function renderPassport(item) {
+      const isEn = currentLang === 'en';
+      const title = isEn ? item.titleEn : item.titleUr;
+      const spec = isEn ? item.specEn : item.specUr;
+      const district = isEn ? item.districtEn : item.districtUr;
+      const village = isEn ? item.villageEn : item.villageUr;
+      const vList = item.vaccinations || [
+        { name: "Enterotoxaemia (ETV)", date: "15-Mar-2026", status: "Protected", batch: "ETV-24B" },
+        { name: "Sheep Pox", date: "10-May-2026", status: "Protected", batch: "SP-K24" },
+        { name: "PPR (Peste des Petits)", date: "02-Jul-2025", status: "Immune", batch: "PPR-IVRI" }
+      ];
+
+      document.getElementById('passportCardContent').innerHTML = `
+        <div class="bg-gradient-to-r from-emerald-900 to-teal-950 text-white p-4 rounded-2xl border border-emerald-700/60 shadow-lg relative overflow-hidden">
+          <div class="flex items-center justify-between pb-2 border-b border-emerald-800">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">🐑</span>
+              <div>
+                <span class="text-[10px] text-emerald-300 font-bold block uppercase tracking-wider">Bharat Pashudhan (INAPH) RFID ID</span>
+                <span class="text-sm font-mono font-black tracking-widest text-amber-300">${item.inaphTag || '1904-8821-4412'}</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black text-[9px] px-2 py-0.5 rounded-full uppercase">Govt Verified</span>
+            </div>
+          </div>
+
+          <div class="mt-2.5 flex items-center justify-between bg-white text-slate-900 p-2 rounded-xl">
+            <div class="font-mono text-[9px] tracking-tight">||| | ||||| || |||| ||| |||| | |||| |||</div>
+            <div class="text-[10px] font-mono font-bold">UID: ${item.inaphTag || '1904-8821-4412'}</div>
+            <span class="text-[10px] text-emerald-700 font-bold">RFID ACTIVE</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
+          <div class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-[10px] block">Breed / Lineage:</span>
+            <span class="font-bold text-slate-900 dark:text-slate-100">${item.category === 'merino' ? 'Kashmir Merino (Synthetic Fine Wool)' : 'Bakarwali Mountain Breed'}</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-[10px] block">Live Weight:</span>
+            <span class="font-black text-emerald-600">${item.weight}</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-[10px] block">Dentition / Age:</span>
+            <span class="font-bold text-amber-600">${spec}</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-[10px] block">Wool Micron Rating:</span>
+            <span class="font-bold">${item.woolMicron || '20.4 Microns (Grade A)'}</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-[10px] block">Origin / Village:</span>
+            <span class="font-bold">${village}</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 text-[10px] block">Sire / Genetics:</span>
+            <span class="font-bold text-blue-600">${item.sireLine || 'SKUAST-K Certified'}</span>
+          </div>
+        </div>
+
+        <div>
+          <h5 class="font-bold text-xs text-slate-700 dark:text-slate-300 mb-2 flex items-center justify-between">
+            <span>💉 Prophylactic Vaccination Record</span>
+            <span class="text-[10px] text-emerald-600 font-normal">All Mandatory Vaccines Administered</span>
+          </h5>
+          <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden text-[11px]">
+            <table class="w-full text-left">
+              <thead class="bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold">
+                <tr>
+                  <th class="p-2">Vaccine / Disease</th>
+                  <th class="p-2">Date</th>
+                  <th class="p-2">Batch #</th>
+                  <th class="p-2">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                ${vList.map(v => `
+                  <tr>
+                    <td class="p-2 font-bold">${v.name}</td>
+                    <td class="p-2 text-slate-500">${v.date}</td>
+                    <td class="p-2 font-mono text-[10px]">${v.batch}</td>
+                    <td class="p-2 font-bold text-emerald-600">✓ ${v.status}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-[11px]">
+          <div class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 block">Deworming:</span>
+            <span class="font-bold text-slate-700 dark:text-slate-300">${item.deworming || 'Fenbendazole + Oxyclozanide'}</span>
+          </div>
+          <div class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+            <span class="text-slate-400 block">Chemical Dipping:</span>
+            <span class="font-bold text-slate-700 dark:text-slate-300">${item.dipping || 'Deltamethrin 1% Dip Vat'}</span>
+          </div>
+        </div>
+
+        <div class="p-3 bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-500/30 rounded-2xl flex items-center justify-between text-xs">
+          <div>
+            <span class="text-[10px] text-slate-400 block">Certifying Veterinary Assistant Surgeon:</span>
+            <span class="font-bold text-emerald-800 dark:text-emerald-300">${item.vetOfficer || 'Dr. M. A. Shah, B.V.Sc & A.H. (VAS Pulwama)'}</span>
+            <span class="text-[10px] text-slate-500 block">J&K Veterinary Council • Department of Sheep Husbandry</span>
+          </div>
+          <div class="w-12 h-12 rounded-full border-2 border-dashed border-emerald-600 flex items-center justify-center text-[9px] font-black text-emerald-700 dark:text-emerald-300 text-center uppercase rotate-[-12deg]">
+            SEAL<br>VERIFIED
+          </div>
+        </div>
+
+        <div class="pt-2 flex gap-2">
+          <button onclick="window.print()" class="flex-1 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>🖨️</span> <span>Print Health Passport</span>
+          </button>
+          <a href="https://wa.me/?text=${encodeURIComponent('Official INAPH Livestock Health Passport: ' + title + ' (Tag UID: ' + (item.inaphTag || '1904-8821-4412') + ') verified by Sheep Husbandry Dept J&K.')}" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+            <span>💬</span> <span>Share Passport</span>
+          </a>
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // HIGHLAND BAHAK MIGRATION ENGINE
+    // ==========================================
+    const migrationRoutes = {
+      mughal: {
+        titleEn: "Pir Panjal / Mughal Road Corridor (Shopian ➔ Bafliaz)",
+        titleUr: "مغل روڈ و پیر کی گلی کوریڈور (شوپیاں تا بفلیاز)",
+        descEn: "Traditional high-altitude transhumance route linking South Kashmir apple valleys to Rajouri-Poonch winter grounds through Peer Ki Gali pass (11,400 ft).",
+        descUr: "جنوبی کشمیر سے راجوری پونچھ تک پیر کی گلی کے راستے مویشیوں کی روایتی ہجرت کا اہم ترین راستہ۔",
+        checkpoints: [
+          { name: "Shopian Padpawan Checkpost", type: "vet", note: "Mandatory deworming & vaccination check" },
+          { name: "Dubjan River Dipping Vat", type: "dip", note: "Anti-scabies chemical dip tank operational" },
+          { name: "Peer Ki Gali Pass (11,400 ft)", type: "shelter", note: "Emergency highland Kothas & solar lighting" },
+          { name: "Bafliaz Transit Camp", type: "fodder", note: "Mobile Vet Clinic (1962) & emergency fodder bank" }
+        ]
+      },
+      sonamarg: {
+        titleEn: "Sonamarg - Baltal - Minamarg Alpine Corridor",
+        titleUr: "سونمرگ تا منمرگ الپائن چراگاہیں",
+        descEn: "Alpine grazing corridor across the Sindh Valley to the Great Himalayan high pastures (Sonamarg, Thajiwas, Baltal, and Zojila foothills).",
+        descUr: "سونمرگ، تھجیواس اور بالتل کی سرسبز الپائن چراگاہوں کا راستہ۔",
+        checkpoints: [
+          { name: "Ganderbal Kangan Base", type: "vet", note: "Veterinary Assistant Surgeon inspection hub" },
+          { name: "Gund Transit Depot", type: "fodder", note: "Mineral salt lick and high-density silage bank" },
+          { name: "Sonamarg Meadow Camp", type: "dip", note: "Mobile chemical dip and automated shearing camp" },
+          { name: "Baltal High Pasture", type: "shelter", note: "Predator-proof chainlink night paddocks" }
+        ]
+      },
+      tosamaidan: {
+        titleEn: "Tosamaidan & Doodhpathri Highland Corridors",
+        titleUr: "توسہ میدان و دودھ پتھری ہائی لینڈ چراگاہیں",
+        descEn: "Vast undulating alpine meadows in Central Kashmir (Budgam) at 10,000 ft, renowned for Kashmir Merino summer pasture.",
+        descUr: "بڈگام کی وسیع ترین الپائن چراگاہ توسہ میدان، جہاں خالص کشمیری میرینو موسم گرما گزارتے ہیں۔",
+        checkpoints: [
+          { name: "Beerwah Khansahib Post", type: "vet", note: "Pre-ascent RFID ear tag verification" },
+          { name: "Doodhpathri Meadow Center", type: "fodder", note: "1962 Mobile Veterinary Clinic stationed" },
+          { name: "Tosamaidan Alpine Plateau", type: "shelter", note: "HADP subsidized community Dhok shelters" }
+        ]
+      },
+      gurez: {
+        titleEn: "Gurez - Tulail - Razdan Pass Alpine Corridor",
+        titleUr: "گریز و تلیل الپائن کوریڈور",
+        descEn: "Sub-alpine border valley accessed via Razdan Pass (11,672 ft), home to organic medicinal herb grazing and pristine mountain sheep.",
+        descUr: "رازدان پاس کے پار وادی گریز و تلیل کی نایاب جڑی بوٹیوں سے لیس الپائن چراگاہیں۔",
+        checkpoints: [
+          { name: "Bandipora Tragbal Ascent", type: "vet", note: "Veterinary fitness certificate inspection" },
+          { name: "Razdan Pass (11,672 ft)", type: "shelter", note: "Emergency weather shelter & communication" },
+          { name: "Dawar Central Mandi", type: "dip", note: "District Sheep Husbandry shearing center" },
+          { name: "Tulail Border Grasslands", type: "fodder", note: "Fodder bank for early snow emergencies" }
+        ]
+      }
+    };
+
+    function openMigrationModal(route) {
+      document.getElementById('migrationModal').classList.remove('hidden');
+      selectMigrationRoute(route || 'mughal');
+    }
+    function closeMigrationModal() {
+      document.getElementById('migrationModal').classList.add('hidden');
+    }
+    function selectMigrationRoute(routeKey) {
+      ['mughal', 'sonamarg', 'tosamaidan', 'gurez'].forEach(k => {
+        const btn = document.getElementById('mRoute' + k.charAt(0).toUpperCase() + k.slice(1));
+        if (btn) {
+          if (k === routeKey) {
+            btn.className = "px-3 py-1.5 rounded-xl bg-teal-600 text-white whitespace-nowrap shadow-sm";
+          } else {
+            btn.className = "px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 whitespace-nowrap";
+          }
+        }
+      });
+
+      const r = migrationRoutes[routeKey];
+      const isEn = currentLang === 'en';
+      const container = document.getElementById('migrationRouteContent');
+      container.innerHTML = `
+        <div class="p-3.5 bg-teal-50 dark:bg-teal-950/30 rounded-2xl border border-teal-200 dark:border-teal-800">
+          <h4 class="font-bold text-teal-950 dark:text-teal-200 text-sm mb-1">${isEn ? r.titleEn : r.titleUr}</h4>
+          <p class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">${isEn ? r.descEn : r.descUr}</p>
+        </div>
+
+        <div class="space-y-2 pt-1">
+          <h5 class="font-bold text-xs text-slate-700 dark:text-slate-300 flex items-center justify-between">
+            <span>Active Checkpoints & Welfare Stations</span>
+            <span class="text-[10px] text-emerald-600 font-bold">🚑 Dial 1962 for Mobile Vet</span>
+          </h5>
+          ${r.checkpoints.map((cp, idx) => `
+            <div class="flex items-center gap-3 p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span class="w-6 h-6 rounded-full bg-teal-100 dark:bg-teal-950 text-teal-700 dark:text-teal-300 font-black text-xs flex items-center justify-center flex-shrink-0">${idx + 1}</span>
+              <div class="flex-1 min-w-0">
+                <span class="font-bold text-slate-900 dark:text-slate-100 block text-xs">${cp.name}</span>
+                <span class="text-[11px] text-slate-500">${cp.note}</span>
+              </div>
+              <span class="text-[10px] bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded-md font-bold uppercase text-slate-600 dark:text-slate-300">${cp.type}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // ==========================================
+    // SKUAST-K WINTER NUTRITION PLANNER
+    // ==========================================
+    function openNutritionModal() {
+      document.getElementById('nutritionModal').classList.remove('hidden');
+      runNutritionCalculator();
+    }
+    function closeNutritionModal() {
+      document.getElementById('nutritionModal').classList.add('hidden');
+    }
+    function runNutritionCalculator() {
+      const size = parseInt(document.getElementById('nutFlockSize').value) || 30;
+      const stage = document.getElementById('nutStage').value;
+      const season = document.getElementById('nutSeason').value;
+
+      let hayFactor = 1.5;
+      let silageFactor = 2.0;
+      let concFactor = 0.4;
+      let ummbFactor = 0.2;
+
+      if (stage === 'gestation') {
+        hayFactor = 1.8; silageFactor = 2.5; concFactor = 0.55; ummbFactor = 0.25;
+      } else if (stage === 'lactating') {
+        hayFactor = 2.0; silageFactor = 3.0; concFactor = 0.7; ummbFactor = 0.3;
+      }
+
+      if (season === 'chillaikalan') {
+        hayFactor *= 1.2; silageFactor *= 1.25; concFactor *= 1.2;
+      } else if (season === 'autumn') {
+        silageFactor *= 0.6; concFactor *= 0.8;
+      }
+
+      const hayTotal = Math.round(size * hayFactor);
+      const silageTotal = Math.round(size * silageFactor);
+      const concTotal = (size * concFactor).toFixed(1);
+      const ummbTotal = Math.max(1, Math.round(size * ummbFactor));
+
+      document.getElementById('nutFlockLabel').textContent = `${size} Sheep Flock`;
+      document.getElementById('nutHay').textContent = `${hayTotal} Kg / day`;
+      document.getElementById('nutSilage').textContent = `${silageTotal} Kg / day`;
+      document.getElementById('nutConcentrate').textContent = `${concTotal} Kg / day`;
+      document.getElementById('nutUMMB').textContent = `${ummbTotal} Blocks / month`;
     }
 
     // SELL MODAL
@@ -1847,6 +3092,9 @@
       }
 
       document.getElementById('topBarTagline').textContent = t.topBarTagline;
+      if (document.getElementById('topHADPBadge')) document.getElementById('topHADPBadge').textContent = t.topHADPBadge;
+      if (document.getElementById('topPassportBadge')) document.getElementById('topPassportBadge').textContent = t.topPassportBadge;
+      if (document.getElementById('topVetHelpline')) document.getElementById('topVetHelpline').textContent = t.topVetHelpline;
       document.getElementById('lblTrackOrder').textContent = t.lblTrackOrder;
       document.getElementById('topBarDelivery').textContent = t.topBarDelivery;
       document.getElementById('topHelpline').textContent = t.topHelpline;
@@ -1854,12 +3102,25 @@
       document.getElementById('navMarketBadge').textContent = t.navMarketBadge;
       document.getElementById('navLogoSub').textContent = t.navLogoSub;
       document.getElementById('langSwitchLabel').textContent = t.langSwitch;
+      if (document.getElementById('navHadpBtn')) document.getElementById('navHadpBtn').textContent = t.navHadpBtn;
       document.getElementById('navEstimatorBtn').textContent = t.navEstimatorBtn;
       document.getElementById('navPostBtn').textContent = t.navPostBtn;
       document.getElementById('navCartLabel').textContent = t.navCartLabel;
       document.getElementById('lblPillAll').textContent = t.lblPillAll;
       document.getElementById('lblPillLive').textContent = t.lblPillLive;
       document.getElementById('lblPillStore').textContent = t.lblPillStore;
+      if (document.getElementById('lblPillHadp')) document.getElementById('lblPillHadp').textContent = t.lblPillHadp;
+
+      if (document.getElementById('hadpBannerTitle')) document.getElementById('hadpBannerTitle').textContent = t.hadpBannerTitle;
+      if (document.getElementById('hadpBannerDesc')) document.getElementById('hadpBannerDesc').textContent = t.hadpBannerDesc;
+      if (document.getElementById('btnHubSubsidy')) document.getElementById('btnHubSubsidy').textContent = t.btnHubSubsidy;
+      if (document.getElementById('btnHubSubsidySub')) document.getElementById('btnHubSubsidySub').textContent = t.btnHubSubsidySub;
+      if (document.getElementById('btnHubPassport')) document.getElementById('btnHubPassport').textContent = t.btnHubPassport;
+      if (document.getElementById('btnHubPassportSub')) document.getElementById('btnHubPassportSub').textContent = t.btnHubPassportSub;
+      if (document.getElementById('btnHubMigration')) document.getElementById('btnHubMigration').textContent = t.btnHubMigration;
+      if (document.getElementById('btnHubMigrationSub')) document.getElementById('btnHubMigrationSub').textContent = t.btnHubMigrationSub;
+      if (document.getElementById('btnHubNutrition')) document.getElementById('btnHubNutrition').textContent = t.btnHubNutrition;
+      if (document.getElementById('btnHubNutritionSub')) document.getElementById('btnHubNutritionSub').textContent = t.btnHubNutritionSub;
 
       document.getElementById('heroBadge').textContent = t.heroBadge;
       document.getElementById('heroTitle').textContent = t.heroTitle;
@@ -1876,6 +3137,7 @@
       document.getElementById('pinCheckBtn').textContent = t.pinCheckBtn;
 
       document.getElementById('catAll').textContent = t.catAll;
+      if (document.getElementById('catHadp')) document.getElementById('catHadp').textContent = t.catHadp;
       document.getElementById('catMerino').textContent = t.catMerino;
       document.getElementById('catBakarwali').textContent = t.catBakarwali;
       document.getElementById('catQurbani').textContent = t.catQurbani;
@@ -1911,8 +3173,23 @@
       document.getElementById('trackTitle').textContent = t.trackTitle;
       document.getElementById('trackSub').textContent = t.trackSub;
 
+      if (document.getElementById('hadpModalTitle')) document.getElementById('hadpModalTitle').textContent = t.hadpModalTitle;
+      if (document.getElementById('hadpModalSub')) document.getElementById('hadpModalSub').textContent = t.hadpModalSub;
+      if (document.getElementById('lblTabHadpSubsidies')) document.getElementById('lblTabHadpSubsidies').textContent = t.lblTabHadpSubsidies;
+      if (document.getElementById('lblTabHadpCalc')) document.getElementById('lblTabHadpCalc').textContent = t.lblTabHadpCalc;
+      if (document.getElementById('lblTabHadpApply')) document.getElementById('lblTabHadpApply').textContent = t.lblTabHadpApply;
+      if (document.getElementById('lblTabHadpDaksh')) document.getElementById('lblTabHadpDaksh').textContent = t.lblTabHadpDaksh;
+
+      if (document.getElementById('passportTitle')) document.getElementById('passportTitle').textContent = t.passportTitle;
+      if (document.getElementById('migrationTitle')) document.getElementById('migrationTitle').textContent = t.migrationTitle;
+      if (document.getElementById('migrationSub')) document.getElementById('migrationSub').textContent = t.migrationSub;
+      if (document.getElementById('nutritionTitle')) document.getElementById('nutritionTitle').textContent = t.nutritionTitle;
+      if (document.getElementById('nutritionSub')) document.getElementById('nutritionSub').textContent = t.nutritionSub;
+
       document.getElementById('botLive').textContent = t.botLive;
       document.getElementById('botStore').textContent = t.botStore;
+      if (document.getElementById('botHadp')) document.getElementById('botHadp').textContent = t.botHadp;
+      if (document.getElementById('botPassport')) document.getElementById('botPassport').textContent = t.botPassport;
       document.getElementById('botCart').textContent = t.botCart;
       document.getElementById('botLang').textContent = t.botLang;
 
