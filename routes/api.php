@@ -44,9 +44,9 @@ Route::prefix('v1')->group(function () {
 
     // 6. System Health Check
     Route::get('health', HealthCheckController::class);
-    Route::get('health', HealthCheckController::class);
 
-Route::post('auth/otp/send', [V1AuthController::class, 'sendOtp']);
+    // 7. OTP Authentication
+    Route::post('auth/otp/send', [V1AuthController::class, 'sendOtp']);
     Route::post('auth/otp/verify', [V1AuthController::class, 'verifyOtp']);
     Route::post('auth/register', [V1AuthController::class, 'register']);
     Route::post('auth/login', [V1AuthController::class, 'login']);

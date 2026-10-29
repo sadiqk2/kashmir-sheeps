@@ -1409,11 +1409,11 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="text-[10px] font-black bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full uppercase">HADP Project 27</span>
-            <span class="text-[10px] text-slate-400 font-bold">Wool Modernization Mission</span>
+            <span class="text-[10px] font-black bg-amber-500 text-slate-950 px-2 py-0.5 rounded-full uppercase">Kashmir Standard</span>
+            <span class="text-[10px] text-slate-400 font-bold">Wool Quality Grading</span>
           </div>
           <h3 class="text-base sm:text-lg font-black" id="woolLabModalTitle">Wool Micron & Clean Fleece Yield Lab Analyzer</h3>
-          <p class="text-xs text-slate-500" id="woolLabModalSub">Fiber diameter (microns), staple length, CFY%, and MSP + bonus price calculation.</p>
+          <p class="text-xs text-slate-500" id="woolLabModalSub">Fiber diameter (microns), staple length, CFY%, and fair market price calculation.</p>
         </div>
       </div>
 
@@ -1449,7 +1449,7 @@
         </div>
 
         <button onclick="runWoolAnalysis()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl transition shadow">
-          Run HADP Laboratory Analysis & Calculate Payout
+          Run Laboratory Quality Analysis & Calculate Payout
         </button>
 
         <div id="woolOutputBox" class="hidden p-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-2xl space-y-3">
@@ -1470,7 +1470,7 @@
         </div>
         <div>
           <h3 class="text-base sm:text-lg font-black">Automated System Diagnostics & Test Suite</h3>
-          <p class="text-xs text-slate-500">Live verification of Laravel backend APIs, SQLite models, cart math, and HADP logic.</p>
+          <p class="text-xs text-slate-500">Live verification of Laravel backend APIs, SQLite models, cart math, and marketplace logic.</p>
         </div>
       </div>
 
@@ -1628,38 +1628,42 @@
         chkLblPayment: "Payment Method",
         trackTitle: "Track Kashmir Order",
         trackSub: "Live status of livestock pickup or product shipping.",
+        lblMobAll: "All",
+        lblMobLive: "Live Mandi",
+        lblMobSell: "Sell",
+        lblMobStore: "Store",
+        lblMobAccount: "Account",
         botLive: "Live Sheep",
         botStore: "Store",
-        botHadp: "HADP",
         botPassport: "Passport",
         botCart: "Cart",
         botLang: "اردو (Urdu)",
-                                                        passportTitle: "Digital Livestock Health Passport",
+        passportTitle: "Digital Livestock Health Passport",
         migrationTitle: "Alpine Pasture (*Bahak*) Migration Tracker",
         migrationSub: "Live pastoral transit corridors, mobile vet vans (1962), dipping vats & transit camps.",
         nutritionTitle: "SKUAST-K Scientific Winter Feeding Planner",
         nutritionSub: "Chillai Kalan stall feeding balance: Silage, UMMB blocks, dry hay & concentrate ration."
       },
       ur: {
-        topBarTagline: "🏛️ ہادپ پروجیکٹ 24 و 27: تجارتی شیپ فارمز اور کترائی مشینوں پر 50٪ سبسڈی فعال • اسکواسٹ تصدیق شدہ",
-                topPassportBadge: "ایناف پاسپورٹ",
+        topBarTagline: "🐑 فارم گیٹ ریٹس پر بھیڑ، خالص میرینو اون اور باغات کی کھاد • مقامی چرواہوں سے براہ راست رابطہ",
+        topPassportBadge: "ایناف پاسپورٹ",
         topVetHelpline: "ہنگامی ویٹ: 1962",
         lblTrackOrder: "آرڈر ٹریک کریں",
         topBarDelivery: "1,499 روپے سے زیادہ خریداری پر مفت ہوم ڈیلیوری",
         topHelpline: "ہیلپ لائن: +91-94190-SHEEP",
         navTitle: "کشمیر شیپس",
-        navMarketBadge: "لائیو اسٹاک و ہادپ مرکز",
+        navMarketBadge: "براہ راست فارم منڈی",
         navLogoSub: "زندہ بھیڑیں • خالص اون • سیب باغات کی کھاد",
         langSwitch: "English",
-        navHadpBtn: "ہادپ اسکیمیں",
+        navHadpBtn: "خدمات",
         navEstimatorBtn: "ریٹس",
         navPostBtn: "اشتہار لگائیں",
         navCartLabel: "ٹوکری",
         lblPillAll: "تمام اشیاء",
         lblPillLive: "زندہ بھیڑ منڈی",
         lblPillStore: "فارم اشیاء و اون",
-                hadpBannerTitle: "🛡️ تصدیق شدہ چرواہا تکنیکی خدمات و جانوروں کی دیکھ بھال",
-        hadpBannerDesc: "تجارتی بھیڑ فارمز اور مشین کترائی پر 50٪ ڈی بی ٹی سبسڈی • 12 ہندسوں کا ایناف ہیلتھ پاسپورٹ • ہائی لینڈ چراگاہ ٹریکر • اسکواسٹ مصدقہ سردیوں کی خوراک۔",
+        hadpBannerTitle: "🛡️ تصدیق شدہ چرواہا تکنیکی خدمات و جانوروں کی دیکھ بھال",
+        hadpBannerDesc: "12 ہندسوں کا ایناف ہیلتھ پاسپورٹ • الپائن بہک نقل مکانی ٹریکنگ • سردیوں کی سائنسی خوراک • 1962 ایمرجنسی ویٹ تشخیص۔",
         btnHubEstimator: "ریٹ کیلکولیٹر", btnHubEstimatorSub: "منڈی و باغات",
         btnHubPassport: "ہیلتھ پاسپورٹ",
         btnHubPassportSub: "ایناف ائیر ٹیگز",
@@ -1721,13 +1725,17 @@
         chkLblPayment: "طریقہ ادائیگی",
         trackTitle: "کشمیر آرڈر ٹریک کریں",
         trackSub: "جانور کی روانگی اور پراڈکٹ ڈیلیوری کی لائیو معلومات۔",
+        lblMobAll: "تمام",
+        lblMobLive: "منڈی",
+        lblMobSell: "بیچیں",
+        lblMobStore: "اسٹور",
+        lblMobAccount: "اکاؤنٹ",
         botLive: "زندہ بھیڑیں",
         botStore: "اسٹور",
-        botHadp: "ہادپ",
         botPassport: "پاسپورٹ",
         botCart: "ٹوکری",
         botLang: "English",
-                                                        passportTitle: "سرکاری ڈیجیٹل لائیو اسٹاک ہیلتھ پاسپورٹ",
+        passportTitle: "ڈیجیٹل لائیو اسٹاک ہیلتھ پاسپورٹ",
         migrationTitle: "ہائی لینڈ چراگاہ (بہک) ٹرانزٹ و ہجرت ٹریکر",
         migrationSub: "بکروال و چوپان ہجرتی راستے، موبائل ویٹرنری ایمبولینس (1962)، اینٹی اسکاب ٹینک اور کیمپس۔",
         nutritionTitle: "اسکواسٹ کشمیر سائنسی ونٹر فیڈنگ پلانر",
@@ -1843,15 +1851,15 @@
     // Navigation & Views
     function setViewMode(mode) {
       viewMode = mode;
-      const gridBtn = document.getElementById('btnViewGrid');
-      const listBtn = document.getElementById('btnViewList');
+      const gridBtn = document.getElementById('viewBtnGrid') || document.getElementById('btnViewGrid');
+      const listBtn = document.getElementById('viewBtnList') || document.getElementById('btnViewList');
       if (gridBtn && listBtn) {
         if (mode === 'grid') {
-          gridBtn.className = 'p-1.5 rounded-lg bg-emerald-600 text-white shadow-sm';
-          listBtn.className = 'p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500';
+          gridBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 text-emerald-600 shadow-sm transition';
+          listBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-500 hover:text-emerald-600 transition';
         } else {
-          listBtn.className = 'p-1.5 rounded-lg bg-emerald-600 text-white shadow-sm';
-          gridBtn.className = 'p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500';
+          listBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 text-emerald-600 shadow-sm transition';
+          gridBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-500 hover:text-emerald-600 transition';
         }
       }
       renderGrid();
@@ -2092,15 +2100,17 @@
     }
 
     function updateCartDrawer() {
-      const itemsContainer = document.getElementById('cartItems');
+      const itemsContainer = document.getElementById('cartItemsList') || document.getElementById('cartItems');
       const subtotalElem = document.getElementById('cartSubtotal');
       const totalElem = document.getElementById('cartTotal');
+      const shippingElem = document.getElementById('cartShipping');
       if (!itemsContainer) return;
 
       if (cart.length === 0) {
         itemsContainer.innerHTML = '<div class="text-center py-12 text-slate-400 text-xs">Your farm basket is empty. Browse live rams, pure wool & orchard manure!</div>';
         if (subtotalElem) subtotalElem.textContent = '₹0';
         if (totalElem) totalElem.textContent = '₹0';
+        if (shippingElem) shippingElem.textContent = 'FREE';
         return;
       }
 
@@ -2130,6 +2140,7 @@
 
       if (subtotalElem) subtotalElem.textContent = '₹' + subtotal.toLocaleString('en-IN');
       if (totalElem) totalElem.textContent = '₹' + total.toLocaleString('en-IN');
+      if (shippingElem) shippingElem.textContent = (shipping === 0) ? 'FREE' : '₹' + shipping;
     }
 
     function openCartDrawer() {
@@ -3021,12 +3032,12 @@
             </div>
             <div class="grid grid-cols-2 gap-2 text-[11px]">
               <div>Clean Wool Realization: <strong>${res.clean_wool_kg} Kg</strong></div>
-              <div>Base HADP MSP Rate: <strong>₹${d.msp_rate_per_kg} / Kg</strong></div>
+              <div>Base Fair Mandi Rate: <strong>₹${d.msp_rate_per_kg} / Kg</strong></div>
               <div>Clean Yield Incentive: <strong class="text-emerald-600">+₹${d.clean_yield_bonus} / Kg</strong></div>
               <div>Total Estimated Payout: <strong class="text-emerald-700 text-sm">₹${d.total_payout.toLocaleString('en-IN')}</strong></div>
             </div>
             <p class="text-[10px] text-slate-500 border-t border-amber-200 dark:border-amber-800 pt-1">
-              Certified under HADP Project 27: Technological Interventions in Wool Processing.
+              Graded according to Kashmir Pashmina & Merino Wool Technical Standards (SKUAST-K).
             </p>
           </div>
         `;
@@ -3263,7 +3274,7 @@
       // Test 6: Wool Lab Micron Grading Logic
       const superFine = 18.5 < 19.5;
       const carpet = 32.0 > 26.0;
-      tests.push({ name: 'HADP Project 27 Wool Micron Grading Classification', passed: superFine && carpet });
+      tests.push({ name: 'Kashmir Merino Wool Micron Grading Classification', passed: superFine && carpet });
 
       // Test 7: Bilingual Translation Keys Parity
       const enKeys = Object.keys(translations.en);
@@ -3293,7 +3304,6 @@
 
       const textMap = {
         topBarTagline: t.topBarTagline,
-        topHADPBadge: t.topHADPBadge,
         topPassportBadge: t.topPassportBadge,
         topVetHelpline: t.topVetHelpline,
         topWoolLabBadge: t.topWoolLabBadge,
@@ -3302,7 +3312,6 @@
         navMarketBadge: t.navMarketBadge,
         navLogoSub: t.navLogoSub,
         langSwitchLabel: t.langSwitch,
-        navHadpBtn: t.navHadpBtn,
         navEstimatorBtn: t.navEstimatorBtn,
         navPostBtn: t.navPostBtn,
         navOrdersLabel: t.navOrdersLabel,
@@ -3310,7 +3319,6 @@
         lblPillAll: t.lblPillAll,
         lblPillLive: t.lblPillLive,
         lblPillStore: t.lblPillStore,
-        lblPillHadp: t.lblPillHadp,
         hadpBannerTitle: t.hadpBannerTitle,
         hadpBannerDesc: t.hadpBannerDesc,
         btnHubEstimator: t.btnHubEstimator,
@@ -3362,12 +3370,6 @@
         sellModalSub: t.sellModalSub,
         calcModalTitle: t.calcModalTitle,
         calcModalSub: t.calcModalSub,
-        hadpModalTitle: t.hadpModalTitle,
-        hadpModalSub: t.hadpModalSub,
-                lblTabHadpCalc: t.lblTabHadpCalc,
-        lblTabHadpApply: t.lblTabHadpApply,
-        lblTabHadpDaksh: t.lblTabHadpDaksh,
-        lblTabHadpLedger: t.lblTabHadpLedger,
         passportTitle: t.passportTitle,
         migrationTitle: t.migrationTitle,
         migrationSub: t.migrationSub,
@@ -3379,13 +3381,11 @@
         clinicalModalSub: t.clinicalModalSub,
         woolLabModalTitle: t.woolLabModalTitle,
         woolLabModalSub: t.woolLabModalSub,
-        botLive: t.botLive,
-        botStore: t.botStore,
-        botHadp: t.botHadp,
-        botPassport: t.botPassport,
-        botOrders: t.botOrders,
-        botCart: t.botCart,
-        botLang: t.botLang
+        lblMobAll: t.lblMobAll,
+        lblMobLive: t.lblMobLive,
+        lblMobSell: t.lblMobSell,
+        lblMobStore: t.lblMobStore,
+        lblMobAccount: t.lblMobAccount
       };
 
       Object.keys(textMap).forEach(id => {
@@ -3560,21 +3560,126 @@
     }
 
     function switchAuthTab(tab) {
+      const paneOtp = document.getElementById('paneOtp');
       const paneReg = document.getElementById('paneRegister');
       const paneLog = document.getElementById('paneLogin');
+      const btnOtp = document.getElementById('tabBtnOtp');
       const btnReg = document.getElementById('tabBtnRegister');
       const btnLog = document.getElementById('tabBtnLogin');
 
-      if (tab === 'register') {
-        paneReg.classList.remove('hidden');
-        paneLog.classList.add('hidden');
-        btnReg.className = "flex-1 py-2 text-xs font-black rounded-xl transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm";
-        btnLog.className = "flex-1 py-2 text-xs font-bold rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-emerald-600";
+      const activeClass = "flex-1 py-2 text-xs font-black rounded-xl transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm";
+      const inactiveClass = "flex-1 py-2 text-xs font-bold rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-emerald-600";
+
+      if (paneOtp) paneOtp.classList.toggle('hidden', tab !== 'otp');
+      if (paneReg) paneReg.classList.toggle('hidden', tab !== 'register');
+      if (paneLog) paneLog.classList.toggle('hidden', tab !== 'login');
+
+      if (btnOtp) btnOtp.className = (tab === 'otp') ? activeClass : inactiveClass;
+      if (btnReg) btnReg.className = (tab === 'register') ? activeClass : inactiveClass;
+      if (btnLog) btnLog.className = (tab === 'login') ? activeClass : inactiveClass;
+    }
+
+    let otpCountdownTimer = null;
+
+    function resetOtpStep() {
+      const stepPhone = document.getElementById('otpStepPhone');
+      const stepVerify = document.getElementById('otpStepVerify');
+      if (stepPhone) stepPhone.classList.remove('hidden');
+      if (stepVerify) stepVerify.classList.add('hidden');
+      const codeInput = document.getElementById('otpCodeInput');
+      if (codeInput) codeInput.value = '';
+    }
+
+    function fillQuickOtpPhone(phone, name) {
+      switchAuthTab('otp');
+      const input = document.getElementById('otpPhoneInput');
+      const nameInput = document.getElementById('otpNameInput');
+      if (input) input.value = phone;
+      if (nameInput && name) nameInput.value = name;
+      resetOtpStep();
+      showToast(`📱 Test phone ${phone} set. Click "Send OTP" to test.`, 'info');
+    }
+
+    async function handleSendOtp() {
+      const phone = document.getElementById('otpPhoneInput')?.value.trim();
+      if (!phone || phone.replace(/\D/g, '').length < 10) {
+        showToast('⚠️ Please enter a valid 10-digit mobile number.', 'warning');
+        return;
+      }
+      const btn = document.getElementById('btnSendOtp');
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Sending SMS / WhatsApp OTP...'; }
+
+      const res = await apiFetch('auth/otp/send', 'POST', { phone });
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+
+      if (res && (res.status === 'success' || res.success)) {
+        const stepPhone = document.getElementById('otpStepPhone');
+        const stepVerify = document.getElementById('otpStepVerify');
+        const targetDisplay = document.getElementById('otpTargetDisplay');
+        const timerDisplay = document.getElementById('otpTimerDisplay');
+        const codeInput = document.getElementById('otpCodeInput');
+
+        if (stepPhone) stepPhone.classList.add('hidden');
+        if (stepVerify) stepVerify.classList.remove('hidden');
+        if (targetDisplay) targetDisplay.textContent = res.phone || phone;
+        if (res.dev_otp && codeInput) codeInput.value = res.dev_otp;
+        showToast(`📩 OTP Code sent to ${res.phone || phone} (Test OTP: ${res.dev_otp || '786000'})`, 'success');
+
+        let remaining = 300;
+        if (otpCountdownTimer) clearInterval(otpCountdownTimer);
+        otpCountdownTimer = setInterval(() => {
+          remaining--;
+          if (remaining <= 0) {
+            clearInterval(otpCountdownTimer);
+            if (timerDisplay) timerDisplay.textContent = 'OTP Expired. Please request a new code.';
+          } else {
+            const mins = String(Math.floor(remaining / 60)).padStart(2, '0');
+            const secs = String(remaining % 60).padStart(2, '0');
+            if (timerDisplay) timerDisplay.textContent = `Valid for ${mins}:${secs} minutes • Dev OTP: ${res.dev_otp || '786000'}`;
+          }
+        }, 1000);
       } else {
-        paneReg.classList.add('hidden');
-        paneLog.classList.remove('hidden');
-        btnLog.className = "flex-1 py-2 text-xs font-black rounded-xl transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm";
-        btnReg.className = "flex-1 py-2 text-xs font-bold rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-emerald-600";
+        const msg = res?.message || 'Failed to send OTP. Please check mobile number.';
+        showToast('❌ ' + msg, 'error');
+      }
+    }
+
+    async function handleVerifyOtp() {
+      const phone = document.getElementById('otpPhoneInput')?.value.trim();
+      const otp = document.getElementById('otpCodeInput')?.value.trim();
+      const name = document.getElementById('otpNameInput')?.value.trim();
+      const district = document.getElementById('otpDistrictInput')?.value;
+
+      if (!otp || otp.length < 4) {
+        showToast('⚠️ Please enter the 6-digit verification code.', 'warning');
+        return;
+      }
+
+      const btn = document.getElementById('btnVerifyOtp');
+      const origText = btn ? btn.innerHTML : '';
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Verifying Code...'; }
+
+      const payload = { phone, otp };
+      if (name) payload.name = name;
+      if (district) payload.district = district;
+
+      const res = await apiFetch('auth/otp/verify', 'POST', payload);
+      if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+
+      if (res && (res.status === 'success' || res.success)) {
+        if (otpCountdownTimer) clearInterval(otpCountdownTimer);
+        currentUser = res.data.user;
+        authToken = res.data.token;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        localStorage.setItem('authToken', authToken);
+
+        showToast(`🎉 Welcome ${currentUser.name}! Phone verified.`, 'success');
+        updateUserNavBadge();
+        renderProfileView();
+      } else {
+        const msg = res?.message || 'Invalid or expired OTP code.';
+        showToast('❌ ' + msg, 'error');
       }
     }
 
@@ -3718,16 +3823,25 @@
       const userLabel = document.getElementById('navUserLabel');
       const userBadge = document.getElementById('navUserBadge');
       const userIcon = document.getElementById('navUserIcon');
+      const mobDot = document.getElementById('mobUserDot');
+      const mobAccountLbl = document.getElementById('lblMobAccount');
 
       if (currentUser) {
-        userLabel.textContent = currentUser.name.split(' ')[0];
-        userBadge.classList.remove('hidden');
-        userBadge.textContent = currentUser.role.toUpperCase();
-        userIcon.textContent = currentUser.role === 'seller' ? '🐑' : (currentUser.role === 'farmer' ? '🏛️' : (currentUser.role === 'veterinarian' ? '🩺' : '👤'));
+        const firstName = currentUser.name.split(' ')[0];
+        if (userLabel) userLabel.textContent = firstName;
+        if (userBadge) {
+          userBadge.classList.remove('hidden');
+          userBadge.textContent = currentUser.role.toUpperCase();
+        }
+        if (userIcon) userIcon.textContent = currentUser.role === 'seller' ? '🐑' : (currentUser.role === 'farmer' ? '🏛️' : (currentUser.role === 'veterinarian' ? '🩺' : '👤'));
+        if (mobDot) mobDot.classList.remove('hidden');
+        if (mobAccountLbl) mobAccountLbl.textContent = firstName;
       } else {
-        userLabel.textContent = "Sign In / Register";
-        userBadge.classList.add('hidden');
-        userIcon.textContent = "👤";
+        if (userLabel) userLabel.textContent = "Sign In / Register";
+        if (userBadge) userBadge.classList.add('hidden');
+        if (userIcon) userIcon.textContent = "👤";
+        if (mobDot) mobDot.classList.add('hidden');
+        if (mobAccountLbl) mobAccountLbl.textContent = (currentLang === 'en') ? 'Account' : 'اکاؤنٹ';
       }
     }
 
@@ -4009,7 +4123,7 @@
                 ✓ Verified
               </span>
             </div>
-            <p class="text-xs text-slate-500" id="profileRoleDisplay">HADP Certified Pastoralist & Sheep Farmer</p>
+            <p class="text-xs text-slate-500" id="profileRoleDisplay">Verified Kashmir Merino Breeder & Pastoralist</p>
           </div>
         </div>
 
