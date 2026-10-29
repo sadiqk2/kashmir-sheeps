@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="theme-color" content="#022c22">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Kashmir Sheeps">
+  <meta name="format-detection" content="telephone=no">
   <title>Kashmir Online Sheeps - Livestock & Farm Marketplace</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,6 +42,35 @@
       animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
   
+    /* Mobile & Tablet Optimizations */
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+    .touch-scroll-x {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+    .touch-scroll-x::-webkit-scrollbar {
+      display: none;
+    }
+    .mobile-nav-btn.active {
+      color: #059669 !important;
+    }
+    .mobile-nav-btn.active .mob-icon {
+      transform: translateY(-2px) scale(1.12);
+      transition: transform 0.2s ease;
+    }
+    .safe-bottom-padding {
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+    }
+
     @media print {
       body * {
         visibility: hidden;
@@ -60,175 +94,174 @@
     }
   </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen pb-24 transition-all duration-300">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen pb-24 md:pb-12 safe-bottom-padding transition-all duration-300">
 
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4 sm:px-0"></div>
 
-  <!-- TOP ANNOUNCEMENT BAR -->
-  <header class="bg-emerald-950 text-emerald-100 text-xs py-2 px-4 border-b border-emerald-900/60 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-2">
-      <div class="flex items-center gap-2">
+  <!-- TOP ANNOUNCEMENT BAR (Non-sticky for full mobile/tablet screen real estate) -->
+  <header class="bg-emerald-950 text-emerald-100 text-[11px] sm:text-xs py-1.5 px-3 sm:px-4 border-b border-emerald-900/60">
+    <div class="max-w-7xl mx-auto flex justify-between items-center gap-2 overflow-x-auto scrollbar-none py-0.5">
+      <div class="flex items-center gap-2 shrink-0">
         <span class="inline-flex items-center justify-center bg-amber-400 text-slate-950 w-2 h-2 rounded-full animate-ping"></span>
-        <span id="topBarTagline" class="font-medium">🐑 Direct Farm-Gate Livestock, Pure Merino Wool & Orchard Manure • Connect Directly with Shepherds across J&K</span>
+        <span id="topBarTagline" class="font-medium whitespace-nowrap sm:whitespace-normal">🐑 Direct Farm-Gate Sheep, Pure Wool & Orchard Manure • Connect Directly with Shepherds</span>
       </div>
-      <div class="flex items-center gap-3 text-[11px]">
+      <div class="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] shrink-0">
         <a href="/marketing-short" class="bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/40 font-bold flex items-center gap-1 transition shadow-sm" title="Watch 9:16 Video Short">
-          🎬 <span>Video Short</span>
+          🎬 <span>Short</span>
         </a>
         <button onclick="openPassportModal()" class="hover:underline flex items-center gap-1 text-emerald-300">
           <span>📋</span> <span id="topPassportBadge">INAPH Passport</span>
         </button>
         <button onclick="openTrackModal()" class="hover:underline flex items-center gap-1 text-emerald-200">
-          <span>📦</span> <span id="lblTrackOrder">Track Order</span>
+          <span>📦</span> <span id="lblTrackOrder">Track</span>
         </button>
-        <button onclick="openClinicalModal()" class="bg-red-900/80 hover:bg-red-800 text-rose-200 px-2.5 py-0.5 rounded-full border border-red-700 font-bold flex items-center gap-1 cursor-pointer transition shadow-sm" title="SKUAST-K Emergency Diagnostic & 1962 Ambulance">
-          🚑 <span id="topVetHelpline">Emergency Vet: 1962</span>
+        <button onclick="openClinicalModal()" class="bg-red-900/80 hover:bg-red-800 text-rose-200 px-2 py-0.5 rounded-full border border-red-700 font-bold flex items-center gap-1 cursor-pointer transition shadow-sm" title="SKUAST-K Emergency Diagnostic & 1962 Ambulance">
+          🚑 <span id="topVetHelpline">Vet: 1962</span>
         </button>
         <button onclick="openWoolLabModal()" class="hidden md:inline-flex items-center gap-1 text-amber-300 font-bold hover:underline cursor-pointer">
-          🔬 <span id="topWoolLabBadge">Wool Testing Lab</span>
+          🔬 <span id="topWoolLabBadge">Wool Lab</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- MAIN NAVIGATION BAR -->
-  <nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm px-4 py-3 sticky top-8 z-40">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+  <!-- MAIN NAVIGATION BAR (Sticky at top-0 for smooth mobile/tablet scrolling) -->
+  <nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm px-3 sm:px-4 py-2 sm:py-2.5 sticky top-0 z-40 transition-all">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
       
       <!-- Brand Logo -->
-      <div class="flex items-center gap-3 cursor-pointer" onclick="showSection('all')">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-black text-2xl shadow-lg shadow-emerald-600/30 transform hover:scale-105 transition">
+      <div class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0" onclick="showSection('all')">
+        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-black text-xl sm:text-2xl shadow-lg shadow-emerald-600/30 transform hover:scale-105 transition">
           🐑
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-base sm:text-lg font-black tracking-tight" id="navLogoTitle">Kashmir Sheeps</h1>
-            <span class="text-[10px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full" id="navMarketBadge">
-              Livestock & Wool Hub
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <h1 class="text-sm sm:text-base md:text-lg font-black tracking-tight" id="navLogoTitle">Kashmir Sheeps</h1>
+            <span class="hidden xs:inline-block text-[9px] sm:text-[10px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-1.5 sm:px-2 py-0.5 rounded-full" id="navMarketBadge">
+              Direct Hub
             </span>
           </div>
-          <p class="text-[11px] text-slate-500 dark:text-slate-400" id="navLogoSub">Live Sheep • Pure Wool • Orchard Manure</p>
+          <p class="hidden sm:block text-[11px] text-slate-500 dark:text-slate-400" id="navLogoSub">Live Sheep • Pure Wool • Orchard Manure</p>
         </div>
       </div>
 
-      <!-- Center Segmented Pill Switcher (Live Mandi vs Store vs HADP) -->
-      <div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
-        <button id="navPillAll" onclick="showSection('all')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm">
+      <!-- Center Segmented Pill Switcher (Visible on Tablets & Desktops) -->
+      <div class="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
+        <button id="navPillAll" onclick="showSection('all')" class="px-3 lg:px-4 py-1.5 rounded-xl text-xs font-bold transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm">
           🌟 <span id="lblPillAll">All Catalog</span>
         </button>
-        <button id="navPillLive" onclick="showSection('live')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">
-          🐏 <span id="lblPillLive">Live Sheep Mandi</span>
+        <button id="navPillLive" onclick="showSection('live')" class="px-3 lg:px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">
+          🐏 <span id="lblPillLive">Live Mandi</span>
         </button>
-        <button id="navPillStore" onclick="showSection('store')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600 flex items-center gap-1">
-          🛍️ <span id="lblPillStore">All Farm Products</span>
+        <button id="navPillStore" onclick="showSection('store')" class="px-2.5 lg:px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600 flex items-center gap-1">
+          🛍️ <span id="lblPillStore">Farm Products</span>
         </button>
-        <button onclick="setCategory('fertilizer'); scrollToCatalog();" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-amber-700 dark:text-amber-400 hover:text-amber-600 flex items-center gap-1">
-          🌱 <span id="lblNavManure">Orchard Manure</span>
+        <button onclick="setCategory('fertilizer'); scrollToCatalog();" class="px-2.5 lg:px-3 py-1.5 rounded-xl text-xs font-bold transition text-amber-700 dark:text-amber-400 hover:text-amber-600 flex items-center gap-1">
+          🌱 <span id="lblNavManure">Manure</span>
         </button>
-        <button onclick="setCategory('wool'); scrollToCatalog();" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-purple-700 dark:text-purple-400 hover:text-purple-600 flex items-center gap-1">
-          🧶 <span id="lblNavWool">Pure Wool & Yarn</span>
+        <button onclick="setCategory('wool'); scrollToCatalog();" class="px-2.5 lg:px-3 py-1.5 rounded-xl text-xs font-bold transition text-purple-700 dark:text-purple-400 hover:text-purple-600 flex items-center gap-1">
+          🧶 <span id="lblNavWool">Wool</span>
         </button>
-        </div>
+      </div>
 
       <!-- Right Action Tools -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5 sm:gap-2">
         <!-- Language Switcher -->
-        <button onclick="toggleLanguage()" class="flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border border-emerald-600/30 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 transition shadow-sm" title="Switch Language">
+        <button onclick="toggleLanguage()" class="flex items-center gap-1 text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl border border-emerald-600/30 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 transition shadow-sm" title="Switch Language">
           <span>🌐</span>
-          <span id="langSwitchLabel">اردو (Urdu)</span>
+          <span id="langSwitchLabel">اردو</span>
         </button>
 
-        <!-- Rate Calculator Tool -->
-        <button onclick="openEstimatorModal()" class="hidden md:flex items-center gap-1.5 text-xs font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 px-3 py-2 rounded-xl transition">
+        <!-- Rate Calculator Tool (Tablet & Desktop) -->
+        <button onclick="openEstimatorModal()" class="hidden md:flex items-center gap-1 text-xs font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 px-3 py-2 rounded-xl transition">
           ⚖️ <span id="navEstimatorBtn">Rates</span>
         </button>
 
         <!-- My Orders Button -->
-        <button onclick="openOrdersModal()" class="relative flex items-center gap-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-xl transition shadow-sm" title="My Orders">
-          <span class="text-base">📦</span>
-          <span class="hidden md:inline" id="navOrdersLabel">My Orders</span>
-          <span id="ordersCountBadge" class="bg-blue-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        <button onclick="openOrdersModal()" class="relative flex items-center justify-center sm:justify-start gap-1 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 w-8 h-8 sm:w-auto sm:px-3 sm:py-2 rounded-xl transition shadow-sm" title="My Orders">
+          <span class="text-sm sm:text-base">📦</span>
+          <span class="hidden md:inline" id="navOrdersLabel">Orders</span>
+          <span id="ordersCountBadge" class="absolute -top-1 -right-1 sm:static bg-blue-600 text-white text-[9px] sm:text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </button>
 
         <!-- Wishlist Button -->
-        <button onclick="showWishlistModal()" class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-slate-200 dark:border-slate-700 transition" title="Favorites">
-          <span class="text-base text-rose-500">❤️</span>
-          <span id="wishlistCountBadge" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
+        <button onclick="showWishlistModal()" class="relative flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/30 border border-slate-200 dark:border-slate-700 transition" title="Favorites">
+          <span class="text-sm sm:text-base text-rose-500">❤️</span>
+          <span id="wishlistCountBadge" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[9px] sm:text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </button>
 
         <!-- User Account / Profile Button -->
-        <button id="navUserBtn" onclick="openAuthModal()" class="flex items-center gap-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-xl transition shadow-sm" title="Account & Registration">
-          <span class="text-base" id="navUserIcon">👤</span>
-          <span class="hidden md:inline" id="navUserLabel">Sign In / Register</span>
+        <button id="navUserBtn" onclick="openAuthModal()" class="flex items-center justify-center sm:justify-start gap-1 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 w-8 h-8 sm:w-auto sm:px-3 sm:py-2 rounded-xl transition shadow-sm" title="Account & Registration">
+          <span class="text-sm sm:text-base" id="navUserIcon">👤</span>
+          <span class="hidden md:inline" id="navUserLabel">Sign In</span>
           <span id="navUserBadge" class="hidden text-[9px] bg-emerald-600 text-white font-bold px-1.5 py-0.2 rounded-full"></span>
         </button>
 
         <!-- Cart Button -->
-        <button onclick="openCartDrawer()" class="relative flex items-center gap-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 border border-slate-200 dark:border-slate-700 px-3.5 py-2 rounded-xl transition shadow-sm">
-          <span class="text-base">🛒</span>
+        <button onclick="openCartDrawer()" class="relative flex items-center gap-1.5 text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 border border-slate-200 dark:border-slate-700 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition shadow-sm">
+          <span class="text-sm sm:text-base">🛒</span>
           <span class="hidden sm:inline" id="navCartLabel">Cart</span>
-          <span id="cartCountBadge" class="bg-emerald-600 text-white text-[11px] font-black w-5 h-5 rounded-full flex items-center justify-center">0</span>
+          <span id="cartCountBadge" class="bg-emerald-600 text-white text-[10px] sm:text-[11px] font-black w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center">0</span>
         </button>
 
-        <!-- Post Ad (Farmer) -->
-        <button onclick="openSellModal()" class="hidden sm:flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3.5 py-2 rounded-xl shadow-md shadow-emerald-600/25 transition">
+        <!-- Post Ad (Tablet & Desktop - Mobile uses bottom nav) -->
+        <button onclick="openSellModal()" class="hidden sm:flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3 sm:px-3.5 py-2 rounded-xl shadow-md shadow-emerald-600/25 transition">
           <span>➕</span>
-          <span id="navPostBtn">Sell Sheep / Manure / Wool</span>
+          <span id="navPostBtn">Sell</span>
         </button>
       </div>
     </div>
   </nav>
 
   <!-- HERO SECTION WITH INTERACTIVE DISCOVERY -->
-  <section class="max-w-7xl mx-auto px-4 pt-5 pb-2">
-    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white p-6 sm:p-10 shadow-2xl border border-emerald-800/50">
+  <section class="max-w-7xl mx-auto px-3 sm:px-4 pt-3 sm:pt-5 pb-2">
+    <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white p-4 sm:p-7 md:p-10 shadow-2xl border border-emerald-800/50">
       
       <!-- Background Ambient Glow -->
       <div class="absolute -top-24 -left-24 w-80 h-80 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-teal-400/20 rounded-full blur-3xl pointer-events-none"></div>
 
       <div class="relative z-10 max-w-3xl">
-        <div class="inline-flex items-center gap-2 bg-emerald-800/80 border border-emerald-600/50 rounded-full px-3.5 py-1 text-xs text-emerald-200 mb-3.5 backdrop-blur-sm">
+        <div class="inline-flex items-center gap-1.5 sm:gap-2 bg-emerald-800/80 border border-emerald-600/50 rounded-full px-3 py-1 text-[11px] sm:text-xs text-emerald-200 mb-2.5 sm:mb-3.5 backdrop-blur-sm">
           <span class="text-amber-400">★</span>
           <span id="heroBadge">Farm-Gate Rates • Zero Middleman • Express Delivery across J&K</span>
         </div>
 
-        <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-3 leading-tight" id="heroTitle">
+        <h2 class="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-2 sm:mb-3 leading-tight" id="heroTitle">
           Kashmir's Premier Online Livestock & Farm Products Store
         </h2>
 
-        <p class="text-xs sm:text-sm text-emerald-100/90 mb-6 leading-relaxed max-w-2xl" id="heroDesc">
-          Connect directly with local shepherds for pure Kashmir Merino rams, Bakarwali mountain sheep, Qurbani stock, certified orchard manure for high-yield apple trees, raw Merino knitting yarn, and shearing clippers.
+        <p class="text-xs sm:text-sm text-emerald-100/90 mb-4 sm:mb-6 leading-relaxed max-w-2xl" id="heroDesc">
+          Connect directly with local shepherds for pure Kashmir Merino rams, Bakarwali mountain sheep, certified orchard manure for high-yield apple trees, and raw Merino knitting yarn.
         </p>
 
-
         <!-- QUICK BUY & SELL SHORTCUTS -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4">
-          <button onclick="setCategory('fertilizer'); scrollToCatalog();" class="p-2.5 rounded-2xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-left transition backdrop-blur-sm group">
-            <span class="text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">🌱</span>
-            <span class="font-bold text-xs block text-amber-200">Buy Orchard Manure</span>
-            <span class="text-[10px] text-amber-100/70 block">Trolley loads & 50kg bags</span>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-2.5 mt-2 sm:mt-4">
+          <button onclick="setCategory('fertilizer'); scrollToCatalog();" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-left transition backdrop-blur-sm group">
+            <span class="text-lg sm:text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">🌱</span>
+            <span class="font-bold text-[11px] sm:text-xs block text-amber-200">Buy Orchard Manure</span>
+            <span class="text-[9px] sm:text-[10px] text-amber-100/70 block truncate">Trolleys & 50kg bags</span>
           </button>
-          <button onclick="setCategory('wool'); scrollToCatalog();" class="p-2.5 rounded-2xl bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/40 text-left transition backdrop-blur-sm group">
-            <span class="text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">🧶</span>
-            <span class="font-bold text-xs block text-purple-200">Buy Merino Wool & Yarn</span>
-            <span class="text-[10px] text-purple-100/70 block">Raw fleece & Pheran yarn</span>
+          <button onclick="setCategory('wool'); scrollToCatalog();" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/40 text-left transition backdrop-blur-sm group">
+            <span class="text-lg sm:text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">🧶</span>
+            <span class="font-bold text-[11px] sm:text-xs block text-purple-200">Buy Merino Wool</span>
+            <span class="text-[9px] sm:text-[10px] text-purple-100/70 block truncate">Raw fleece & yarn</span>
           </button>
-          <button onclick="openSellModal('fertilizer')" class="p-2.5 rounded-2xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 text-left transition backdrop-blur-sm group">
-            <span class="text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">➕</span>
-            <span class="font-bold text-xs block text-emerald-200">Sell Manure / Wool</span>
-            <span class="text-[10px] text-emerald-100/70 block">Free farmer direct ad</span>
+          <button onclick="openSellModal('fertilizer')" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 text-left transition backdrop-blur-sm group">
+            <span class="text-lg sm:text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">➕</span>
+            <span class="font-bold text-[11px] sm:text-xs block text-emerald-200">Sell Manure / Wool</span>
+            <span class="text-[9px] sm:text-[10px] text-emerald-100/70 block truncate">Free direct farmer ad</span>
           </button>
-          <button onclick="openEstimatorModal('manure')" class="p-2.5 rounded-2xl bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 text-left transition backdrop-blur-sm group">
-            <span class="text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">📐</span>
-            <span class="font-bold text-xs block text-blue-200">Orchard Calculator</span>
-            <span class="text-[10px] text-blue-100/70 block">Manure needed per kanal</span>
+          <button onclick="openEstimatorModal('manure')" class="p-2 sm:p-2.5 rounded-xl sm:rounded-2xl bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 text-left transition backdrop-blur-sm group">
+            <span class="text-lg sm:text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">📐</span>
+            <span class="font-bold text-[11px] sm:text-xs block text-blue-200">Orchard Calculator</span>
+            <span class="text-[9px] sm:text-[10px] text-blue-100/70 block truncate">Kanal dosage estimate</span>
           </button>
         </div>
 
-                <!-- SMART SEARCH & FILTER BOX -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl p-2.5 shadow-2xl border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 flex flex-col md:flex-row gap-2">
+        <!-- SMART SEARCH & FILTER BOX -->
+        <div class="mt-4 bg-white dark:bg-slate-900 rounded-2xl p-2 sm:p-2.5 shadow-2xl border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 flex flex-col md:flex-row gap-2">
           
           <!-- Text Input -->
           <div class="flex-1 flex items-center px-3 py-1.5 gap-2.5">
@@ -244,24 +277,24 @@
             </select>
           </div>
 
-          <button onclick="filterCatalog()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-7 py-3 rounded-xl transition shadow-md shadow-emerald-700/30" id="heroSearchBtn">
+          <button onclick="filterCatalog()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-6 py-2.5 sm:py-3 rounded-xl transition shadow-md shadow-emerald-700/30 w-full md:w-auto text-center" id="heroSearchBtn">
             Search
           </button>
         </div>
 
         <!-- Highlights Strip -->
-        <div class="flex items-center gap-6 mt-6 pt-5 border-t border-emerald-800/60 text-xs flex-wrap">
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2.5 sm:gap-6 mt-4 sm:mt-6 pt-4 sm:pt-5 border-t border-emerald-800/60 text-xs">
           <div class="flex items-center gap-1.5 text-emerald-200">
-            <span>🛡️</span> <span id="h1">Veterinary Health Verified</span>
+            <span>🛡️</span> <span id="h1" class="truncate">Veterinary Health Verified</span>
           </div>
           <div class="flex items-center gap-1.5 text-emerald-200">
-            <span>📦</span> <span id="h2">Cash on Delivery & Instant UPI</span>
+            <span>📦</span> <span id="h2" class="truncate">Cash on Delivery & Instant UPI</span>
           </div>
           <div class="flex items-center gap-1.5 text-emerald-200">
-            <span>🚜</span> <span id="h3">Tractor Loads for Apple Orchards</span>
+            <span>🚜</span> <span id="h3" class="truncate">Tractor Loads for Apple Orchards</span>
           </div>
           <div class="flex items-center gap-1.5 text-emerald-200">
-            <span>💬</span> <span id="h4">Direct WhatsApp with Shepherds</span>
+            <span>💬</span> <span id="h4" class="truncate">Direct WhatsApp with Shepherds</span>
           </div>
         </div>
       </div>
@@ -273,65 +306,67 @@
     </div>
   </section>
 
-  <!-- HADP J&K GOVERNMENT SCHEMES & SCIENTIFIC COMMAND CENTER -->
-  <section class="max-w-7xl mx-auto px-4 py-2">
-    <div class="bg-gradient-to-r from-amber-950/85 via-emerald-950/90 to-slate-900 border border-amber-500/40 rounded-3xl p-4 sm:p-5 text-white shadow-xl relative overflow-hidden">
+  <!-- VERIFIED SHEPHERD TECHNICAL CARE & TESTING HUB (Mobile/Tab/Desktop Responsive) -->
+  <section class="max-w-7xl mx-auto px-3 sm:px-4 py-2">
+    <div class="bg-gradient-to-r from-emerald-950/90 via-slate-900 to-teal-950/90 border border-emerald-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 text-white shadow-xl relative overflow-hidden">
       <!-- Glow decoration -->
-      <div class="absolute -right-16 -top-16 w-56 h-56 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -right-16 -top-16 w-56 h-56 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 relative z-10">
         <!-- Title & Badges -->
         <div class="max-w-xl">
           <div class="flex items-center gap-2 flex-wrap mb-1.5">
-            <span class="bg-amber-400 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow">
-              Govt of J&K Flagship
+            <span class="bg-emerald-500 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow">
+              Verified Shepherd Care
             </span>
-            <span class="bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 font-bold text-[10px] px-2.5 py-0.5 rounded-full">
-              HADP Project 24 & 27 • SKUAST-K Verified
+            <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold text-[10px] px-2.5 py-0.5 rounded-full">
+              INAPH RFID • SKUAST-K Diagnostic Standards
             </span>
           </div>
-          <h3 class="text-base sm:text-lg font-black tracking-tight flex items-center gap-2" id="hadpBannerTitle">
-            🏛️ Holistic Agriculture Development Program (HADP) & Livestock Scientific Hub
+          <h3 class="text-sm sm:text-base md:text-lg font-black tracking-tight flex items-center gap-2" id="hadpBannerTitle">
+            🛡️ Verified Shepherd Technical Services & Animal Care Hub
           </h3>
-          <p class="text-xs text-amber-100/80 mt-1 leading-relaxed" id="hadpBannerDesc">
-            50% DBT Capital Subsidy on Commercial Sheep Farms & Mechanical Shearing • 12-Digit INAPH Ear Tag Passports • Alpine Bahak Migration Tracking • SKUAST-K Certified Winter Nutrition.
+          <p class="text-xs text-emerald-100/80 mt-1 leading-relaxed" id="hadpBannerDesc">
+            12-Digit INAPH Ear Tag Health Passports • Alpine Bahak Migration Tracking • SKUAST-K Certified Winter Silage • 1962 Emergency Vet Diagnostics.
           </p>
         </div>
 
-        <!-- 4 Fast Action Buttons -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-          <button onclick="openHadpModal('subsidies')" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-center transition group cursor-pointer shadow-sm">
-            <span class="text-xl mb-1 group-hover:scale-110 transition">💰</span>
-            <span class="text-xs font-black text-amber-300" id="btnHubSubsidy">50% Subsidy</span>
-            <span class="text-[10px] text-amber-200/70" id="btnHubSubsidySub">Project 24 & 27</span>
-          </button>
-
-          <button onclick="openPassportModal()" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-center transition group cursor-pointer shadow-sm">
-            <span class="text-xl mb-1 group-hover:scale-110 transition">📋</span>
+        <!-- 6 Fast Technical Action Buttons (2-col on Mobile, 3-col on Tab, 6-col on Desktop) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-2.5 w-full lg:w-auto">
+          <button onclick="openPassportModal()" class="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-lg sm:text-xl mb-1 group-hover:scale-110 transition">📋</span>
             <span class="text-xs font-black text-emerald-300" id="btnHubPassport">Health Passport</span>
             <span class="text-[10px] text-emerald-200/70" id="btnHubPassportSub">INAPH Ear Tags</span>
           </button>
 
-          <button onclick="openMigrationModal()" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-teal-500/15 hover:bg-teal-500/25 border border-teal-500/40 text-center transition group cursor-pointer shadow-sm">
-            <span class="text-xl mb-1 group-hover:scale-110 transition">🏔️</span>
+          <button onclick="openMigrationModal()" class="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-teal-500/15 hover:bg-teal-500/25 border border-teal-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-lg sm:text-xl mb-1 group-hover:scale-110 transition">🏔️</span>
             <span class="text-xs font-black text-teal-300" id="btnHubMigration">Bahak Migration</span>
             <span class="text-[10px] text-teal-200/70" id="btnHubMigrationSub">Pasture Corridors</span>
           </button>
 
-          <button onclick="openNutritionModal()" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/40 text-center transition group cursor-pointer shadow-sm">
-            <span class="text-xl mb-1 group-hover:scale-110 transition">❄️</span>
+          <button onclick="openNutritionModal()" class="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-lg sm:text-xl mb-1 group-hover:scale-110 transition">❄️</span>
             <span class="text-xs font-black text-sky-300" id="btnHubNutrition">Winter Feed</span>
-            <span class="text-[10px] text-sky-200/70" id="btnHubNutritionSub">SKUAST-K Silage</span>
+            <span class="text-[10px] text-sky-200/70" id="btnHubNutritionSub">SKUAST Silage</span>
           </button>
-          <button onclick="openClinicalModal()" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/40 text-center transition group cursor-pointer shadow-sm">
-            <span class="text-xl mb-1 group-hover:scale-110 transition">🩺</span>
+
+          <button onclick="openClinicalModal()" class="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-lg sm:text-xl mb-1 group-hover:scale-110 transition">🩺</span>
             <span class="text-xs font-black text-rose-300" id="btnHubClinical">Clinical Vet</span>
-            <span class="text-[10px] text-rose-200/70" id="btnHubClinicalSub">SKUAST-K & 1962</span>
+            <span class="text-[10px] text-rose-200/70" id="btnHubClinicalSub">1962 Helpline</span>
           </button>
-          <button onclick="openWoolLabModal()" class="flex flex-col items-center justify-center p-3 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-center transition group cursor-pointer shadow-sm">
-            <span class="text-xl mb-1 group-hover:scale-110 transition">🔬</span>
+
+          <button onclick="openWoolLabModal()" class="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-lg sm:text-xl mb-1 group-hover:scale-110 transition">🔬</span>
             <span class="text-xs font-black text-amber-300" id="btnHubWoolLab">Wool Lab</span>
-            <span class="text-[10px] text-amber-200/70" id="btnHubWoolLabSub">HADP Project 27</span>
+            <span class="text-[10px] text-amber-200/70" id="btnHubWoolLabSub">Micron & Yield</span>
+          </button>
+
+          <button onclick="openEstimatorModal('sheep')" class="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/40 text-center transition group cursor-pointer shadow-sm">
+            <span class="text-lg sm:text-xl mb-1 group-hover:scale-110 transition">⚖️</span>
+            <span class="text-xs font-black text-purple-300" id="btnHubSubsidy">Rates Estimator</span>
+            <span class="text-[10px] text-purple-200/70" id="btnHubSubsidySub">Live & Orchard</span>
           </button>
         </div>
       </div>
@@ -339,10 +374,10 @@
   </section>
 
   <!-- PINCODE DELIVERY CHECKER STRIP -->
-  <section class="max-w-7xl mx-auto px-4 py-2">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs shadow-sm">
+  <section class="max-w-7xl mx-auto px-3 sm:px-4 py-2">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs shadow-sm">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center text-lg">
+        <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center text-lg shrink-0">
           🚚
         </div>
         <div>
@@ -351,8 +386,8 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <input id="pincodeInput" type="number" placeholder="e.g. 190001 (Srinagar)" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs w-48 focus:outline-none">
-        <button onclick="checkPincode()" class="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold px-4 py-2 rounded-xl hover:bg-emerald-600 transition" id="pinCheckBtn">
+        <input id="pincodeInput" type="number" placeholder="e.g. 190001 (Srinagar)" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs w-full sm:w-48 focus:outline-none">
+        <button onclick="checkPincode()" class="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold px-4 py-2 rounded-xl hover:bg-emerald-600 transition shrink-0" id="pinCheckBtn">
           Check
         </button>
       </div>
@@ -360,40 +395,40 @@
     <div id="pincodeMessage" class="hidden text-xs mt-2 px-3 text-emerald-600 dark:text-emerald-400 font-semibold"></div>
   </section>
 
-  <!-- CATEGORY PILLS BAR -->
-  <section class="max-w-7xl mx-auto px-4 py-3">
-    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs sm:text-sm font-semibold" id="categoriesBar">
-      <button onclick="setCategory('all')" class="cat-pill active px-4 py-2 rounded-2xl bg-emerald-600 text-white whitespace-nowrap shadow-sm transition">
+  <!-- CATEGORY PILLS BAR (Touch Scrollable on Mobile & Tablet) -->
+  <section class="max-w-7xl mx-auto px-3 sm:px-4 py-3">
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs sm:text-sm font-semibold touch-scroll-x" id="categoriesBar">
+      <button onclick="setCategory('all')" class="cat-pill active px-3.5 sm:px-4 py-2 rounded-2xl bg-emerald-600 text-white whitespace-nowrap shadow-sm transition shrink-0">
         🌟 <span id="catAll">All Items</span> (<span id="totalBadge">12</span>)
       </button>
-      <button onclick="setCategory('merino')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+      <button onclick="setCategory('merino')" class="cat-pill px-3.5 sm:px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition shrink-0">
         🐑 <span id="catMerino">Kashmir Merino</span>
       </button>
-      <button onclick="setCategory('bakarwali')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+      <button onclick="setCategory('bakarwali')" class="cat-pill px-3.5 sm:px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition shrink-0">
         🏔️ <span id="catBakarwali">Bakarwali Mountain Breed</span>
       </button>
-      <button onclick="setCategory('qurbani')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+      <button onclick="setCategory('qurbani')" class="cat-pill px-3.5 sm:px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition shrink-0">
         ✨ <span id="catQurbani">Qurbani Ready (2-4 Teeth)</span>
       </button>
-      <button onclick="setCategory('fertilizer')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-amber-400/60 dark:border-amber-600/50 text-amber-800 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/40 whitespace-nowrap transition flex items-center gap-1.5 shadow-sm">
+      <button onclick="setCategory('fertilizer')" class="cat-pill px-3.5 sm:px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-amber-400/60 dark:border-amber-600/50 text-amber-800 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/40 whitespace-nowrap transition flex items-center gap-1.5 shadow-sm shrink-0">
         🌱 <span id="catFertilizer">Apple Orchard Manure (کھاد)</span>
         <span class="bg-amber-500 text-slate-950 text-[10px] font-black px-1.5 py-0.2 rounded-full">Orchard Fresh</span>
       </button>
-      <button onclick="setCategory('wool')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-purple-400/60 dark:border-purple-600/50 text-purple-800 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 whitespace-nowrap transition flex items-center gap-1.5 shadow-sm">
+      <button onclick="setCategory('wool')" class="cat-pill px-3.5 sm:px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-purple-400/60 dark:border-purple-600/50 text-purple-800 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 whitespace-nowrap transition flex items-center gap-1.5 shadow-sm shrink-0">
         🧶 <span id="catWool">Pure Raw Wool & Yarn (خام اون)</span>
         <span class="bg-purple-500 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full">SKUAST Tested</span>
       </button>
-      <button onclick="setCategory('supplies')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
+      <button onclick="setCategory('supplies')" class="cat-pill px-3.5 sm:px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition shrink-0">
         ⚙️ <span id="catSupplies">Clippers, Salt & Feed</span>
       </button>
     </div>
   </section>
 
   <!-- MAIN CATALOG VIEWPORT -->
-  <main class="max-w-7xl mx-auto px-4">
+  <main class="max-w-7xl mx-auto px-3 sm:px-4">
     <!-- View Switcher & Sort Toolbar -->
-    <div class="flex flex-wrap justify-between items-center mb-4 gap-3 bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
-      <div class="flex items-center gap-3">
+    <div class="flex flex-wrap justify-between items-center mb-4 gap-2.5 sm:gap-3 bg-white dark:bg-slate-900 p-2.5 sm:p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div class="flex items-center gap-2.5 sm:gap-3">
         <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
           <span id="showingText">Showing items:</span>
           <span id="displayedCount" class="font-extrabold text-emerald-600 dark:text-emerald-400 mx-1">12</span>
@@ -401,10 +436,10 @@
 
         <!-- View Mode: Grid vs List -->
         <div class="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-          <button onclick="setViewMode('grid')" id="viewBtnGrid" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 text-emerald-600 shadow-sm" title="Grid View">
+          <button onclick="setViewMode('grid')" id="viewBtnGrid" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white dark:bg-slate-900 text-emerald-600 shadow-sm transition" title="Grid View">
             ▦
           </button>
-          <button onclick="setViewMode('list')" id="viewBtnList" class="px-2.5 py-1 rounded-lg text-xs font-bold text-slate-500 hover:text-emerald-600" title="List View">
+          <button onclick="setViewMode('list')" id="viewBtnList" class="px-2.5 py-1 rounded-lg text-xs font-bold text-slate-500 hover:text-emerald-600 transition" title="List View">
             ≡
           </button>
         </div>
@@ -412,8 +447,8 @@
       
       <!-- Sort and Filter -->
       <div class="flex items-center gap-2 text-xs">
-        <label class="text-slate-400" id="sortLabel">Sort by:</label>
-        <select id="sortSelect" onchange="sortItems()" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs focus:outline-none cursor-pointer font-medium">
+        <label class="text-slate-400 hidden xs:inline" id="sortLabel">Sort by:</label>
+        <select id="sortSelect" onchange="sortItems()" class="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 sm:px-3 py-1.5 text-xs focus:outline-none cursor-pointer font-medium">
           <option value="featured" id="optFeatured">Featured First</option>
           <option value="low" id="optLow">Price: Low to High</option>
           <option value="high" id="optHigh">Price: High to Low</option>
@@ -422,15 +457,15 @@
       </div>
     </div>
 
-    <!-- CARDS CONTAINER (GRID OR LIST) -->
-    <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <!-- CARDS CONTAINER (GRID OR LIST - Responsive Breakpoints for Mobile/Tablet/Desktop) -->
+    <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-3.5 sm:gap-5">
       <!-- Injected via JavaScript -->
     </div>
   </main>
 
   <!-- WISHLIST MODAL -->
-  <div id="wishlistModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="wishlistModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeWishlistModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
       
       <div class="flex items-center gap-2 mb-4">
@@ -497,8 +532,8 @@
   </div>
 
   <!-- CHECKOUT MODAL -->
-  <div id="checkoutModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="checkoutModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
       
       <div class="mb-4">
@@ -609,8 +644,8 @@
   </div>
 
   <!-- ORDER TRACKING TIMELINE MODAL -->
-  <div id="trackModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 relative shadow-2xl">
+  <div id="trackModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl max-w-md w-full p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeTrackModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
       <div class="mb-4">
@@ -673,16 +708,16 @@
   </div>
 
   <!-- MODAL: PRODUCT DETAIL & INTERACTIVE PHOTO GALLERY -->
-  <div id="detailModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="detailModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeDetailModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
       <div id="detailModalContent"></div>
     </div>
   </div>
 
   <!-- MODAL: FARMER POST AD -->
-  <div id="sellModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="sellModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeSellModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
       <div class="mb-3">
@@ -943,8 +978,8 @@
 
   <!-- MODAL: HADP GOVERNMENT SCHEMES & DBT SUBSIDY HUB -->
   <!-- MODAL: DIGITAL LIVESTOCK HEALTH PASSPORT (INAPH / BHARAT PASHUDHAN) -->
-  <div id="passportModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-emerald-500/30 rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="passportModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-emerald-500/30 rounded-2xl sm:rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closePassportModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
       <!-- Government Passport Badge -->
@@ -1030,8 +1065,8 @@
   </div>
 
   <!-- MODAL: HIGHLAND BAHAK MIGRATION & TRANSHUMANCE TRACKER -->
-  <div id="migrationModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-teal-500/30 rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="migrationModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-teal-500/30 rounded-2xl sm:rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeMigrationModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
       <div class="flex items-center gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
@@ -1111,8 +1146,8 @@
   </div>
 
   <!-- MODAL: SKUAST-K WINTER NUTRITION & FEEDING CALCULATOR -->
-  <div id="nutritionModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-sky-500/30 rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="nutritionModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-sky-500/30 rounded-2xl sm:rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeNutritionModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
       <div class="flex items-center gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
@@ -1186,8 +1221,8 @@
 
   
   <!-- MODAL: MY ORDERS (آرڈرز کی تاریخ) -->
-  <div id="ordersModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="ordersModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeOrdersModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
       <div class="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-800 mb-4">
@@ -1208,8 +1243,8 @@
   </div>
 
   <!-- MODAL: PRINTABLE OFFICIAL TAX INVOICE (سرکاری ٹیکس رسید) -->
-  <div id="invoiceModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-2xl w-full max-h-[94vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="invoiceModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[94vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <div class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800 mb-4 no-print">
         <div class="flex items-center gap-2">
           <span class="text-xl">🧾</span>
@@ -1231,8 +1266,8 @@
 
   <!-- MODAL: HADP OFFICIAL PRE-SANCTION CERTIFICATE -->
   <!-- MODAL: SKUAST-K CLINICAL DIAGNOSTIC ASSISTANT & 1962 HELPLINE -->
-  <div id="clinicalModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-rose-500/40 rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="clinicalModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-rose-500/40 rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeClinicalModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
       <div class="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-800 mb-4">
@@ -1337,8 +1372,8 @@
   </div>
 
   <!-- MODAL: HADP PROJECT 27 WOOL LABORATORY ANALYZER -->
-  <div id="woolLabModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-amber-500/40 rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="woolLabModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-amber-500/40 rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeWoolLabModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
       <div class="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-800 mb-4">
@@ -1398,8 +1433,8 @@
   </div>
 
   <!-- MODAL: IN-BROWSER SYSTEM DIAGNOSTICS & TEST RUNNER -->
-  <div id="testModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+  <div id="testModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl">
       <button onclick="closeTestModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
       <div class="flex items-center gap-3 pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
@@ -1429,47 +1464,47 @@
 
   
   <!-- INSTITUTIONAL PLATFORM FOOTER -->
-  <footer class="max-w-7xl mx-auto px-4 mt-12 pt-8 pb-10 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+  <footer class="max-w-7xl mx-auto px-3 sm:px-4 mt-12 pt-8 pb-10 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
       <div>
         <div class="flex items-center gap-2 mb-2 font-black text-slate-900 dark:text-slate-100 text-sm">
-          <span>🐑</span> Kashmir Sheeps Full-Stack Hub
+          <span>🐑</span> Kashmir Sheeps Marketplace
         </div>
         <p class="leading-relaxed text-[11px]">
-          Jammu & Kashmir's premier direct livestock, organic manure, and pure Kashmir Merino wool marketplace powered by SKUAST-K Kashmir and Sheep Husbandry Department.
+          Jammu & Kashmir's premier direct livestock, organic orchard manure, and pure Kashmir Merino wool platform. Connecting shepherds, orchardists, and buyers with zero middlemen.
         </p>
       </div>
       <div>
-        <h5 class="font-bold text-slate-900 dark:text-slate-200 mb-2">Marketplace Portals</h5>
-        <ul class="space-y-1 text-[11px]">
-          <li><a href="javascript:void(0)" onclick="openHadpModal('subsidies')" class="hover:text-emerald-600">🏛️ Project 24 (50-Ewe Commercial Unit)</a></li>
-          <li><a href="javascript:void(0)" onclick="openHadpModal('calculator')" class="hover:text-emerald-600">💰 50% DBT Subsidy Calculator</a></li>
-          <li><a href="javascript:void(0)" onclick="openWoolLabModal()" class="hover:text-emerald-600">🔬 Project 27 Wool Quality Lab</a></li>
-          <li><a href="javascript:void(0)" onclick="openMigrationModal()" class="hover:text-emerald-600">🏔️ Bahak Pastoral Transit Corridor</a></li>
+        <h5 class="font-bold text-slate-900 dark:text-slate-200 mb-2">Direct Marketplace Hubs</h5>
+        <ul class="space-y-1.5 text-[11px]">
+          <li><a href="javascript:void(0)" onclick="showSection('live'); scrollToCatalog();" class="hover:text-emerald-600">🐏 Live Kashmir Sheep Mandi</a></li>
+          <li><a href="javascript:void(0)" onclick="setCategory('fertilizer'); scrollToCatalog();" class="hover:text-amber-600">🌱 Apple Orchard Manure Loads</a></li>
+          <li><a href="javascript:void(0)" onclick="setCategory('wool'); scrollToCatalog();" class="hover:text-purple-600">🧶 Kashmir Merino Raw Fleece & Yarn</a></li>
+          <li><a href="javascript:void(0)" onclick="openSellModal()" class="hover:text-emerald-600">➕ Direct Farmer Listing (Sell Free)</a></li>
         </ul>
       </div>
       <div>
-        <h5 class="font-bold text-slate-900 dark:text-slate-200 mb-2">Scientific & Veterinary Support</h5>
-        <ul class="space-y-1 text-[11px]">
+        <h5 class="font-bold text-slate-900 dark:text-slate-200 mb-2">Shepherd Care & Calculators</h5>
+        <ul class="space-y-1.5 text-[11px]">
           <li><a href="javascript:void(0)" onclick="openPassportModal()" class="hover:text-emerald-600">📋 INAPH 12-Digit Tag Verification</a></li>
-          <li><a href="javascript:void(0)" onclick="openClinicalModal()" class="hover:text-emerald-600">🩺 SKUAST-K Symptom Triage & Dosage</a></li>
-          <li><a href="javascript:void(0)" onclick="openNutritionModal()" class="hover:text-emerald-600">❄️ Chillai Kalan Stall Feeding Planner</a></li>
+          <li><a href="javascript:void(0)" onclick="openEstimatorModal('manure')" class="hover:text-emerald-600">📐 Apple Orchard Manure Calculator</a></li>
+          <li><a href="javascript:void(0)" onclick="openWoolLabModal()" class="hover:text-emerald-600">🔬 Merino Wool Quality & Micron Lab</a></li>
           <li><a href="tel:1962" class="text-rose-600 font-bold hover:underline">🚑 Emergency Vet Helpline: 1962</a></li>
         </ul>
       </div>
       <div>
         <h5 class="font-bold text-slate-900 dark:text-slate-200 mb-2">System Diagnostics</h5>
         <p class="text-[11px] mb-3 leading-relaxed">
-          Full-Stack Laravel Backend connected to SQLite database. Run automated test suite to verify endpoints and operations.
+          Full-Stack Laravel DDD Architecture connected to SQLite. Continuous health checks and verified profiles.
         </p>
-        <button onclick="openTestModal()" class="bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition">
+        <button onclick="openTestModal()" class="bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition shadow-sm">
           <span>🧪</span> Run System Diagnostics Tests
         </button>
       </div>
     </div>
     <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px]">
-      <span>© 2026 Department of Sheep Husbandry, Govt of Jammu & Kashmir • Developed with SKUAST-K</span>
-      <span class="text-emerald-600 font-bold">Official J&K Kisan Sathi & HADP DBT Network</span>
+      <span>© 2026 Kashmir Sheeps • Direct Shepherd, Manure & Wool Commerce Platform</span>
+      <span class="text-emerald-600 font-bold">Verified Zero-Middleman Network</span>
     </div>
   </footer>
 
@@ -1517,7 +1552,7 @@
     // UI Dictionary
     const translations = {
       en: {
-        topBarTagline: "🏛️ HADP Project 24 & 27 Active: 50% Subsidy on Commercial Sheep Farms & Shearing • SKUAST-K Certified",
+        topBarTagline: "🐑 Direct Farm-Gate Sheep, Pure Merino Wool & Orchard Manure • Connect Directly with Shepherds",
         topHADPBadge: "HADP 50% Subsidy",
         topPassportBadge: "INAPH Passport",
         topVetHelpline: "Emergency Vet: 1962",
@@ -1525,7 +1560,7 @@
         topBarDelivery: "Free Delivery above ₹1,499",
         topHelpline: "Helpline: +91-94190-SHEEP",
         navTitle: "Kashmir Sheeps",
-        navMarketBadge: "Livestock & HADP Hub",
+        navMarketBadge: "Direct Hub",
         navLogoSub: "Live Sheep • Pure Wool • Orchard Manure",
         langSwitch: "اردو (Urdu)",
         navHadpBtn: "HADP Schemes",
@@ -1536,10 +1571,10 @@
         lblPillLive: "Live Sheep Mandi",
         lblPillStore: "Farm Products & Wool",
         lblPillHadp: "HADP Subsidies",
-        hadpBannerTitle: "🏛️ Holistic Agriculture Development Program (HADP) & Livestock Scientific Hub",
-        hadpBannerDesc: "50% DBT Capital Subsidy on Commercial Sheep Farms & Mechanical Shearing • 12-Digit INAPH Ear Tag Passports • Alpine Bahak Migration Tracking • SKUAST-K Certified Winter Nutrition.",
-        btnHubSubsidy: "50% Subsidy",
-        btnHubSubsidySub: "Project 24 & 27",
+        hadpBannerTitle: "🛡️ Verified Shepherd Technical Services & Animal Care Hub",
+        hadpBannerDesc: "12-Digit INAPH Ear Tag Health Passports • Alpine Bahak Migration Tracking • SKUAST-K Certified Winter Silage • 1962 Emergency Vet Diagnostics.",
+        btnHubSubsidy: "Rates Estimator",
+        btnHubSubsidySub: "Live & Orchard",
         btnHubPassport: "Health Passport",
         btnHubPassportSub: "INAPH Ear Tags",
         btnHubMigration: "Bahak Migration",
@@ -1559,7 +1594,7 @@
         pinSub: "Enter your J&K Pin code for livestock transport & farm product shipping estimates.",
         pinCheckBtn: "Check",
         catAll: "All Items",
-        catHadp: "HADP & SKUAST Units",
+        catHadp: "Kashmir Merino Units",
         catMerino: "Kashmir Merino",
         catBakarwali: "Bakarwali Mountain Breed",
         catQurbani: "Qurbani Ready (2-4 Teeth)",
@@ -1638,7 +1673,7 @@
         lblPillLive: "زندہ بھیڑ منڈی",
         lblPillStore: "فارم اشیاء و اون",
         lblPillHadp: "ہادپ سبسڈیز",
-        hadpBannerTitle: "🏛️ جامع زرعی ترقیاتی پروگرام (ہادپ) و لائیو اسٹاک سائنسی مرکز",
+        hadpBannerTitle: "🛡️ تصدیق شدہ چرواہا تکنیکی خدمات و جانوروں کی دیکھ بھال",
         hadpBannerDesc: "تجارتی بھیڑ فارمز اور مشین کترائی پر 50٪ ڈی بی ٹی سبسڈی • 12 ہندسوں کا ایناف ہیلتھ پاسپورٹ • ہائی لینڈ چراگاہ ٹریکر • اسکواسٹ مصدقہ سردیوں کی خوراک۔",
         btnHubSubsidy: "50% سبسڈی",
         btnHubSubsidySub: "پروجیکٹ 24 و 27",
@@ -1854,11 +1889,29 @@
       Object.keys(pills).forEach(k => {
         if (pills[k]) {
           pills[k].className = (k === sec) 
-            ? 'px-4 py-1.5 rounded-xl text-xs font-bold transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm'
-            : 'px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600';
+            ? 'px-3 lg:px-4 py-1.5 rounded-xl text-xs font-bold transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm'
+            : 'px-3 lg:px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600';
         }
       });
+      updateMobileBottomNav(sec);
       filterCatalog();
+    }
+
+    function updateMobileBottomNav(sec) {
+      const mobPills = {
+        all: document.getElementById('mobNavAll'),
+        live: document.getElementById('mobNavLive'),
+        store: document.getElementById('mobNavStore')
+      };
+      Object.keys(mobPills).forEach(k => {
+        if (mobPills[k]) {
+          if (k === sec) {
+            mobPills[k].classList.add('active');
+          } else {
+            mobPills[k].classList.remove('active');
+          }
+        }
+      });
     }
 
     function setCategory(cat) {
@@ -1916,8 +1969,8 @@
       }
 
       container.className = (viewMode === 'grid')
-        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5'
-        : 'flex flex-col gap-3';
+        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-3.5 sm:gap-5'
+        : 'flex flex-col gap-3 sm:gap-4';
 
       container.innerHTML = items.map(item => {
         const isFav = wishlist.includes(item.id);
@@ -1930,44 +1983,44 @@
         const isSold = item.is_sold;
 
         return `
-          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group relative flex ${viewMode === 'list' ? 'flex-row' : 'flex-col'}">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group relative flex ${viewMode === 'list' ? 'flex-col sm:flex-row' : 'flex-col'}">
             <!-- Image & Badges -->
-            <div class="${viewMode === 'list' ? 'w-48 shrink-0' : 'w-full h-52'} relative overflow-hidden bg-slate-100 dark:bg-slate-800 cursor-pointer" onclick="viewItemDetails(${item.id})">
+            <div class="${viewMode === 'list' ? 'w-full sm:w-52 shrink-0 h-48 sm:h-auto' : 'w-full h-48 sm:h-52'} relative overflow-hidden bg-slate-100 dark:bg-slate-800 cursor-pointer" onclick="viewItemDetails(${item.id})">
               <img src="${item.gallery[0]}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
               
               <!-- Badges -->
-              <div class="absolute top-3 left-3 flex flex-col gap-1.5">
-                ${isSold ? '<span class="bg-red-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow">SOLD OUT</span>' : ''}
-                ${item.isQurbani ? '<span class="bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full shadow">Qurbani Ready</span>' : ''}
+              <div class="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 flex flex-col gap-1 sm:gap-1.5">
+                ${isSold ? '<span class="bg-red-600 text-white text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow">SOLD OUT</span>' : ''}
+                ${item.isQurbani ? '<span class="bg-amber-500 text-slate-950 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full shadow">Qurbani Ready</span>' : ''}
                 ${item.inaph_tag ? `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 text-[9px] font-mono px-2 py-0.5 rounded-full backdrop-blur-sm">RFID: ${item.inaph_tag}</span>` : ''}
               </div>
 
               <!-- Wishlist Heart -->
-              <button onclick="toggleWishlist(${item.id}, event)" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 text-sm flex items-center justify-center shadow transition hover:scale-110">
+              <button onclick="toggleWishlist(${item.id}, event)" class="absolute top-2.5 sm:top-3 right-2.5 sm:right-3 w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 text-sm flex items-center justify-center shadow transition hover:scale-110" title="Favorite">
                 ${isFav ? '❤️' : '🤍'}
               </button>
             </div>
 
             <!-- Content Area -->
-            <div class="p-4 flex-1 flex flex-col justify-between">
+            <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
               <div>
                 <div class="flex items-center justify-between text-[11px] text-slate-500 mb-1">
-                  <span class="flex items-center gap-1">📍 ${dist || 'Kashmir'}</span>
-                  <span class="font-bold text-amber-500">★ ${item.rating || 5.0}</span>
+                  <span class="flex items-center gap-1 truncate">📍 ${dist || 'Kashmir'}</span>
+                  <span class="font-bold text-amber-500 shrink-0">★ ${item.rating || 5.0}</span>
                 </div>
-                <h4 class="font-bold text-sm line-clamp-1 group-hover:text-emerald-600 transition" onclick="viewItemDetails(${item.id})">${title}</h4>
-                <p class="text-[11px] text-slate-500 mt-1 line-clamp-1">${spec}</p>
+                <h4 class="font-bold text-sm sm:text-base line-clamp-1 group-hover:text-emerald-600 transition cursor-pointer" onclick="viewItemDetails(${item.id})">${title}</h4>
+                <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-1">${spec}</p>
                 <div class="flex items-center gap-2 text-[10px] text-slate-400 mt-1.5">
-                  <span>👨‍🌾 ${farmer}</span>
-                  ${item.weight ? `<span>• ⚖️ ${item.weight}</span>` : ''}
+                  <span class="truncate">👨‍🌾 ${farmer}</span>
+                  ${item.weight ? `<span class="shrink-0">• ⚖️ ${item.weight}</span>` : ''}
                 </div>
               </div>
 
-              <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <div class="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2">
                 <div>
-                  <span class="text-[10px] text-slate-400 block">${currentLang === 'en' ? 'Farm Rate' : 'فارم ریٹ'}</span>
-                  <div class="flex items-baseline gap-1.5">
-                    <span class="text-base font-black text-emerald-600">₹${price}</span>
+                  <span class="text-[9px] sm:text-[10px] text-slate-400 block">${currentLang === 'en' ? 'Farm Rate' : 'فارم ریٹ'}</span>
+                  <div class="flex items-baseline gap-1.5 flex-wrap">
+                    <span class="text-sm sm:text-base font-black text-emerald-600">₹${price}</span>
                     ${isLive && item.weight && parseInt(item.weight) > 0 ? `
                       <span class="text-[9px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.2 rounded">
                         ~₹${Math.round(item.price / parseInt(item.weight))}/Kg
@@ -1976,24 +2029,24 @@
                   </div>
                 </div>
 
-                <div class="flex items-center gap-1.5">
+                <div class="flex items-center gap-1 sm:gap-1.5 flex-wrap sm:flex-nowrap shrink-0">
                   ${isLive && item.inaph_tag ? `
-                    <button onclick="openPassportForTag('${item.inaph_tag}')" class="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold hover:bg-emerald-100" title="INAPH Passport">
+                    <button onclick="openPassportForTag('${item.inaph_tag}')" class="p-1.5 sm:p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold hover:bg-emerald-100 transition" title="INAPH Passport">
                       📋
                     </button>
                   ` : ''}
-                  <button onclick="openWhatsAppInquiry(${item.id})" class="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 transition" title="WhatsApp Shepherd">
+                  <button onclick="openWhatsAppInquiry(${item.id})" class="p-1.5 sm:p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 transition" title="WhatsApp Shepherd">
                     💬
                   </button>
                   ${isSold ? `
-                    <button disabled class="px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-400 text-xs font-bold cursor-not-allowed">
+                    <button disabled class="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-400 text-xs font-bold cursor-not-allowed">
                       Sold Out
                     </button>
                   ` : `
-                    <button onclick="addToCart(${item.id})" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold transition" title="Add to Basket">
+                    <button onclick="addToCart(${item.id})" class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold transition" title="Add to Basket">
                       🛒
                     </button>
-                    <button onclick="quickBuy(${item.id})" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-1">
+                    <button onclick="quickBuy(${item.id})" class="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-1">
                       <span>⚡</span> <span>${currentLang === 'en' ? 'Buy Now' : 'فوری خریدیں'}</span>
                     </button>
                   `}
@@ -4308,6 +4361,45 @@
       </div>
     </div>
   </div>
+
+
+  <!-- NATIVE MOBILE BOTTOM NAVIGATION BAR (Thumb-friendly for Mobile Phones < md) -->
+  <nav id="mobileBottomNav" class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 z-40 px-2 py-1.5 shadow-[0_-4px_25px_rgba(0,0,0,0.08)]">
+    <div class="flex items-center justify-around max-w-md mx-auto">
+      <!-- 1. Catalog / All -->
+      <button onclick="showSection('all'); updateMobileBottomNav('all');" class="mobile-nav-btn active flex flex-col items-center py-1 px-3 rounded-xl text-slate-500 hover:text-emerald-600 transition" id="mobNavAll">
+        <span class="text-xl mob-icon transition-transform">🐑</span>
+        <span class="text-[10px] font-bold mt-0.5 tracking-tight" id="lblMobAll">All</span>
+      </button>
+
+      <!-- 2. Live Sheep Mandi -->
+      <button onclick="showSection('live'); updateMobileBottomNav('live');" class="mobile-nav-btn flex flex-col items-center py-1 px-3 rounded-xl text-slate-500 hover:text-emerald-600 transition" id="mobNavLive">
+        <span class="text-xl mob-icon transition-transform">🐏</span>
+        <span class="text-[10px] font-bold mt-0.5 tracking-tight" id="lblMobLive">Live Mandi</span>
+      </button>
+
+      <!-- 3. Elevated Floating Action: Post Ad / Sell -->
+      <button onclick="openSellModal()" class="flex flex-col items-center -mt-6 group" id="mobNavSell" title="Post Free Ad (Sheep / Manure / Wool)">
+        <div class="w-13 h-13 rounded-full bg-gradient-to-tr from-emerald-600 via-teal-600 to-emerald-500 text-white flex items-center justify-center text-2xl shadow-lg shadow-emerald-600/40 transform group-hover:scale-105 active:scale-95 transition border-4 border-white dark:border-slate-900">
+          ➕
+        </div>
+        <span class="text-[10px] font-black text-emerald-700 dark:text-emerald-400 mt-0.5" id="lblMobSell">Sell</span>
+      </button>
+
+      <!-- 4. Farm Products (Manure & Wool) -->
+      <button onclick="showSection('store'); updateMobileBottomNav('store');" class="mobile-nav-btn flex flex-col items-center py-1 px-3 rounded-xl text-slate-500 hover:text-emerald-600 transition" id="mobNavStore">
+        <span class="text-xl mob-icon transition-transform">🌱</span>
+        <span class="text-[10px] font-bold mt-0.5 tracking-tight" id="lblMobStore">Store</span>
+      </button>
+
+      <!-- 5. Profile / Account -->
+      <button onclick="openAuthModal()" class="mobile-nav-btn flex flex-col items-center py-1 px-3 rounded-xl text-slate-500 hover:text-emerald-600 transition relative" id="mobNavAccount">
+        <span class="text-xl mob-icon transition-transform">👤</span>
+        <span class="text-[10px] font-bold mt-0.5 tracking-tight" id="lblMobAccount">Account</span>
+        <span id="mobUserDot" class="hidden absolute top-1 right-2.5 w-2 h-2 rounded-full bg-emerald-500"></span>
+      </button>
+    </div>
+  </nav>
 
 </body>
 </html>
