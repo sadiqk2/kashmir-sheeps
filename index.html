@@ -73,6 +73,9 @@
         <span id="topBarTagline" class="font-medium">🐑 Direct Farm-Gate Livestock, Pure Merino Wool & Orchard Manure • Connect Directly with Shepherds across J&K</span>
       </div>
       <div class="flex items-center gap-3 text-[11px]">
+        <a href="public/marketing-short.html" class="bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/40 font-bold flex items-center gap-1 transition shadow-sm" title="Watch 9:16 Video Short">
+          🎬 <span>Video Short</span>
+        </a>
         <button onclick="openPassportModal()" class="hover:underline flex items-center gap-1 text-emerald-300">
           <span>📋</span> <span id="topPassportBadge">INAPH Passport</span>
         </button>
@@ -580,7 +583,7 @@
         <div id="kccPaymentBox" class="hidden p-3 bg-amber-50 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-800">
           <label class="block font-bold text-xs text-amber-900 dark:text-amber-300 mb-1">Enter 16-Digit Kisan Credit Card (KCC) Number</label>
           <input type="text" id="kccCardNumber" maxlength="19" placeholder="4129-XXXX-XXXX-9021" class="w-full bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700 rounded-xl p-2.5 text-xs font-mono">
-          <p class="text-[10px] text-amber-700 dark:text-amber-400 mt-1">HADP interest subvention of 3% applies automatically on animal husbandry units.</p>
+          <p class="text-[10px] text-amber-700 dark:text-amber-400 mt-1">Direct farm-gate pricing with verified veterinary health clearance across all 10 Kashmir districts.</p>
         </div>
 
         <div class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1 text-xs">
@@ -1433,11 +1436,11 @@
           <span>🐑</span> Kashmir Sheeps Full-Stack Hub
         </div>
         <p class="leading-relaxed text-[11px]">
-          Jammu & Kashmir's flagship scientific livestock ecosystem powered by HADP Project 24 & 27, SKUAST-K Kashmir, and Bharat Pashudhan (INAPH).
+          Jammu & Kashmir's premier direct livestock, organic manure, and pure Kashmir Merino wool marketplace powered by SKUAST-K Kashmir and Sheep Husbandry Department.
         </p>
       </div>
       <div>
-        <h5 class="font-bold text-slate-900 dark:text-slate-200 mb-2">HADP Direct Portals</h5>
+        <h5 class="font-bold text-slate-900 dark:text-slate-200 mb-2">Marketplace Portals</h5>
         <ul class="space-y-1 text-[11px]">
           <li><a href="javascript:void(0)" onclick="openHadpModal('subsidies')" class="hover:text-emerald-600">🏛️ Project 24 (50-Ewe Commercial Unit)</a></li>
           <li><a href="javascript:void(0)" onclick="openHadpModal('calculator')" class="hover:text-emerald-600">💰 50% DBT Subsidy Calculator</a></li>
@@ -1508,8 +1511,8 @@
     let currentCategory = 'all';
     let currentSection = 'all';
     let viewMode = 'grid'; // 'grid' or 'list'
-    let cart = [];
-    let wishlist = [];
+    let cart = StorageService.get(StorageService.KEYS.CART, []);
+    let wishlist = StorageService.get(StorageService.KEYS.WISHLIST, []);
 
     // UI Dictionary
     const translations = {
@@ -1963,7 +1966,14 @@
               <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <div>
                   <span class="text-[10px] text-slate-400 block">${currentLang === 'en' ? 'Farm Rate' : 'فارم ریٹ'}</span>
-                  <span class="text-base font-black text-emerald-600">₹${price}</span>
+                  <div class="flex items-baseline gap-1.5">
+                    <span class="text-base font-black text-emerald-600">₹${price}</span>
+                    ${isLive && item.weight && parseInt(item.weight) > 0 ? `
+                      <span class="text-[9px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.2 rounded">
+                        ~₹${Math.round(item.price / parseInt(item.weight))}/Kg
+                      </span>
+                    ` : ''}
+                  </div>
                 </div>
 
                 <div class="flex items-center gap-1.5">
@@ -1972,13 +1982,19 @@
                       📋
                     </button>
                   ` : ''}
+                  <button onclick="openWhatsAppInquiry(${item.id})" class="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 transition" title="WhatsApp Shepherd">
+                    💬
+                  </button>
                   ${isSold ? `
                     <button disabled class="px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-400 text-xs font-bold cursor-not-allowed">
-                      Sold
+                      Sold Out
                     </button>
                   ` : `
-                    <button onclick="addToCart(${item.id})" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm">
-                      ${translations[currentLang].addToCart}
+                    <button onclick="addToCart(${item.id})" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold transition" title="Add to Basket">
+                      🛒
+                    </button>
+                    <button onclick="quickBuy(${item.id})" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-sm flex items-center gap-1">
+                      <span>⚡</span> <span>${currentLang === 'en' ? 'Buy Now' : 'فوری خریدیں'}</span>
                     </button>
                   `}
                 </div>
@@ -2103,6 +2119,22 @@
       const payable = (subtotal >= 1499) ? subtotal : subtotal + 199;
       document.getElementById('chkItemsTotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
       document.getElementById('chkPayable').textContent = '₹' + payable.toLocaleString('en-IN');
+
+      // Senior Buyer improvement: Auto-populate details from logged-in user profile
+      if (currentUser) {
+        const nameInput = document.getElementById('chkName');
+        const phoneInput = document.getElementById('chkPhone');
+        const distInput = document.getElementById('chkDistrict');
+        const addrInput = document.getElementById('chkAddress');
+        if (nameInput && !nameInput.value) nameInput.value = currentUser.name || '';
+        if (phoneInput && !phoneInput.value) phoneInput.value = currentUser.phone || '';
+        if (distInput && currentUser.district) distInput.value = currentUser.district;
+        if (addrInput && !addrInput.value) {
+          const parts = [currentUser.village, currentUser.tehsil, currentUser.district].filter(Boolean);
+          addrInput.value = parts.length > 0 ? parts.join(', ') : '';
+        }
+      }
+
       document.getElementById('checkoutModal').classList.remove('hidden');
     }
 
@@ -2305,7 +2337,7 @@
             <div>
               <span class="text-xs font-black uppercase text-emerald-800 tracking-wider">Government of Jammu & Kashmir</span>
               <h2 class="text-lg font-black tracking-tight text-slate-900">DEPARTMENT OF SHEEP HUSBANDRY</h2>
-              <p class="text-[10px] text-slate-500">Kashmir Livestock E-Mandi & HADP Supply Network</p>
+              <p class="text-[10px] text-slate-500">Kashmir Livestock E-Mandi & Pastoral Supply Network</p>
             </div>
             <div class="text-right">
               <span class="bg-emerald-100 text-emerald-900 font-mono font-black text-xs px-2.5 py-1 rounded-md">TAX INVOICE</span>
@@ -3550,9 +3582,22 @@
             <div><strong>Seller / Shepherd:</strong> ${item.farmerEn || item.farmer_name}</div>
             ${item.inaph_tag ? `<div><strong>12-Digit RFID:</strong> ${item.inaph_tag}</div>` : ''}
           </div>
-          <button onclick="addToCart(${item.id}); closeDetailModal();" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition">
-            ${translations[currentLang].addToCart}
-          </button>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="addToCart(${item.id}); closeDetailModal();" class="py-3 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-100 font-bold text-xs transition flex items-center justify-center gap-1.5">
+              🛒 ${translations[currentLang].addToCart}
+            </button>
+            <button onclick="quickBuy(${item.id}); closeDetailModal();" class="py-3 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/30">
+              ⚡ ${currentLang === 'en' ? 'Buy Now' : 'فوری آرڈر کریں'}
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openWhatsAppInquiry(${item.id})" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 font-bold text-xs transition flex items-center justify-center gap-1.5">
+              💬 WhatsApp Direct with Shepherd
+            </button>
+            <a href="tel:${item.phone || '09419024810'}" class="py-2.5 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs transition flex items-center justify-center gap-1">
+              📞 Call
+            </a>
+          </div>
         </div>
       `;
 
@@ -3958,7 +4003,57 @@
       if (modal) {
         modal.classList.remove('hidden');
         presetSellForm(preset);
+
+        // Senior Seller improvement: Auto-populate seller credentials if logged in
+        if (currentUser) {
+          const farmerInput = document.getElementById('postFarmer');
+          const phoneInput = document.getElementById('postPhone');
+          const distSelect = document.getElementById('postDistrict');
+          if (farmerInput && !farmerInput.value) farmerInput.value = currentUser.name;
+          if (phoneInput && !phoneInput.value) phoneInput.value = currentUser.phone || '';
+          if (distSelect && currentUser.district) distSelect.value = currentUser.district;
+        }
       }
+    }
+
+    
+    /* =====================================================================
+       SENIOR ENGINEER & SHEEP BUYER/SELLER HELPER SUITE
+       ===================================================================== */
+    function quickBuy(id) {
+      const item = catalog.find(i => i.id === id);
+      if (!item) return;
+      if (item.is_sold) {
+        showToast(currentLang === 'en' ? 'This item is already sold.' : 'یہ جانور پہلے ہی بک چکا ہے', '⚠️');
+        return;
+      }
+      const existing = cart.find(c => c.id === id);
+      if (!existing) {
+        cart.push({
+          id: item.id,
+          title: currentLang === 'en' ? item.titleEn : item.titleUr,
+          price: item.price,
+          qty: 1,
+          gallery: Array.isArray(item.gallery) ? item.gallery : [item.gallery || 'https://images.unsplash.com/photo-1526030994690-40e26ad32a1c?auto=format&fit=crop&w=800&q=80'],
+          spec: currentLang === 'en' ? item.specEn : item.specUr,
+          inaph_tag: item.inaph_tag || null,
+          type: item.type
+        });
+        StorageService.set(StorageService.KEYS.CART, cart);
+        updateCartBadge();
+        updateCartDrawer();
+      }
+      openCheckoutModal();
+    }
+
+    function openWhatsAppInquiry(id) {
+      const item = catalog.find(i => i.id === id);
+      if (!item) return;
+      const rawPhone = (item.whatsapp || item.phone || '9419024810').replace(/[^0-9]/g, '');
+      const cleanPhone = rawPhone.startsWith('91') ? rawPhone : ('91' + (rawPhone.startsWith('0') ? rawPhone.slice(1) : rawPhone));
+      const title = currentLang === 'en' ? item.titleEn : item.titleUr;
+      const msg = encodeURIComponent(`Assalam-o-Alaikum, I am interested in purchasing your listing "${title}" (Price: ₹${item.price.toLocaleString('en-IN')}) listed on Kashmir Sheeps marketplace. Is it available for inspection / delivery?`);
+      window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
     }
 
     async function init() {

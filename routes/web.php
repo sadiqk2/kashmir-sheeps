@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\HealthCheckController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,3 +15,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('app');
 })->name('home');
+
+Route::get('/health', HealthCheckController::class)->name('health');
+
+Route::get('/marketing-short', function () {
+    return view('marketing-short');
+})->name('marketing.short');

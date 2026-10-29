@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\ClinicalDiagnosisController as V1ClinicalControl
 use App\Http\Controllers\Api\V1\WoolLabController as V1WoolLabController;
 use App\Http\Controllers\Api\V1\BahakTransitController as V1BahakController;
 use App\Http\Controllers\Api\V1\AuthController as V1AuthController;
+use App\Http\Controllers\Api\HealthCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,8 +42,11 @@ Route::prefix('v1')->group(function () {
     Route::get('bahak-transit', [V1BahakController::class, 'index']);
     Route::post('bahak-transit', [V1BahakController::class, 'store']);
 
-    // 5. Identity & Authentication Domain
-    Route::post('auth/register', [V1AuthController::class, 'register']);
+    // 6. System Health Check
+    Route::get('health', HealthCheckController::class);
+    Route::get('health', HealthCheckController::class);
+
+Route::post('auth/register', [V1AuthController::class, 'register']);
     Route::post('auth/login', [V1AuthController::class, 'login']);
     Route::get('auth/roles', [V1AuthController::class, 'roles']);
     Route::get('users/sellers', [V1AuthController::class, 'sellers']);
@@ -75,6 +79,8 @@ Route::post('wool-lab/analyze', [V1WoolLabController::class, 'analyze']);
 Route::get('wool-lab/{sampleCode}', [V1WoolLabController::class, 'show']);
 Route::get('bahak-transit', [V1BahakController::class, 'index']);
 Route::post('bahak-transit', [V1BahakController::class, 'store']);
+
+Route::get('health', HealthCheckController::class);
 
 Route::post('auth/register', [V1AuthController::class, 'register']);
 Route::post('auth/login', [V1AuthController::class, 'login']);
