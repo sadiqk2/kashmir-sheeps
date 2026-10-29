@@ -78,7 +78,7 @@
       <div class="flex items-center gap-2">
         <div class="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center font-black text-xs shadow">🐑</div>
         <span class="font-bold text-xs tracking-tight">kashmir.sheeps</span>
-        <span class="text-[10px] bg-white/20 backdrop-blur-sm px-2 py-0.2 rounded-full font-semibold">Official</span>
+        <span class="text-[10px] bg-white/20 backdrop-blur-sm px-2 py-0.2 rounded-full font-semibold">Verified Direct</span>
       </div>
       <div class="flex items-center gap-1 text-[11px] bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 font-mono" id="timerDisplay">
         00:00 / 00:38
