@@ -19,14 +19,67 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Default Admin User
-        User::firstOrCreate(
-            ['email' => 'admin@kashmirsheeps.gov.in'],
+        // Pre-seeded Users (Admin, Verified Sellers, Farmers, Buyers, VAS)
+        $users = [
             [
+                'email' => 'admin@kashmirsheeps.gov.in',
                 'name' => 'Dr. Farooq Mir (Director Sheep Husbandry)',
+                'phone' => '09419000196',
+                'role' => 'admin',
+                'district' => 'Srinagar',
+                'is_verified' => true,
                 'password' => bcrypt('kashmir@sheep1962'),
-            ]
-        );
+            ],
+            [
+                'email' => 'ghulam.mir@kashmirsheeps.in',
+                'name' => 'Ghulam Rasool Mir (Mattan Stud Farm)',
+                'phone' => '09419011223',
+                'role' => 'seller',
+                'district' => 'Anantnag',
+                'tehsil' => 'Mattan',
+                'village' => 'Highland Farm Mattan',
+                'inaph_breeder_code' => 'JK-BREED-ANG-042',
+                'is_verified' => true,
+                'password' => bcrypt('password123'),
+            ],
+            [
+                'email' => 'hassan.wani@kashmirsheeps.in',
+                'name' => 'Ghulam Hassan Wani (Daksh Kisan Certified)',
+                'phone' => '09419477889',
+                'role' => 'farmer',
+                'district' => 'Pulwama',
+                'tehsil' => 'Tral',
+                'village' => 'Aripal Tral',
+                'kkg_id' => 'KKG-PUL-TRAL-02',
+                'aadhaar_hash' => 'XXXX-XXXX-7182',
+                'is_verified' => true,
+                'password' => bcrypt('password123'),
+            ],
+            [
+                'email' => 'tariq.buyer@gmail.com',
+                'name' => 'Tariq Ahmad Mir',
+                'phone' => '09419024810',
+                'role' => 'buyer',
+                'district' => 'Anantnag',
+                'tehsil' => 'Mattan',
+                'village' => 'Near Jamia Masjid',
+                'is_verified' => true,
+                'password' => bcrypt('password123'),
+            ],
+            [
+                'email' => 'dr.lone@jksheep.gov.in',
+                'name' => 'Dr. M. A. Lone, VAS',
+                'phone' => '09419099881',
+                'role' => 'veterinarian',
+                'district' => 'Anantnag',
+                'is_verified' => true,
+                'password' => bcrypt('password123'),
+            ],
+        ];
+
+        foreach ($users as $u) {
+            User::updateOrCreate(['email' => $u['email']], $u);
+        }
 
         // 1. Livestock Listings
         $listings = [
@@ -254,173 +307,194 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($listings as $l) {
-            $created = LivestockListing::create($l);
+            $created = LivestockListing::firstOrCreate(
+                ['title_en' => $l['title_en']],
+                $l
+            );
 
             // If it has an INAPH tag, create the passport
             if (!empty($l['inaph_tag'])) {
-                InaphPassport::create([
-                    'tag_no' => $l['inaph_tag'],
-                    'livestock_listing_id' => $created->id,
-                    'breed' => $l['title_en'],
-                    'genotype' => 'Kashmir Merino (87.5% Rambouillet x Gaddi Cross)',
-                    'sex' => 'Ram / Male',
-                    'dob' => '2024-04-12',
-                    'teeth' => $l['spec_en'],
-                    'sire_line' => $l['sire_line'] ?? 'SKUAST-K Lineage',
-                    'dam_line' => $l['dam_line'] ?? 'Govt Sheep Farm Dachigam',
-                    'rfid_frequency' => '134.2 kHz ISO 11784/11785 FDX-B',
-                    'etv_vaccination_date' => '2026-08-15',
-                    'pox_vaccination_date' => '2026-07-20',
-                    'ppr_vaccination_date' => '2025-05-10',
-                    'fmd_vaccination_date' => '2026-09-01',
-                    'deworming_date' => '2026-10-10',
-                    'deworming_drug' => 'Fenbendazole 10% (SKUAST Protocol)',
-                    'vet_officer' => 'Dr. M. A. Lone, VAS J&K Sheep Husbandry',
-                    'fitness_cert_no' => 'JK-VET-FIT-2026-' . rand(100, 999),
-                    'owner_name' => $l['farmer_name'],
-                    'district' => $l['district'],
-                ]);
+                InaphPassport::firstOrCreate(
+                    ['tag_no' => $l['inaph_tag']],
+                    [
+                        'livestock_listing_id' => $created->id,
+                        'breed' => $l['title_en'],
+                        'genotype' => 'Kashmir Merino (87.5% Rambouillet x Gaddi Cross)',
+                        'sex' => 'Ram / Male',
+                        'dob' => '2024-04-12',
+                        'teeth' => $l['spec_en'],
+                        'sire_line' => $l['sire_line'] ?? 'SKUAST-K Lineage',
+                        'dam_line' => $l['dam_line'] ?? 'Govt Sheep Farm Dachigam',
+                        'rfid_frequency' => '134.2 kHz ISO 11784/11785 FDX-B',
+                        'etv_vaccination_date' => '2026-08-15',
+                        'pox_vaccination_date' => '2026-07-20',
+                        'ppr_vaccination_date' => '2025-05-10',
+                        'fmd_vaccination_date' => '2026-09-01',
+                        'deworming_date' => '2026-10-10',
+                        'deworming_drug' => 'Fenbendazole 10% (SKUAST Protocol)',
+                        'vet_officer' => 'Dr. M. A. Lone, VAS J&K Sheep Husbandry',
+                        'fitness_cert_no' => 'JK-VET-FIT-2026-880',
+                        'owner_name' => $l['farmer_name'],
+                        'district' => $l['district'],
+                    ]
+                );
             }
         }
 
         // 2. Pre-seeded Orders
-        $order1 = Order::create([
-            'order_no' => 'KS-891042',
-            'customer_name' => 'Tariq Ahmad Mir',
-            'customer_phone' => '09419024810',
-            'district' => 'Anantnag',
-            'delivery_address' => 'Near Jamia Masjid, Mattan, Anantnag - 192125',
-            'pin_code' => '192125',
-            'payment_method' => 'Cash on Delivery',
-            'payment_status' => 'pending',
-            'subtotal' => 38000.00,
-            'shipping_fee' => 0.00,
-            'total_amount' => 38000.00,
-            'status' => 'In Transit',
-            'carrier_vehicle' => 'JK01-AH-4912 (J&K Livestock Express)',
-            'vas_officer_cleared' => 'Dr. Rafiq Ahmad, VAS Ganderbal',
-            'notes' => 'Handle with care; breeding ram for high-altitude orchard farm.',
-            'created_at' => now()->subHours(18),
-        ]);
+        $order1 = Order::firstOrCreate(
+            ['order_no' => 'KS-891042'],
+            [
+                'customer_name' => 'Tariq Ahmad Mir',
+                'customer_phone' => '09419024810',
+                'district' => 'Anantnag',
+                'delivery_address' => 'Near Jamia Masjid, Mattan, Anantnag - 192125',
+                'pin_code' => '192125',
+                'payment_method' => 'Cash on Delivery',
+                'payment_status' => 'pending',
+                'subtotal' => 38000.00,
+                'shipping_fee' => 0.00,
+                'total_amount' => 38000.00,
+                'status' => 'In Transit',
+                'carrier_vehicle' => 'JK01-AH-4912 (J&K Livestock Express)',
+                'vas_officer_cleared' => 'Dr. Rafiq Ahmad, VAS Ganderbal',
+                'notes' => 'Handle with care; breeding ram for high-altitude orchard farm.',
+                'created_at' => now()->subHours(18),
+            ]
+        );
 
-        OrderItem::create([
-            'order_id' => $order1->id,
-            'title' => 'SKUAST-K Certified Elite Kashmir Merino Breeding Ram',
-            'spec' => '2 Teeth (Doda) • 20.5 Micron Superfine',
-            'inaph_tag' => '040029481023',
-            'unit_price' => 38000.00,
-            'quantity' => 1,
-            'total_price' => 38000.00,
-        ]);
+        OrderItem::firstOrCreate(
+            ['order_id' => $order1->id, 'title' => 'SKUAST-K Certified Elite Kashmir Merino Breeding Ram'],
+            [
+                'spec' => '2 Teeth (Doda) • 20.5 Micron Superfine',
+                'inaph_tag' => '040029481023',
+                'unit_price' => 38000.00,
+                'quantity' => 1,
+                'total_price' => 38000.00,
+            ]
+        );
 
-        $order2 = Order::create([
-            'order_no' => 'KS-672109',
-            'customer_name' => 'Farooq Ahmad Lone',
-            'customer_phone' => '09797033441',
-            'district' => 'Baramulla',
-            'delivery_address' => 'Main Chowk, Model Apple Orchard, Sopore - 193201',
-            'pin_code' => '193201',
-            'payment_method' => 'Instant UPI',
-            'payment_status' => 'verified',
-            'upi_reference' => 'UPI902481092812',
-            'subtotal' => 4500.00,
-            'shipping_fee' => 0.00,
-            'total_amount' => 4500.00,
-            'status' => 'Delivered',
-            'carrier_vehicle' => 'JK05-B-1190 Tractor Trolley',
-            'vas_officer_cleared' => 'Not Applicable (Organic Produce)',
-            'notes' => 'Direct unload at tree beds.',
-            'created_at' => now()->subDays(3),
-        ]);
+        $order2 = Order::firstOrCreate(
+            ['order_no' => 'KS-672109'],
+            [
+                'customer_name' => 'Farooq Ahmad Lone',
+                'customer_phone' => '09797033441',
+                'district' => 'Baramulla',
+                'delivery_address' => 'Main Chowk, Model Apple Orchard, Sopore - 193201',
+                'pin_code' => '193201',
+                'payment_method' => 'Instant UPI',
+                'payment_status' => 'verified',
+                'upi_reference' => 'UPI902481092812',
+                'subtotal' => 4500.00,
+                'shipping_fee' => 0.00,
+                'total_amount' => 4500.00,
+                'status' => 'Delivered',
+                'carrier_vehicle' => 'JK05-B-1190 Tractor Trolley',
+                'vas_officer_cleared' => 'Not Applicable (Organic Produce)',
+                'notes' => 'Direct unload at tree beds.',
+                'created_at' => now()->subDays(3),
+            ]
+        );
 
-        OrderItem::create([
-            'order_id' => $order2->id,
-            'title' => 'Fermented Organic Sheep Manure (Tractor Trolley - 500 Kg)',
-            'spec' => 'High Nitrogen-Potash for Apple Orchards',
-            'unit_price' => 4500.00,
-            'quantity' => 1,
-            'total_price' => 4500.00,
-        ]);
+        OrderItem::firstOrCreate(
+            ['order_id' => $order2->id, 'title' => 'Fermented Organic Sheep Manure (Tractor Trolley - 500 Kg)'],
+            [
+                'spec' => 'High Nitrogen-Potash for Apple Orchards',
+                'unit_price' => 4500.00,
+                'quantity' => 1,
+                'total_price' => 4500.00,
+            ]
+        );
 
         // 3. Pre-seeded HADP Applications
-        HadpApplication::create([
-            'ref_no' => 'HADP-JK-SHP-84920',
-            'beneficiary_name' => 'Ghulam Hassan Wani',
-            'aadhaar_hash' => 'XXXX-XXXX-7182',
-            'phone' => '09419477889',
-            'district' => 'Pulwama',
-            'target_scheme' => 'Project 24: Commercial 50-Ewe Sheep Farm (50% DBT)',
-            'training_status' => 'Certified - Daksh Kisan SKUAST-K Level 2',
-            'unit_cost' => 500000.00,
-            'subsidy_amount' => 250000.00,
-            'workflow_stage' => 3, // VAS Field Inspection Cleared
-            'kkg_center_id' => 'KKG-PUL-TRAL-02',
-            'vas_inspector_name' => 'Dr. Z. A. Rather, VAS Tral',
-            'sanction_order_no' => 'DSHO/PUL/HADP-24/2026/419',
-        ]);
+        HadpApplication::firstOrCreate(
+            ['ref_no' => 'HADP-JK-SHP-84920'],
+            [
+                'beneficiary_name' => 'Ghulam Hassan Wani',
+                'aadhaar_hash' => 'XXXX-XXXX-7182',
+                'phone' => '09419477889',
+                'district' => 'Pulwama',
+                'target_scheme' => 'Project 24: Commercial 50-Ewe Sheep Farm (50% DBT)',
+                'training_status' => 'Certified - Daksh Kisan SKUAST-K Level 2',
+                'unit_cost' => 500000.00,
+                'subsidy_amount' => 250000.00,
+                'workflow_stage' => 3, // VAS Field Inspection Cleared
+                'kkg_center_id' => 'KKG-PUL-TRAL-02',
+                'vas_inspector_name' => 'Dr. Z. A. Rather, VAS Tral',
+                'sanction_order_no' => 'DSHO/PUL/HADP-24/2026/419',
+            ]
+        );
 
-        HadpApplication::create([
-            'ref_no' => 'HADP-JK-SHP-62104',
-            'beneficiary_name' => 'Showkat Ahmad Bhat',
-            'aadhaar_hash' => 'XXXX-XXXX-4911',
-            'phone' => '09906044556',
-            'district' => 'Shopian',
-            'target_scheme' => 'Project 27: Modern Shearing Unit & Wool Scouring (50% DBT)',
-            'training_status' => 'Enrolled in Daksh Kisan LMS',
-            'unit_cost' => 300000.00,
-            'subsidy_amount' => 150000.00,
-            'workflow_stage' => 1, // KKG Intake Form Submitted
-            'kkg_center_id' => 'KKG-SHP-HIR-01',
-        ]);
+        HadpApplication::firstOrCreate(
+            ['ref_no' => 'HADP-JK-SHP-62104'],
+            [
+                'beneficiary_name' => 'Showkat Ahmad Bhat',
+                'aadhaar_hash' => 'XXXX-XXXX-4911',
+                'phone' => '09906044556',
+                'district' => 'Shopian',
+                'target_scheme' => 'Project 27: Modern Shearing Unit & Wool Scouring (50% DBT)',
+                'training_status' => 'Enrolled in Daksh Kisan LMS',
+                'unit_cost' => 300000.00,
+                'subsidy_amount' => 150000.00,
+                'workflow_stage' => 1, // KKG Intake Form Submitted
+                'kkg_center_id' => 'KKG-SHP-HIR-01',
+            ]
+        );
 
         // 4. Pre-seeded Bahak Transit Logs
-        BahakTransitLog::create([
-            'permit_no' => 'BAHAK-JK-2026-9041',
-            'chopan_name' => 'Bashir Ahmad Tedwa',
-            'chopan_id' => 'CHP-KST-092',
-            'phone' => '09419011223',
-            'route_name' => 'Sinthan Top Pass (Kishtwar to Daksum Corridor)',
-            'ewe_count' => 260,
-            'ram_count' => 30,
-            'lamb_count' => 130,
-            'total_head_count' => 420,
-            'dipping_cert_no' => 'DIP-DAKSUM-2026-081',
-            'checkpost_name' => 'Daksum Checkpost',
-            'transit_date' => '2026-10-18',
-            'clearance_status' => 'Cleared',
-        ]);
+        BahakTransitLog::firstOrCreate(
+            ['permit_no' => 'BAHAK-JK-2026-9041'],
+            [
+                'chopan_name' => 'Bashir Ahmad Tedwa',
+                'chopan_id' => 'CHP-KST-092',
+                'phone' => '09419011223',
+                'route_name' => 'Sinthan Top Pass (Kishtwar to Daksum Corridor)',
+                'ewe_count' => 260,
+                'ram_count' => 30,
+                'lamb_count' => 130,
+                'total_head_count' => 420,
+                'dipping_cert_no' => 'DIP-DAKSUM-2026-081',
+                'checkpost_name' => 'Daksum Checkpost',
+                'transit_date' => '2026-10-18',
+                'clearance_status' => 'Cleared',
+            ]
+        );
 
-        BahakTransitLog::create([
-            'permit_no' => 'BAHAK-JK-2026-7812',
-            'chopan_name' => 'Ghulam Rasool Poswal',
-            'chopan_id' => 'CHP-BND-044',
-            'phone' => '09419024810',
-            'route_name' => 'Gurez - Tulail Pass',
-            'ewe_count' => 380,
-            'ram_count' => 45,
-            'lamb_count' => 225,
-            'total_head_count' => 650,
-            'dipping_cert_no' => 'DIP-DAWAR-2026-114',
-            'checkpost_name' => 'Dawar Alpine Post',
-            'transit_date' => '2026-10-22',
-            'clearance_status' => 'Cleared',
-        ]);
+        BahakTransitLog::firstOrCreate(
+            ['permit_no' => 'BAHAK-JK-2026-7812'],
+            [
+                'chopan_name' => 'Ghulam Rasool Poswal',
+                'chopan_id' => 'CHP-BND-044',
+                'phone' => '09419024810',
+                'route_name' => 'Gurez - Tulail Pass',
+                'ewe_count' => 380,
+                'ram_count' => 45,
+                'lamb_count' => 225,
+                'total_head_count' => 650,
+                'dipping_cert_no' => 'DIP-DAWAR-2026-114',
+                'checkpost_name' => 'Dawar Alpine Post',
+                'transit_date' => '2026-10-22',
+                'clearance_status' => 'Cleared',
+            ]
+        );
 
         // 5. Pre-seeded Wool Lab Testing Record
-        WoolLabRecord::create([
-            'sample_code' => 'WOOL-SKUAST-2026-891',
-            'farmer_name' => 'Ghulam Rasool Mir',
-            'flock_tag_reference' => 'TAG-040038192044',
-            'district' => 'Anantnag',
-            'micron' => 19.2,
-            'staple_length_cm' => 7.8,
-            'clean_yield_pct' => 65.4,
-            'greasy_weight_kg' => 3.80,
-            'wool_grade' => 'Superfine Merino Grade A',
-            'msp_rate_per_kg' => 340.00,
-            'clean_yield_bonus' => 95.00,
-            'total_payout' => 1653.00,
-            'certified_by' => 'SKUAST-K Wool Testing & Quality Certification Division',
-        ]);
+        WoolLabRecord::firstOrCreate(
+            ['sample_code' => 'WOOL-SKUAST-2026-891'],
+            [
+                'farmer_name' => 'Ghulam Rasool Mir',
+                'flock_tag_reference' => 'TAG-040038192044',
+                'district' => 'Anantnag',
+                'micron' => 19.2,
+                'staple_length_cm' => 7.8,
+                'clean_yield_pct' => 65.4,
+                'greasy_weight_kg' => 3.80,
+                'wool_grade' => 'Superfine Merino Grade A',
+                'msp_rate_per_kg' => 340.00,
+                'clean_yield_bonus' => 95.00,
+                'total_payout' => 1653.00,
+                'certified_by' => 'SKUAST-K Wool Testing & Quality Certification Division',
+            ]
+        );
     }
 }

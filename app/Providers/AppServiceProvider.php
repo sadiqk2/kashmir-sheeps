@@ -17,6 +17,8 @@ use App\Domain\Pastoral\Repositories\WoolLabRepositoryInterface;
 use App\Domain\Pastoral\Repositories\EloquentWoolLabRepository;
 use App\Domain\Pastoral\Repositories\BahakTransitRepositoryInterface;
 use App\Domain\Pastoral\Repositories\EloquentBahakTransitRepository;
+use App\Domain\Identity\Repositories\UserRepositoryInterface;
+use App\Domain\Identity\Repositories\EloquentUserRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(InaphPassportRepositoryInterface::class, EloquentInaphPassportRepository::class);
         $this->app->bind(WoolLabRepositoryInterface::class, EloquentWoolLabRepository::class);
         $this->app->bind(BahakTransitRepositoryInterface::class, EloquentBahakTransitRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, EloquentUserRepository::class);
     }
 
     /**

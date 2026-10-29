@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\InaphPassportController as V1InaphController;
 use App\Http\Controllers\Api\V1\ClinicalDiagnosisController as V1ClinicalController;
 use App\Http\Controllers\Api\V1\WoolLabController as V1WoolLabController;
 use App\Http\Controllers\Api\V1\BahakTransitController as V1BahakController;
+use App\Http\Controllers\Api\V1\AuthController as V1AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,18 @@ Route::prefix('v1')->group(function () {
     Route::get('wool-lab/{sampleCode}', [V1WoolLabController::class, 'show']);
     Route::get('bahak-transit', [V1BahakController::class, 'index']);
     Route::post('bahak-transit', [V1BahakController::class, 'store']);
+
+    // 6. Identity & Authentication Domain
+    Route::post('auth/register', [V1AuthController::class, 'register']);
+    Route::post('auth/login', [V1AuthController::class, 'login']);
+    Route::get('auth/roles', [V1AuthController::class, 'roles']);
+    Route::get('users/sellers', [V1AuthController::class, 'sellers']);
+    Route::get('users/buyers', [V1AuthController::class, 'buyers']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('auth/me', [V1AuthController::class, 'me']);
+        Route::post('auth/logout', [V1AuthController::class, 'logout']);
+    });
 });
 
 /*
@@ -73,3 +86,14 @@ Route::post('wool-lab/analyze', [V1WoolLabController::class, 'analyze']);
 Route::get('wool-lab/{sampleCode}', [V1WoolLabController::class, 'show']);
 Route::get('bahak-transit', [V1BahakController::class, 'index']);
 Route::post('bahak-transit', [V1BahakController::class, 'store']);
+
+Route::post('auth/register', [V1AuthController::class, 'register']);
+Route::post('auth/login', [V1AuthController::class, 'login']);
+Route::get('auth/roles', [V1AuthController::class, 'roles']);
+Route::get('users/sellers', [V1AuthController::class, 'sellers']);
+Route::get('users/buyers', [V1AuthController::class, 'buyers']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('auth/me', [V1AuthController::class, 'me']);
+    Route::post('auth/logout', [V1AuthController::class, 'logout']);
+});
