@@ -117,8 +117,14 @@
         <button id="navPillLive" onclick="showSection('live')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">
           🐏 <span id="lblPillLive">Live Sheep Mandi</span>
         </button>
-        <button id="navPillStore" onclick="showSection('store')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600 flex items-center gap-1">
-          🛍️ <span id="lblPillStore">Farm Products & Wool</span>
+        <button id="navPillStore" onclick="showSection('store')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 dark:text-slate-400 hover:text-emerald-600 flex items-center gap-1">
+          🛍️ <span id="lblPillStore">All Farm Products</span>
+        </button>
+        <button onclick="setCategory('fertilizer'); scrollToCatalog();" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-amber-700 dark:text-amber-400 hover:text-amber-600 flex items-center gap-1">
+          🌱 <span id="lblNavManure">Orchard Manure</span>
+        </button>
+        <button onclick="setCategory('wool'); scrollToCatalog();" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-purple-700 dark:text-purple-400 hover:text-purple-600 flex items-center gap-1">
+          🧶 <span id="lblNavWool">Pure Wool & Yarn</span>
         </button>
         </div>
 
@@ -165,7 +171,7 @@
         <!-- Post Ad (Farmer) -->
         <button onclick="openSellModal()" class="hidden sm:flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3.5 py-2 rounded-xl shadow-md shadow-emerald-600/25 transition">
           <span>➕</span>
-          <span id="navPostBtn">Sell Sheep</span>
+          <span id="navPostBtn">Sell Sheep / Manure / Wool</span>
         </button>
       </div>
     </div>
@@ -193,7 +199,32 @@
           Connect directly with local shepherds for pure Kashmir Merino rams, Bakarwali mountain sheep, Qurbani stock, certified orchard manure for high-yield apple trees, raw Merino knitting yarn, and shearing clippers.
         </p>
 
-        <!-- SMART SEARCH & FILTER BOX -->
+
+        <!-- QUICK BUY & SELL SHORTCUTS -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4">
+          <button onclick="setCategory('fertilizer'); scrollToCatalog();" class="p-2.5 rounded-2xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-left transition backdrop-blur-sm group">
+            <span class="text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">🌱</span>
+            <span class="font-bold text-xs block text-amber-200">Buy Orchard Manure</span>
+            <span class="text-[10px] text-amber-100/70 block">Trolley loads & 50kg bags</span>
+          </button>
+          <button onclick="setCategory('wool'); scrollToCatalog();" class="p-2.5 rounded-2xl bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/40 text-left transition backdrop-blur-sm group">
+            <span class="text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">🧶</span>
+            <span class="font-bold text-xs block text-purple-200">Buy Merino Wool & Yarn</span>
+            <span class="text-[10px] text-purple-100/70 block">Raw fleece & Pheran yarn</span>
+          </button>
+          <button onclick="openSellModal('fertilizer')" class="p-2.5 rounded-2xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 text-left transition backdrop-blur-sm group">
+            <span class="text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">➕</span>
+            <span class="font-bold text-xs block text-emerald-200">Sell Manure / Wool</span>
+            <span class="text-[10px] text-emerald-100/70 block">Free farmer direct ad</span>
+          </button>
+          <button onclick="openEstimatorModal('manure')" class="p-2.5 rounded-2xl bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 text-left transition backdrop-blur-sm group">
+            <span class="text-xl block mb-0.5 group-hover:scale-110 transition-transform inline-block">📐</span>
+            <span class="font-bold text-xs block text-blue-200">Orchard Calculator</span>
+            <span class="text-[10px] text-blue-100/70 block">Manure needed per kanal</span>
+          </button>
+        </div>
+
+                <!-- SMART SEARCH & FILTER BOX -->
         <div class="bg-white dark:bg-slate-900 rounded-2xl p-2.5 shadow-2xl border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 flex flex-col md:flex-row gap-2">
           
           <!-- Text Input -->
@@ -332,9 +363,6 @@
       <button onclick="setCategory('all')" class="cat-pill active px-4 py-2 rounded-2xl bg-emerald-600 text-white whitespace-nowrap shadow-sm transition">
         🌟 <span id="catAll">All Items</span> (<span id="totalBadge">12</span>)
       </button>
-      <button onclick="setCategory('hadp')" class="cat-pill px-4 py-2 rounded-2xl bg-amber-500/10 dark:bg-amber-950/40 border border-amber-500/40 text-amber-700 dark:text-amber-300 hover:border-amber-500 whitespace-nowrap transition">
-        🏛️ <span id="catHadp">HADP & SKUAST Units</span>
-      </button>
       <button onclick="setCategory('merino')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
         🐑 <span id="catMerino">Kashmir Merino</span>
       </button>
@@ -344,11 +372,13 @@
       <button onclick="setCategory('qurbani')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
         ✨ <span id="catQurbani">Qurbani Ready (2-4 Teeth)</span>
       </button>
-      <button onclick="setCategory('fertilizer')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
-        🍎 <span id="catFertilizer">Apple Orchard Manure (Khad)</span>
+      <button onclick="setCategory('fertilizer')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-amber-400/60 dark:border-amber-600/50 text-amber-800 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/40 whitespace-nowrap transition flex items-center gap-1.5 shadow-sm">
+        🌱 <span id="catFertilizer">Apple Orchard Manure (کھاد)</span>
+        <span class="bg-amber-500 text-slate-950 text-[10px] font-black px-1.5 py-0.2 rounded-full">Orchard Fresh</span>
       </button>
-      <button onclick="setCategory('wool')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
-        🧶 <span id="catWool">Merino Wool & Blankets</span>
+      <button onclick="setCategory('wool')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-purple-400/60 dark:border-purple-600/50 text-purple-800 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 whitespace-nowrap transition flex items-center gap-1.5 shadow-sm">
+        🧶 <span id="catWool">Pure Raw Wool & Yarn (خام اون)</span>
+        <span class="bg-purple-500 text-white text-[10px] font-black px-1.5 py-0.2 rounded-full">SKUAST Tested</span>
       </button>
       <button onclick="setCategory('supplies')" class="cat-pill px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 whitespace-nowrap transition">
         ⚙️ <span id="catSupplies">Clippers, Salt & Feed</span>
@@ -672,6 +702,28 @@
       </div>
 
       <div id="sellPaneNew">
+      <!-- 3-Way Selling Preset Selector -->
+      <div class="mb-4">
+        <label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">What are you selling today? (آپ کیا فروخت کرنا چاہتے ہیں؟)</label>
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <button type="button" onclick="presetSellForm('sheep')" id="sellType_sheep" class="sell-type-btn p-2.5 rounded-2xl border-2 border-emerald-600 bg-emerald-50/60 dark:bg-emerald-950/40 text-center transition">
+            <span class="text-xl block mb-0.5">🐑</span>
+            <span class="font-bold block text-slate-900 dark:text-slate-100 text-[11px]">Live Sheep</span>
+            <span class="text-[9px] text-slate-500 block">Ram, Ewe, Qurbani</span>
+          </button>
+          <button type="button" onclick="presetSellForm('fertilizer')" id="sellType_fertilizer" class="sell-type-btn p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 text-center transition hover:border-amber-500">
+            <span class="text-xl block mb-0.5">🌱</span>
+            <span class="font-bold block text-slate-900 dark:text-slate-100 text-[11px]">Orchard Manure</span>
+            <span class="text-[9px] text-slate-500 block">Trolleys & 50kg Bags</span>
+          </button>
+          <button type="button" onclick="presetSellForm('wool')" id="sellType_wool" class="sell-type-btn p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 text-center transition hover:border-purple-500">
+            <span class="text-xl block mb-0.5">🧶</span>
+            <span class="font-bold block text-slate-900 dark:text-slate-100 text-[11px]">Merino Wool</span>
+            <span class="text-[9px] text-slate-500 block">Raw Fleece & Yarn</span>
+          </button>
+        </div>
+      </div>
+
       <form id="sellForm" onsubmit="handlePostAd(event)" class="space-y-3.5 text-xs sm:text-sm">
         <!-- Photo Upload with Live Preview -->
         <div>
@@ -751,20 +803,35 @@
   </div>
 
   <!-- MODAL: WEIGHT RATE CALCULATOR -->
-  <div id="estimatorModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 relative shadow-2xl">
+  <div id="estimatorModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-5 sm:p-6 relative shadow-2xl">
       <button onclick="closeEstimatorModal()" class="modal-close-btn absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
 
-      <div class="mb-4 text-center">
-        <span class="text-3xl">⚖️</span>
-        <h3 class="text-base sm:text-lg font-bold mt-1" id="calcModalTitle">Kashmir Live-Weight Rate Estimator</h3>
-        <p class="text-xs text-slate-500" id="calcModalSub">Estimate fair farm-gate pricing based on current J&K Mandi live weight rates.</p>
+      <div class="mb-4">
+        <h3 class="text-base sm:text-lg font-black flex items-center gap-2" id="calcModalTitle">
+          ⚖️ Kashmir Livestock, Manure & Wool Estimator
+        </h3>
+        <p class="text-xs text-slate-500" id="calcModalSub">Instant calculations for sheep rates, orchard manure requirements, and wool market grades.</p>
       </div>
 
-      <div class="space-y-4 text-xs sm:text-sm">
+      <!-- Segmented Calculator Switcher -->
+      <div class="flex items-center gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl mb-4 text-xs font-bold">
+        <button id="calcTabSheep" onclick="switchCalcTab('sheep')" class="flex-1 py-2 px-2 rounded-xl transition bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-sm text-center">
+          🐑 Sheep Rates
+        </button>
+        <button id="calcTabManure" onclick="switchCalcTab('manure')" class="flex-1 py-2 px-2 rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-amber-600 text-center">
+          🌱 Orchard Manure
+        </button>
+        <button id="calcTabWool" onclick="switchCalcTab('wool')" class="flex-1 py-2 px-2 rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-purple-600 text-center">
+          🧶 Wool & Payout
+        </button>
+      </div>
+
+      <!-- 1. SHEEP RATE ESTIMATOR -->
+      <div id="calcPaneSheep" class="space-y-4 text-xs sm:text-sm">
         <div>
           <label class="block font-bold mb-1" id="calcBreedLabel">Select Breed Category</label>
-          <select id="calcBreed" onchange="calculateRate()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
+          <select id="calcBreed" onchange="calculateRate()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none">
             <!-- Populated in JS -->
           </select>
         </div>
@@ -774,12 +841,98 @@
           <input type="number" id="calcWeight" value="52" oninput="calculateRate()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-center text-xl font-black text-emerald-600 focus:outline-none">
         </div>
 
-        <div class="p-5 bg-emerald-50 dark:bg-emerald-950/40 rounded-2xl border border-emerald-200 dark:border-emerald-800 text-center">
+        <div class="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-2xl border border-emerald-200 dark:border-emerald-800 text-center">
           <p class="text-xs text-emerald-800 dark:text-emerald-300 font-bold" id="calcResultLabel">Estimated Fair Farm-Gate Rate</p>
           <div id="calcResult" class="text-3xl font-black text-emerald-700 dark:text-emerald-300 my-1">
             ₹21,840
           </div>
-          <p class="text-[11px] text-slate-500" id="calcNote">Final price varies depending on horn symmetry, fleece yield, pedigree, and health.</p>
+          <p class="text-[11px] text-slate-500">Fair live weight rate based on current Kashmir Mandi trading standards.</p>
+        </div>
+      </div>
+
+      <!-- 2. ORCHARD MANURE REQUIREMENT CALCULATOR -->
+      <div id="calcPaneManure" class="hidden space-y-4 text-xs sm:text-sm">
+        <div class="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-800 text-xs">
+          <span class="font-bold text-amber-800 dark:text-amber-200 block mb-0.5">🍎 Apple Tree Winter Rootzone Protection:</span>
+          <p class="text-amber-700/90 dark:text-amber-300/90 leading-relaxed">
+            Sheep manure has 3x higher nitrogen-potassium content than cow dung. Decomposing droppings release biological warmth protecting roots during Chillai Kalan (-8°C).
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1">Orchard Size (Kanals / کنال)</label>
+            <input type="number" id="manureKanals" value="4" min="1" max="100" oninput="calculateManure()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-center text-lg font-black text-amber-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Orchard Type</label>
+            <select id="manureType" onchange="calculateManure()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-none text-xs">
+              <option value="traditional">Traditional Delicious Orchard (16-20 Trees/Kanal)</option>
+              <option value="highdensity">High-Density M9 Apple (60-80 Trees/Kanal)</option>
+              <option value="almond">Walnut & Almond Plantation</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="p-4 bg-amber-50 dark:bg-amber-950/40 rounded-2xl border border-amber-200 dark:border-amber-800">
+          <div class="grid grid-cols-2 gap-3 text-center mb-3">
+            <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800">
+              <span class="text-[10px] text-slate-500 uppercase font-black block">Tractor Trolleys</span>
+              <span id="manureTrolleysResult" class="text-2xl font-black text-amber-700 dark:text-amber-300">1.5 Trolleys</span>
+              <span class="text-[10px] text-slate-400 block">~750 Kg aged dung</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800">
+              <span class="text-[10px] text-slate-500 uppercase font-black block">Or 50 Kg Bags</span>
+              <span id="manureBagsResult" class="text-2xl font-black text-amber-700 dark:text-amber-300">15 Bags</span>
+              <span class="text-[10px] text-slate-400 block">Screened sun-dried pellets</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-xs pt-2 border-t border-amber-200 dark:border-amber-800">
+            <span class="font-bold text-slate-700 dark:text-slate-300">Est. Fertilizer Cost:</span>
+            <span id="manureCostResult" class="font-black text-base text-amber-700 dark:text-amber-300">₹6,750</span>
+          </div>
+        </div>
+
+        <button onclick="setCategory('fertilizer'); closeEstimatorModal(); scrollToCatalog();" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-md shadow-amber-600/20">
+          🌱 View Verified Manure Suppliers in My District
+        </button>
+      </div>
+
+      <!-- 3. RAW WOOL QUALITY & VALUE ESTIMATOR -->
+      <div id="calcPaneWool" class="hidden space-y-4 text-xs sm:text-sm">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold mb-1">Fiber Micron (مائکرون)</label>
+            <input type="number" id="woolMicronInput" value="19.5" step="0.1" min="15" max="40" oninput="calculateWool()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-center text-lg font-black text-purple-600 focus:outline-none">
+          </div>
+          <div>
+            <label class="block font-bold mb-1">Greasy Fleece Weight (Kg)</label>
+            <input type="number" id="woolWeightInput" value="30" min="1" max="1000" oninput="calculateWool()" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-center text-lg font-black text-purple-600 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="p-4 bg-purple-50 dark:bg-purple-950/40 rounded-2xl border border-purple-200 dark:border-purple-800 space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-500 font-medium">Assigned Grade:</span>
+            <span id="woolGradeResult" class="font-bold text-purple-700 dark:text-purple-300">Superfine Merino Grade A</span>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-500 font-medium">Clean Wool Yield (~64%):</span>
+            <span id="woolCleanYieldResult" class="font-bold text-slate-800 dark:text-slate-200">19.2 Kg</span>
+          </div>
+          <div class="flex justify-between items-center text-xs pt-2 border-t border-purple-200 dark:border-purple-800">
+            <span class="font-bold text-slate-700 dark:text-slate-300">Estimated Market Payout:</span>
+            <span id="woolPayoutResult" class="font-black text-xl text-purple-700 dark:text-purple-300">₹8,352</span>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="setCategory('wool'); closeEstimatorModal(); scrollToCatalog();" class="flex-1 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-md shadow-purple-600/20">
+            🧶 Browse Wool Listings
+          </button>
+          <button onclick="openSellModal('wool'); closeEstimatorModal();" class="py-2.5 px-3 rounded-xl border border-purple-400 text-purple-600 font-bold text-xs hover:bg-purple-50 transition">
+            ➕ Post Wool Ad
+          </button>
         </div>
       </div>
     </div>
@@ -3640,6 +3793,171 @@
         userLabel.textContent = "Sign In / Register";
         userBadge.classList.add('hidden');
         userIcon.textContent = "👤";
+      }
+    }
+
+    
+    /* =====================================================================
+       BUY & SELL MANURE & WOOL LOGIC + ESTIMATOR CALCULATORS
+       ===================================================================== */
+    function scrollToCatalog() {
+      const el = document.getElementById('categoriesBar') || document.getElementById('cardsGrid');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function presetSellForm(type) {
+      document.querySelectorAll('.sell-type-btn').forEach(b => {
+        b.className = "sell-type-btn p-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 text-center transition";
+      });
+      const activeBtn = document.getElementById('sellType_' + type);
+      if (activeBtn) {
+        activeBtn.className = "sell-type-btn p-2.5 rounded-2xl border-2 border-emerald-600 bg-emerald-50/60 dark:bg-emerald-950/40 text-center transition";
+      }
+
+      const pb = document.getElementById('postBreed');
+      const pTitle = document.getElementById('postTitle');
+      const pWeight = document.getElementById('postWeight');
+      const pTeeth = document.getElementById('postTeeth');
+      const pPrice = document.getElementById('postPrice');
+      const pDesc = document.getElementById('postDesc');
+      const lblWeight = document.getElementById('lblWeight');
+      const lblTeeth = document.getElementById('lblTeeth');
+
+      if (type === 'fertilizer') {
+        if (pb) pb.value = 'fertilizer';
+        if (lblWeight) lblWeight.textContent = "Batch Size (Kg / Trolley)";
+        if (lblTeeth) lblTeeth.textContent = "Packaging & Age";
+        if (pTitle) pTitle.placeholder = "e.g. 6-Month Aged Sheep Manure (Tractor Trolley - 500 Kg)";
+        if (pWeight) pWeight.value = 500;
+        if (pTeeth) pTeeth.placeholder = "e.g. Tractor Trolley • High Potash for Apple Roots";
+        if (pPrice) pPrice.value = 4500;
+        if (pDesc) pDesc.value = "Aged fermented sheep droppings from highland night sheds. Provides organic warmth and nutrition for apple tree rootzones.";
+      } else if (type === 'wool') {
+        if (pb) pb.value = 'wool';
+        if (lblWeight) lblWeight.textContent = "Fleece Weight (Kg)";
+        if (lblTeeth) lblTeeth.textContent = "Micron & Grade";
+        if (pTitle) pTitle.placeholder = "e.g. Spring Clip Pure Kashmir Merino Fleece (19.8 Micron)";
+        if (pWeight) pWeight.value = 25;
+        if (pTeeth) pTeeth.placeholder = "e.g. 19.8 Micron Superfine • 66% Clean Yield";
+        if (pPrice) pPrice.value = 9500;
+        if (pDesc) pDesc.value = "Hand-sheared and skirted pure Kashmir Merino raw fleece. Elastic, clean, ideal for Pheran knitting yarn or tweed mill weaving.";
+      } else {
+        if (pb) pb.value = 'merino';
+        if (lblWeight) lblWeight.textContent = "Weight (Kg / Unit)";
+        if (lblTeeth) lblTeeth.textContent = "Teeth / Spec";
+        if (pTitle) pTitle.placeholder = "e.g. Pure Kashmir Merino Ram (2 Teeth / Doda)";
+        if (pWeight) pWeight.value = 55;
+        if (pTeeth) pTeeth.placeholder = "2 Teeth (Doda)";
+        if (pPrice) pPrice.value = 25000;
+        if (pDesc) pDesc.value = "High quality Kashmir sheep directly from shepherd flock.";
+      }
+    }
+
+    // Calculator Tabs
+    function switchCalcTab(tab) {
+      document.getElementById('calcPaneSheep').classList.add('hidden');
+      document.getElementById('calcPaneManure').classList.add('hidden');
+      document.getElementById('calcPaneWool').classList.add('hidden');
+      document.getElementById('calcTabSheep').className = "flex-1 py-2 px-2 rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-emerald-600 text-center";
+      document.getElementById('calcTabManure').className = "flex-1 py-2 px-2 rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-amber-600 text-center";
+      document.getElementById('calcTabWool').className = "flex-1 py-2 px-2 rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-purple-600 text-center";
+
+      if (tab === 'manure') {
+        document.getElementById('calcPaneManure').classList.remove('hidden');
+        document.getElementById('calcTabManure').className = "flex-1 py-2 px-2 rounded-xl transition bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm text-center";
+        calculateManure();
+      } else if (tab === 'wool') {
+        document.getElementById('calcPaneWool').classList.remove('hidden');
+        document.getElementById('calcTabWool').className = "flex-1 py-2 px-2 rounded-xl transition bg-white dark:bg-slate-900 text-purple-600 dark:text-purple-400 shadow-sm text-center";
+        calculateWool();
+      } else {
+        document.getElementById('calcPaneSheep').classList.remove('hidden');
+        document.getElementById('calcTabSheep').className = "flex-1 py-2 px-2 rounded-xl transition bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-sm text-center";
+        calculateRate();
+      }
+    }
+
+    // Open Estimator with default tab
+    const origOpenEstimatorModal = typeof openEstimatorModal === 'function' ? openEstimatorModal : null;
+    function openEstimatorModal(defaultTab = 'sheep') {
+      const modal = document.getElementById('estimatorModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        switchCalcTab(defaultTab);
+      }
+    }
+
+    // Orchard Manure Calculator logic
+    function calculateManure() {
+      const kanals = parseFloat(document.getElementById('manureKanals')?.value) || 4;
+      const type = document.getElementById('manureType')?.value || 'traditional';
+
+      let trolleys = kanals * 0.35; // ~1 trolley per 2.8 kanals
+      if (type === 'highdensity') {
+        trolleys = kanals * 0.55; // High density requires more concentrated feeding
+      } else if (type === 'almond') {
+        trolleys = kanals * 0.25;
+      }
+
+      trolleys = Math.max(0.5, Math.round(trolleys * 10) / 10);
+      const bags = Math.round(trolleys * 10);
+      const cost = Math.round(trolleys * 4500);
+
+      const trolleysEl = document.getElementById('manureTrolleysResult');
+      const bagsEl = document.getElementById('manureBagsResult');
+      const costEl = document.getElementById('manureCostResult');
+
+      if (trolleysEl) trolleysEl.textContent = trolleys + ' Trolleys';
+      if (bagsEl) bagsEl.textContent = bags + ' Bags';
+      if (costEl) costEl.textContent = '₹' + cost.toLocaleString();
+    }
+
+    // Wool Quality & Payout Calculator logic
+    function calculateWool() {
+      const micron = parseFloat(document.getElementById('woolMicronInput')?.value) || 19.5;
+      const wt = parseFloat(document.getElementById('woolWeightInput')?.value) || 30;
+
+      let grade = 'Fine Merino Grade B';
+      let ratePerKg = 340;
+      let cleanYieldPct = 64;
+
+      if (micron < 19.5) {
+        grade = 'Superfine Merino Grade A (Premium)';
+        ratePerKg = 435;
+        cleanYieldPct = 66;
+      } else if (micron <= 22.5) {
+        grade = 'Fine Merino Grade B (Suitings)';
+        ratePerKg = 340;
+        cleanYieldPct = 62;
+      } else if (micron <= 26.0) {
+        grade = 'Medium Crossbred Grade C (Tweeds/Pherans)';
+        ratePerKg = 245;
+        cleanYieldPct = 58;
+      } else {
+        grade = 'Bakarwali Coarse Grade D (Carpets/Namdas)';
+        ratePerKg = 160;
+        cleanYieldPct = 52;
+      }
+
+      const cleanKg = Math.round((wt * cleanYieldPct / 100) * 10) / 10;
+      const totalPayout = Math.round(cleanKg * ratePerKg);
+
+      const gradeEl = document.getElementById('woolGradeResult');
+      const yieldEl = document.getElementById('woolCleanYieldResult');
+      const payoutEl = document.getElementById('woolPayoutResult');
+
+      if (gradeEl) gradeEl.textContent = grade;
+      if (yieldEl) yieldEl.textContent = cleanKg + ' Kg (~' + cleanYieldPct + '% clean yield)';
+      if (payoutEl) payoutEl.textContent = '₹' + totalPayout.toLocaleString();
+    }
+
+    // Open Sell Modal with preset
+    const origOpenSellModal = typeof openSellModal === 'function' ? openSellModal : null;
+    function openSellModal(preset = 'sheep') {
+      const modal = document.getElementById('sellModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        presetSellForm(preset);
       }
     }
 

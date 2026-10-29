@@ -300,6 +300,110 @@ class DatabaseSeeder extends Seeder
                 'gallery' => [
                     'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80'
                 ]
+            ],
+            [
+                'type' => 'product',
+                'category' => 'fertilizer',
+                'title_en' => 'Decomposed Dry Sheep Dropping Fertilizer (50 Kg Screened Bag)',
+                'title_ur' => 'خالص چھنی ہوئی بھیڑ کی خشک کھاد (۵۰ کلو بیگ)',
+                'price' => 450.00,
+                'weight' => '50 Kg',
+                'spec_en' => 'Odourless Screened Organic Pellets • 50 Kg Heavy Duty Bag',
+                'spec_ur' => 'بو کے بغیر چھنی ہوئی دیسی گولیاں • سیب و اخروٹ کیلئے',
+                'district' => 'Shopian',
+                'village_en' => 'Hirpora Organic Pastoral Belt',
+                'village_ur' => 'ہیرپورہ، شوپیاں',
+                'farmer_name' => 'Peer Panjal Organic Shepherds',
+                'phone' => '+91-99060-44556',
+                'whatsapp' => '919906044556',
+                'is_qurbani' => false,
+                'verified' => true,
+                'rating' => 5.0,
+                'reviews_count' => 22,
+                'is_sold' => false,
+                'desc_en' => 'Dry, sun-cured, and mesh-screened sheep pellets packed in tear-resistant 50 kg woven bags. Ideal for targeted trenching around high-density apple trees, almonds, and kitchen gardens.',
+                'desc_ur' => 'دھوپ میں سکھائی گئی اور چھنی ہوئی بھیڑ کی خشک کھاد۔ پودوں کے ارد گرد گڑھوں میں ڈالنے اور فوری اثر کیلئے بہترین۔',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80'
+                ]
+            ],
+            [
+                'type' => 'product',
+                'category' => 'fertilizer',
+                'title_en' => 'Highland Night-Folded Bahak Sheep Manure (Tipper Load - 2.5 Tons)',
+                'title_ur' => 'ہائی آلٹیچیوڈ چراگاہوں کی خالص بھیڑ کھاد (ٹیپر لوڈ - ۲.۵ ٹن)',
+                'price' => 18500.00,
+                'weight' => '2500 Kg',
+                'spec_en' => 'High Nitrogen Alpine Pasture Dung • Unloaded at Apple Orchard',
+                'spec_ur' => 'قدرتی جڑی بوٹیوں سے لیس دیسی کھاد • باغات میں ترسیل',
+                'district' => 'Pulwama',
+                'village_en' => 'Tral Apple & Saffron Valley',
+                'village_ur' => 'ترال ویلی، پلوامہ',
+                'farmer_name' => 'Chopan Agro Logistics, Tral',
+                'phone' => '+91-94194-77889',
+                'whatsapp' => '919419477889',
+                'is_qurbani' => false,
+                'verified' => true,
+                'rating' => 4.9,
+                'reviews_count' => 15,
+                'is_sold' => false,
+                'desc_en' => 'Bulk commercial tipper load directly sourced from high alpine night folding camps. Rich in wild clover and alpine medicinal flora nitrogen, delivered directly to your orchard beds.',
+                'desc_ur' => 'پہاڑی چراگاہوں کے باڑوں سے ٹپر بھر کر براہ راست آپ کے باغ تک ترسیل۔ شدید سردیوں میں جڑوں کو گرم رکھنے کیلئے اکسیر۔',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80'
+                ]
+            ],
+            [
+                'type' => 'product',
+                'category' => 'wool',
+                'title_en' => 'Spring Clip Hand-Skirted Pure Merino Raw Fleece (25 Kg Bulk Bale)',
+                'title_ur' => 'بہار کے موسم کی کتری ہوئی سفید میرینو خام اون (۲۵ کلو گٹھڑی)',
+                'price' => 9500.00,
+                'weight' => '25 Kg',
+                'spec_en' => 'SKUAST-K Tested 19.8 Micron • Clean White Fleece • 66% Yield',
+                'spec_ur' => '۱۹.۸ مائکرون ریشہ • سفید چمکدار • ۶۶ فیصد صاف پیداوار',
+                'district' => 'Ganderbal',
+                'village_en' => 'Dachigam Valley Shepherds Camp',
+                'village_ur' => 'داچھی گام، گاندربل',
+                'farmer_name' => 'Dachigam Shepherds Guild',
+                'phone' => '+91-94190-24810',
+                'whatsapp' => '919419024810',
+                'is_qurbani' => false,
+                'verified' => true,
+                'rating' => 5.0,
+                'reviews_count' => 17,
+                'is_sold' => false,
+                'desc_en' => 'Bale of spring-sheared pure Kashmir Merino wool. Skirted of vegetable matter and tags. Exceptional elasticity and softness, ready for industrial combing, local tweed mills, or cooperative spinning.',
+                'desc_ur' => 'بہار کے موسم کی کتری ہوئی صاف ستھری میرینو گٹھڑی۔ پشمینہ کی طرح نرم اور فیرن، گرم شال اور ٹویڈ کیلئے بہترین۔',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80'
+                ]
+            ],
+            [
+                'type' => 'product',
+                'category' => 'wool',
+                'title_en' => 'Traditional Charkha Hand-Spun Natural White Merino Pheran Yarn (1 Kg Hank)',
+                'title_ur' => 'چرخے پر کاتا ہوا خالص کشمیری میرینو اون کا دھاگہ (۱ کلو لٹی برائے فیرن)',
+                'price' => 1200.00,
+                'weight' => '1 Kg',
+                'spec_en' => 'Ready for Pheran / Tweed Weaving • 100% Pure Virgin Merino Wool',
+                'spec_ur' => 'روایتی فیرن و لنگیر کی بنائی کیلئے تیار • خالص میرینو سوت',
+                'district' => 'Bandipora',
+                'village_en' => 'Sumbal Wool Artisans Cluster',
+                'village_ur' => 'سنبل، بانڈی پورہ',
+                'farmer_name' => 'Wular Wool & Artisan Guild',
+                'phone' => '+91-94190-88112',
+                'whatsapp' => '919419088112',
+                'is_qurbani' => false,
+                'verified' => true,
+                'rating' => 4.9,
+                'reviews_count' => 38,
+                'is_sold' => false,
+                'desc_en' => 'Hand-spun 2-ply yarn spun on traditional Kashmiri wooden charkhas by local women spinners. Non-chemically bleached natural ivory tone with superior thermal insulation.',
+                'desc_ur' => 'کشمیری خواتین کے چرخے پر کاتا ہوا خالص اون کا دھاگہ۔ ہاتھ کی بنائی والے گرم فیرن اور سویٹر کیلئے سب سے بہترین۔',
+                'gallery' => [
+                    'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80'
+                ]
             ]
         ];
 
