@@ -46,7 +46,9 @@ Route::prefix('v1')->group(function () {
     Route::get('health', HealthCheckController::class);
     Route::get('health', HealthCheckController::class);
 
-Route::post('auth/register', [V1AuthController::class, 'register']);
+Route::post('auth/otp/send', [V1AuthController::class, 'sendOtp']);
+    Route::post('auth/otp/verify', [V1AuthController::class, 'verifyOtp']);
+    Route::post('auth/register', [V1AuthController::class, 'register']);
     Route::post('auth/login', [V1AuthController::class, 'login']);
     Route::get('auth/roles', [V1AuthController::class, 'roles']);
     Route::get('users/sellers', [V1AuthController::class, 'sellers']);
@@ -82,6 +84,8 @@ Route::post('bahak-transit', [V1BahakController::class, 'store']);
 
 Route::get('health', HealthCheckController::class);
 
+Route::post('auth/otp/send', [V1AuthController::class, 'sendOtp']);
+Route::post('auth/otp/verify', [V1AuthController::class, 'verifyOtp']);
 Route::post('auth/register', [V1AuthController::class, 'register']);
 Route::post('auth/login', [V1AuthController::class, 'login']);
 Route::get('auth/roles', [V1AuthController::class, 'roles']);

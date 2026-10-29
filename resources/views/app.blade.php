@@ -3543,7 +3543,7 @@
     let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     let authToken = localStorage.getItem('authToken') || null;
 
-    function openAuthModal(defaultTab = 'register') {
+    function openAuthModal(defaultTab = 'otp') {
       const modal = document.getElementById('authModal');
       modal.classList.remove('hidden');
       if (currentUser) {
@@ -4055,14 +4055,101 @@
           </div>
         </div>
 
-        <!-- Segmented Tab Switcher -->
-        <div class="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 mb-5">
-          <button id="tabBtnRegister" onclick="switchAuthTab('register')" class="flex-1 py-2 text-xs font-black rounded-xl transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm">
-            ✨ Create Account (رجسٹریشن)
+        <!-- Segmented Tab Switcher (OTP, Register, Login) -->
+        <div class="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 mb-5 gap-1">
+          <button id="tabBtnOtp" onclick="switchAuthTab('otp')" class="flex-1 py-2 text-xs font-black rounded-xl transition bg-white dark:bg-slate-900 text-emerald-700 dark:text-emerald-400 shadow-sm">
+            📱 Phone OTP
+          </button>
+          <button id="tabBtnRegister" onclick="switchAuthTab('register')" class="flex-1 py-2 text-xs font-bold rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">
+            ✨ Register
           </button>
           <button id="tabBtnLogin" onclick="switchAuthTab('login')" class="flex-1 py-2 text-xs font-bold rounded-xl transition text-slate-600 dark:text-slate-400 hover:text-emerald-600">
-            🔑 Sign In (لاگ ان)
+            🔑 Password
           </button>
+        </div>
+
+        <!-- 0. PHONE OTP TAB -->
+        <div id="paneOtp" class="space-y-4">
+          <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-2xl border border-emerald-500/30 text-xs">
+            <span class="font-bold text-emerald-900 dark:text-emerald-200 block mb-0.5">⚡ Fast 1-Tap Mobile Sign In & Registration</span>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Receive a 6-digit OTP code on your mobile phone via SMS & WhatsApp.</p>
+          </div>
+
+          <!-- Step 1: Enter Phone Number -->
+          <div id="otpStepPhone" class="space-y-3 text-xs">
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Mobile Phone (موبائل نمبر) *</label>
+              <div class="relative flex items-center">
+                <span class="absolute left-3 text-slate-400 font-bold">+91</span>
+                <input type="tel" id="otpPhoneInput" placeholder="94190XXXXX" class="w-full pl-12 pr-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 font-mono text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+              </div>
+              <p class="text-[10px] text-slate-400 mt-1">Works with all J&K Airtel, Jio & BSNL numbers.</p>
+            </div>
+
+            <!-- KYC for fast auto-verification -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">Full Name (پورا نام)</label>
+                <input type="text" id="otpNameInput" placeholder="e.g. Ghulam Rasool" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 outline-none">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1">District (ضلع)</label>
+                <select id="otpDistrictInput" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 outline-none">
+                  <option value="Anantnag">Anantnag (اسلام آباد)</option>
+                  <option value="Pulwama">Pulwama (پلوامہ)</option>
+                  <option value="Srinagar">Srinagar (سرینگر)</option>
+                  <option value="Baramulla">Baramulla (بارہمولہ)</option>
+                  <option value="Budgam">Budgam (بڈگام)</option>
+                  <option value="Shopian">Shopian (شوپیاں)</option>
+                  <option value="Ganderbal">Ganderbal (گاندربل)</option>
+                  <option value="Kulgam">Kulgam (کولگام)</option>
+                  <option value="Bandipora">Bandipora (باندی پورہ)</option>
+                  <option value="Kupwara">Kupwara (کپوارہ)</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" onclick="handleSendOtp()" id="btnSendOtp" class="w-full py-3 px-4 rounded-xl text-xs font-black bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/25 transition flex items-center justify-center gap-2">
+              <span>📩</span> <span>Send 6-Digit SMS / WhatsApp OTP</span>
+            </button>
+          </div>
+
+          <!-- Step 2: Enter 6-Digit OTP -->
+          <div id="otpStepVerify" class="hidden space-y-3 text-xs">
+            <div class="text-center p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+              <span class="text-xs text-slate-500">Verification code sent to</span>
+              <span class="font-bold text-sm block font-mono text-emerald-600" id="otpTargetDisplay">+91-XXXXXXXXXX</span>
+              <button type="button" onclick="resetOtpStep()" class="text-[10px] text-slate-400 hover:underline mt-0.5">Edit Number ✎</button>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 dark:text-slate-300 mb-1.5 text-center">Enter 6-Digit Verification Code</label>
+              <input type="text" id="otpCodeInput" maxlength="6" placeholder="786000" class="w-48 mx-auto block text-center tracking-widest text-xl font-mono font-black py-2 px-3 rounded-xl border-2 border-emerald-500 bg-white dark:bg-slate-800 outline-none">
+              <p class="text-[10px] text-center text-slate-400 mt-1" id="otpTimerDisplay">Valid for 05:00 minutes • Dev OTP: 786000</p>
+            </div>
+
+            <button type="button" onclick="handleVerifyOtp()" id="btnVerifyOtp" class="w-full py-3 px-4 rounded-xl text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2">
+              <span>✓</span> <span>Verify Code & Sign In</span>
+            </button>
+            <div class="text-center">
+              <button type="button" onclick="handleSendOtp()" class="text-xs text-emerald-600 hover:underline font-bold">Resend OTP Code</button>
+            </div>
+          </div>
+
+          <!-- Quick Demo Phone Logins -->
+          <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
+            <span class="text-[10px] uppercase font-black text-slate-400 tracking-wider block mb-2">⚡ 1-Click Shepherd Test Numbers:</span>
+            <div class="grid grid-cols-2 gap-2 text-[11px]">
+              <button type="button" onclick="fillQuickOtpPhone('09419011223', 'Ghulam Rasool Mir')" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-left transition">
+                <span class="font-bold block text-slate-800 dark:text-slate-200">🐑 Ghulam Rasool</span>
+                <span class="text-[9px] text-emerald-600 block">09419011223 (Verified Breeder)</span>
+              </button>
+              <button type="button" onclick="fillQuickOtpPhone('09419477889', 'Ghulam Hassan Wani')" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-left transition">
+                <span class="font-bold block text-slate-800 dark:text-slate-200">🐑 Hassan Wani</span>
+                <span class="text-[9px] text-emerald-600 block">09419477889 (Tral Pastoralist)</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- 1. REGISTRATION TAB -->
