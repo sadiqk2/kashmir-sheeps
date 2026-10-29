@@ -44,16 +44,16 @@ class AuthApiTest extends TestCase
         $this->assertDatabaseHas('users', ['email' => 'bashir.reshi@gmail.com']);
     }
 
-    public function test_farmer_with_kkg_id_is_auto_verified(): void
+    public function test_seller_with_inaph_code_is_auto_verified(): void
     {
         $payload = [
             'name' => 'Mohammad Shafi Lone',
-            'email' => 'shafi.farmer@kashmirsheeps.in',
+            'email' => 'shafi.breeder@kashmirsheeps.in',
             'password' => 'secret12345',
             'phone' => '09419077665',
-            'role' => 'farmer',
+            'role' => 'seller',
             'district' => 'Ganderbal',
-            'kkg_id' => 'KKG-GAN-KANG-05',
+            'inaph_breeder_code' => 'JK-BREED-GAN-09',
         ];
 
         $response = $this->postJson('/api/v1/auth/register', $payload);
@@ -64,9 +64,9 @@ class AuthApiTest extends TestCase
                 'data' => [
                     'user' => [
                         'name' => 'Mohammad Shafi Lone',
-                        'role' => 'farmer',
+                        'role' => 'seller',
                         'is_verified' => true,
-                        'kkg_id' => 'KKG-GAN-KANG-05',
+                        'inaph_breeder_code' => 'JK-BREED-GAN-09',
                     ],
                 ],
             ]);

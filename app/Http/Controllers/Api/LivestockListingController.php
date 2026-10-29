@@ -94,7 +94,7 @@ class LivestockListingController extends Controller
             'photo' => 'nullable|string', // Data URL or Image URL
         ]);
 
-        $isLive = in_array($validated['category'], ['merino', 'bakarwali', 'qurbani', 'hadp']);
+        $isLive = in_array($validated['category'], ['merino', 'bakarwali', 'qurbani']);
         $whatsapp = $validated['whatsapp'] ?? preg_replace('/[^0-9]/', '', $validated['phone']);
 
         $gallery = [];

@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'role' => $this->role,
             'role_label' => match($this->role) {
                 'seller' => 'Registered Livestock Breeder & Seller',
-                'farmer' => 'HADP Certified Pastoralist & Sheep Farmer',
+                'farmer' => 'Pastoralist & Certified Sheep Farmer',
                 'veterinarian' => 'Veterinary Assistant Surgeon (VAS)',
                 'admin' => 'Department Director / Admin',
                 default => 'Verified Buyer / Consumer',

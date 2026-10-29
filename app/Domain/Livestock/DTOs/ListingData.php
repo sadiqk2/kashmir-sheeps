@@ -26,7 +26,7 @@ readonly class ListingData
 
     public static function fromRequest(array $data): self
     {
-        $isLive = in_array($data['category'] ?? '', ['merino', 'bakarwali', 'qurbani', 'hadp']);
+        $isLive = in_array($data['category'] ?? '', ['merino', 'bakarwali', 'qurbani']);
         $whatsapp = $data['whatsapp'] ?? preg_replace('/[^0-9]/', '', $data['phone'] ?? '');
 
         return new self(

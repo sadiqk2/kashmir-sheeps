@@ -85,41 +85,7 @@ class RestApiV1Test extends TestCase
             ]);
     }
 
-    public function test_v1_hadp_subsidies_lifecycle(): void
-    {
-        $payload = [
-            'beneficiary_name' => 'DDD HADP Beneficiary',
-            'aadhaar_hash' => 'XXXX-XXXX-1122',
-            'phone' => '09419112233',
-            'district' => 'Pulwama',
-            'target_scheme' => 'Project 24: Commercial 50-Ewe Sheep Farm',
-            'training_status' => 'Daksh Kisan Certified',
-        ];
 
-        $res = $this->postJson('/api/v1/hadp', $payload);
-        $res->assertStatus(201)
-            ->assertJson([
-                'status' => 'success',
-                'data' => [
-                    'beneficiary_name' => 'DDD HADP Beneficiary',
-                    'workflow_stage' => 1,
-                    'workflow_stage_label' => 'Application Submitted (KKG Intake)',
-                ]
-            ]);
-
-        $refNo = $res->json('ref_no');
-
-        // Advance stage
-        $advRes = $this->postJson("/api/v1/hadp/{$refNo}/advance-stage");
-        $advRes->assertStatus(200)
-            ->assertJson([
-                'status' => 'success',
-                'data' => [
-                    'workflow_stage' => 2,
-                    'workflow_stage_label' => 'Technical Scrutiny (Tehsil VAS Verified)',
-                ]
-            ]);
-    }
 
     public function test_v1_inaph_registry_and_search(): void
     {

@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Account successfully registered and verified on Kashmir Sheeps & HADP Digital Ecosystem.',
+            'message' => 'Account successfully registered and verified on Kashmir Sheeps Marketplace.',
             'data' => [
                 'user' => new UserResource($result['user']),
                 'token' => $result['token'],
@@ -124,7 +124,7 @@ class AuthController extends Controller
     }
 
     /**
-     * List verified buyers & HADP beneficiaries.
+     * List verified buyers & regular consumers.
      */
     public function buyers(UserRepositoryInterface $userRepo): JsonResponse
     {
@@ -163,9 +163,9 @@ class AuthController extends Controller
                 ],
                 [
                     'role' => 'farmer',
-                    'name_en' => 'HADP Commercial Sheep Farmer',
-                    'name_ur' => 'ایچ اے ڈی پی پروجیکٹ کسان',
-                    'desc' => 'Apply for 50% DBT subsidy on 50-ewe / 100-ewe commercial units, register INAPH tags, and log Bahak migratory transit passes.',
+                    'name_en' => 'Pastoralist & Sheep Farmer',
+                    'name_ur' => 'بھیڑ پال کسان و چوپان',
+                    'desc' => 'Manage flock breeding, register 12-digit INAPH ear tags, and log Bahak migratory transit passes across high-altitude alpine routes.',
                 ],
                 [
                     'role' => 'veterinarian',

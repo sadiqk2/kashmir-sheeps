@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\LivestockListing;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\HadpApplication;
 use App\Models\InaphPassport;
 use App\Models\BahakTransitLog;
 use App\Models\WoolLabRecord;
@@ -44,14 +43,12 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'email' => 'hassan.wani@kashmirsheeps.in',
-                'name' => 'Ghulam Hassan Wani (Daksh Kisan Certified)',
+                'name' => 'Ghulam Hassan Wani (Highland Sheep Breeder)',
                 'phone' => '09419477889',
                 'role' => 'farmer',
                 'district' => 'Pulwama',
                 'tehsil' => 'Tral',
                 'village' => 'Aripal Tral',
-                'kkg_id' => 'KKG-PUL-TRAL-02',
-                'aadhaar_hash' => 'XXXX-XXXX-7182',
                 'is_verified' => true,
                 'password' => bcrypt('password123'),
             ],
@@ -85,7 +82,7 @@ class DatabaseSeeder extends Seeder
         $listings = [
             [
                 'type' => 'live',
-                'category' => 'hadp',
+                'category' => 'merino',
                 'title_en' => 'SKUAST-K Certified Elite Kashmir Merino Breeding Ram',
                 'title_ur' => 'اسکاسٹ تصدیق شدہ کشمیری میرینو بریڈنگ مینڈھ',
                 'price' => 38000.00,
@@ -259,8 +256,8 @@ class DatabaseSeeder extends Seeder
                 'title_ur' => 'اسکاسٹ گریڈڈ کشمیری میرینو خام اون (۴ کلو)',
                 'price' => 1650.00,
                 'weight' => '4 Kg',
-                'spec_en' => 'HADP Project 27 Certified • 20.2 Micron Staple',
-                'spec_ur' => 'پروجیکٹ ۲۷ سرٹیفائیڈ • ۲۰.۲ مائکرون ریشہ',
+                'spec_en' => 'SKUAST-K Quality Certified • 20.2 Micron Staple',
+                'spec_ur' => 'اسکاسٹ کوالٹی سرٹیفائیڈ • ۲۰.۲ مائکرون ریشہ',
                 'district' => 'Budgam',
                 'village_en' => 'Charar-i-Sharief Sheep Extension',
                 'village_ur' => 'چرار شریف، بڈگام',
@@ -285,8 +282,8 @@ class DatabaseSeeder extends Seeder
                 'title_ur' => '۶۵۰ واٹ الیکٹرک بھیڑ کترنے والی مشین (کلپر)',
                 'price' => 6400.00,
                 'weight' => '3.2 Kg',
-                'spec_en' => 'HADP Project 27 Approved • 6-Speed Copper Motor',
-                'spec_ur' => 'پروجیکٹ ۲۷ منظور شدہ • ۶ اسپیڈ کاپر موٹر',
+                'spec_en' => 'Commercial Heavy-Duty • 6-Speed Copper Motor',
+                'spec_ur' => 'کمرشل ہیوی ڈیوٹی • ۶ اسپیڈ کاپر موٹر',
                 'district' => 'Srinagar',
                 'village_en' => 'Batamaloo Mandi Equipment Center',
                 'village_ur' => 'بٹہ مالو، سری نگر',
@@ -406,42 +403,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 3. Pre-seeded HADP Applications
-        HadpApplication::firstOrCreate(
-            ['ref_no' => 'HADP-JK-SHP-84920'],
-            [
-                'beneficiary_name' => 'Ghulam Hassan Wani',
-                'aadhaar_hash' => 'XXXX-XXXX-7182',
-                'phone' => '09419477889',
-                'district' => 'Pulwama',
-                'target_scheme' => 'Project 24: Commercial 50-Ewe Sheep Farm (50% DBT)',
-                'training_status' => 'Certified - Daksh Kisan SKUAST-K Level 2',
-                'unit_cost' => 500000.00,
-                'subsidy_amount' => 250000.00,
-                'workflow_stage' => 3, // VAS Field Inspection Cleared
-                'kkg_center_id' => 'KKG-PUL-TRAL-02',
-                'vas_inspector_name' => 'Dr. Z. A. Rather, VAS Tral',
-                'sanction_order_no' => 'DSHO/PUL/HADP-24/2026/419',
-            ]
-        );
-
-        HadpApplication::firstOrCreate(
-            ['ref_no' => 'HADP-JK-SHP-62104'],
-            [
-                'beneficiary_name' => 'Showkat Ahmad Bhat',
-                'aadhaar_hash' => 'XXXX-XXXX-4911',
-                'phone' => '09906044556',
-                'district' => 'Shopian',
-                'target_scheme' => 'Project 27: Modern Shearing Unit & Wool Scouring (50% DBT)',
-                'training_status' => 'Enrolled in Daksh Kisan LMS',
-                'unit_cost' => 300000.00,
-                'subsidy_amount' => 150000.00,
-                'workflow_stage' => 1, // KKG Intake Form Submitted
-                'kkg_center_id' => 'KKG-SHP-HIR-01',
-            ]
-        );
-
-        // 4. Pre-seeded Bahak Transit Logs
+        // 3. Pre-seeded Bahak Transit Logs
         BahakTransitLog::firstOrCreate(
             ['permit_no' => 'BAHAK-JK-2026-9041'],
             [

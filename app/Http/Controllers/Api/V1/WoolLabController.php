@@ -28,7 +28,7 @@ class WoolLabController extends Controller
             'count' => $records->count(),
             'data' => WoolLabRecordResource::collection($records),
             'meta' => [
-                'scheme' => 'HADP Project 27',
+                'authority' => 'SKUAST-Kashmir Wool Testing Division',
                 'timestamp' => now()->toIso8601String(),
             ],
         ]);
@@ -42,7 +42,7 @@ class WoolLabController extends Controller
         return response()->json([
             'status' => 'success',
             'success' => true,
-            'message' => "Sample {$res['record']->sample_code} analyzed successfully under HADP Project 27.",
+            'message' => "Sample {$res['record']->sample_code} analyzed successfully by SKUAST-K Wool Testing Division.",
             'data' => new WoolLabRecordResource($res['record']),
             'clean_wool_kg' => $res['clean_wool_kg'],
         ], 201);

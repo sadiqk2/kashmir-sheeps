@@ -15,7 +15,7 @@ class WoolLabApiTest extends TestCase
         $this->seed();
     }
 
-    public function test_can_analyze_superfine_merino_wool_under_hadp_project_27(): void
+    public function test_can_analyze_superfine_merino_wool(): void
     {
         $payload = [
             'farmer_name' => 'Ghulam Hassan Mir',

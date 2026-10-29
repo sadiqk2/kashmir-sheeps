@@ -18,7 +18,7 @@ class AnalyzeWoolAction
         $cleanYield = $data->clean_yield_pct;
         $greasyWt = $data->greasy_weight_kg;
 
-        // HADP Project 27 Classification
+        // Official SKUAST-K Wool Grading Standard
         if ($micron < 19.5) {
             $grade = 'Superfine Merino Grade A (Premium Apparel)';
             $baseMsp = 340.00;
@@ -56,7 +56,7 @@ class AnalyzeWoolAction
             'msp_rate_per_kg' => $baseMsp,
             'clean_yield_bonus' => $bonus,
             'total_payout' => $totalPayout,
-            'certified_by' => 'SKUAST-K Wool Testing & Quality Certification Division (HADP Project 27)',
+            'certified_by' => 'SKUAST-K Wool Testing & Quality Certification Division',
         ]);
 
         return [
