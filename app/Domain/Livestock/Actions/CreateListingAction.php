@@ -6,6 +6,7 @@ use App\Domain\Livestock\DTOs\ListingData;
 use App\Domain\Livestock\Repositories\LivestockListingRepositoryInterface;
 use App\Domain\Veterinary\Repositories\InaphPassportRepositoryInterface;
 use App\Models\LivestockListing;
+use App\Models\User;
 
 class CreateListingAction
 {
@@ -25,7 +26,32 @@ class CreateListingAction
                 : 'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80';
         }
 
+        $tier = $data->seller_verification_tier ?? 'basic';
+        $isVerified = false;
+
+        if ($data->user_id) {
+            $user = User::find($data->user_id);
+            if ($user) {
+                $hasAadhaar = !empty($user->aadhaar_hash);
+                $hasInaph = !empty($user->inaph_breeder_code);
+                if ($hasAadhaar && $hasInaph) {
+                    $tier = 'aadhaar_inaph';
+                    $isVerified = true;
+                } elseif ($hasAadhaar) {
+                    $tier = 'aadhaar_only';
+                    $isVerified = true;
+                } elseif ($hasInaph) {
+                    $tier = 'inaph_only';
+                    $isVerified = true;
+                } elseif ($user->is_verified) {
+                    $tier = 'verified_phone';
+                    $isVerified = true;
+                }
+            }
+        }
+
         $listing = $this->repository->create([
+            'user_id' => $data->user_id,
             'type' => $data->type,
             'category' => $data->category,
             'title_en' => $data->title_en,
@@ -41,7 +67,8 @@ class CreateListingAction
             'phone' => $data->phone,
             'whatsapp' => $data->whatsapp,
             'is_qurbani' => str_contains(strtolower($data->spec_en), '2') || str_contains(strtolower($data->spec_en), '4'),
-            'verified' => true,
+            'verified' => $isVerified,
+            'seller_verification_tier' => $tier,
             'rating' => 5.0,
             'reviews_count' => 1,
             'inaph_tag' => $data->inaph_tag,
@@ -71,6 +98,6 @@ class CreateListingAction
             ]);
         }
 
-        return $listing->load('passport');
+        return $listing->load(['passport', 'user']);
     }
 }

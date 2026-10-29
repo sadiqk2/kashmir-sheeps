@@ -43,7 +43,8 @@ class LivestockListingController extends Controller
 
     public function store(StoreLivestockRequest $request): JsonResponse
     {
-        $dto = ListingData::fromRequest($request->validated());
+        $userId = $request->user()?->id ?? $request->input('user_id');
+        $dto = ListingData::fromRequest($request->validated(), $userId ? (int) $userId : null);
         $listing = $this->createAction->execute($dto);
 
         return response()->json([

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -14,6 +15,7 @@ class LivestockListing extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'user_id' => 'integer',
         'is_qurbani' => 'boolean',
         'verified' => 'boolean',
         'is_sold' => 'boolean',
@@ -22,6 +24,11 @@ class LivestockListing extends Model
         'reviews_count' => 'integer',
         'gallery' => 'array',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function passport(): HasOne
     {

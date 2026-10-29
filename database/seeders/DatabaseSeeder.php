@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
                 'tehsil' => 'Mattan',
                 'village' => 'Highland Farm Mattan',
                 'inaph_breeder_code' => 'JK-BREED-ANG-042',
+                'aadhaar_hash' => 'XXXX-XXXX-8921',
                 'is_verified' => true,
                 'password' => bcrypt('password123'),
             ],
@@ -49,6 +50,8 @@ class DatabaseSeeder extends Seeder
                 'district' => 'Pulwama',
                 'tehsil' => 'Tral',
                 'village' => 'Aripal Tral',
+                'inaph_breeder_code' => 'JK-BREED-PUL-108',
+                'aadhaar_hash' => 'XXXX-XXXX-4512',
                 'is_verified' => true,
                 'password' => bcrypt('password123'),
             ],
@@ -407,8 +410,16 @@ class DatabaseSeeder extends Seeder
             ]
         ];
 
-        foreach ($listings as $l) {
-            $created = LivestockListing::firstOrCreate(
+        $sellerMir = User::where('email', 'ghulam.mir@kashmirsheeps.in')->first();
+        $sellerWani = User::where('email', 'hassan.wani@kashmirsheeps.in')->first();
+
+        foreach ($listings as $idx => $l) {
+            $seller = ($idx % 2 === 0) ? $sellerMir : $sellerWani;
+            $l['user_id'] = $seller?->id;
+            $l['seller_verification_tier'] = 'aadhaar_inaph';
+            $l['verified'] = true;
+
+            $created = LivestockListing::updateOrCreate(
                 ['title_en' => $l['title_en']],
                 $l
             );

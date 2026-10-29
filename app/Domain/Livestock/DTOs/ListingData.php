@@ -22,9 +22,11 @@ readonly class ListingData
         public ?string $photo = null,
         public ?array $gallery = null,
         public ?string $type = null,
+        public ?int $user_id = null,
+        public ?string $seller_verification_tier = null,
     ) {}
 
-    public static function fromRequest(array $data): self
+    public static function fromRequest(array $data, ?int $userId = null): self
     {
         $isLive = in_array($data['category'] ?? '', ['merino', 'bakarwali', 'qurbani']);
         $whatsapp = $data['whatsapp'] ?? preg_replace('/[^0-9]/', '', $data['phone'] ?? '');
@@ -47,6 +49,8 @@ readonly class ListingData
             photo: $data['photo'] ?? null,
             gallery: $data['gallery'] ?? null,
             type: $data['type'] ?? ($isLive ? 'live' : 'product'),
+            user_id: $userId ?? ($data['user_id'] ?? null),
+            seller_verification_tier: $data['seller_verification_tier'] ?? null,
         );
     }
 }

@@ -740,6 +740,36 @@
       </div>
 
       <div id="sellPaneNew">
+      <!-- 1. Verified Seller Identity Banner -->
+      <div id="sellVerificationBanner" class="p-3 mb-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500/40 text-xs flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg font-black shrink-0">
+            🛡️
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="font-bold text-slate-900 dark:text-slate-100" id="sellerBannerName">Verified Farmer Account</span>
+              <span id="sellerBannerBadge" class="text-[9px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-full">🛡️ Aadhaar Verified</span>
+            </div>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400" id="sellerBannerLoc">District Registered • Ready to Post</p>
+          </div>
+        </div>
+        <button type="button" onclick="openAuthModal('me')" class="text-[10px] text-emerald-700 dark:text-emerald-300 font-bold hover:underline shrink-0">
+          Profile ↗
+        </button>
+      </div>
+
+      <!-- 2. Live Market Pricing & Mandi Benchmark Decision Support -->
+      <div id="sellPriceGuidance" class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-900 dark:text-amber-200 mb-3.5">
+        <div class="flex items-center gap-1.5 font-bold mb-1">
+          <span class="text-sm">💡</span>
+          <span id="priceGuidanceTitle">Mandi Rate & Decision Guidance</span>
+        </div>
+        <p class="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300" id="priceGuidanceText">
+          Live sheep mandi benchmark: <strong>~₹410/Kg live weight</strong>. For a 45 Kg ram, typical fair farm-gate rate is <strong>₹18,000 – ₹19,500</strong>.
+        </p>
+      </div>
+
       <!-- 3-Way Selling Preset Selector -->
       <div class="mb-4">
         <label class="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1.5">What are you selling today? (آپ کیا فروخت کرنا چاہتے ہیں؟)</label>
@@ -1939,6 +1969,7 @@
               <!-- Badges -->
               <div class="absolute top-2.5 sm:top-3 left-2.5 sm:left-3 flex flex-col gap-1 sm:gap-1.5">
                 ${isSold ? '<span class="bg-red-600 text-white text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow">SOLD OUT</span>' : ''}
+                ${item.seller_verified_badge ? `<span class="bg-emerald-950/90 text-emerald-300 border border-emerald-500/50 text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm shadow flex items-center gap-1">${item.seller_verified_badge}</span>` : (item.verified ? '<span class="bg-emerald-950/90 text-emerald-300 border border-emerald-500/50 text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm shadow">🛡️ Aadhaar Verified Farmer</span>' : '')}
                 ${item.isQurbani ? '<span class="bg-amber-500 text-slate-950 text-[9px] sm:text-[10px] font-black px-2 py-0.5 rounded-full shadow">Qurbani Ready</span>' : ''}
                 ${item.inaph_tag ? `<span class="bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 text-[9px] font-mono px-2 py-0.5 rounded-full backdrop-blur-sm">RFID: ${item.inaph_tag}</span>` : ''}
               </div>
@@ -2448,9 +2479,80 @@
     }
 
     // Farmer Listing Manager
-    function openSellModal() {
+    function openSellModal(categoryPreset = null) {
+      if (!currentUser) {
+        showToast(currentLang === 'en' 
+          ? '⚠️ Seller Account Required: Please sign in or register with Aadhaar to post ads.' 
+          : '⚠️ براہ کرم اشتہار لگانے سے پہلے اپنا فارمر اکاؤنٹ رجسٹر یا لاگ ان کریں', '🛡️');
+        openAuthModal('register');
+        return;
+      }
+
       document.getElementById('sellModal').classList.remove('hidden');
       switchSellTab('new');
+
+      if (categoryPreset) {
+        presetSellForm(categoryPreset);
+      } else {
+        updateSellPriceGuidance();
+      }
+
+      // Auto-fill from authenticated user
+      const fName = document.getElementById('postFarmer');
+      const fPhone = document.getElementById('postPhone');
+      const fDist = document.getElementById('postDistrict');
+
+      if (fName && !fName.value) fName.value = currentUser.name || '';
+      if (fPhone && !fPhone.value) fPhone.value = currentUser.phone || '';
+      if (fDist && currentUser.district) fDist.value = currentUser.district;
+
+      // Update Verified Banner in Modal
+      const bName = document.getElementById('sellerBannerName');
+      const bBadge = document.getElementById('sellerBannerBadge');
+      const bLoc = document.getElementById('sellerBannerLoc');
+
+      if (bName) bName.textContent = currentUser.name;
+      if (bBadge) {
+        const hasAadhaar = Boolean(currentUser.aadhaar_hash);
+        const hasInaph = Boolean(currentUser.inaph_breeder_code);
+        if (hasAadhaar && hasInaph) {
+          bBadge.textContent = '🛡️ Aadhaar & INAPH Verified';
+          bBadge.className = 'text-[9px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-full';
+        } else if (hasAadhaar) {
+          bBadge.textContent = '🛡️ Aadhaar Verified Farmer';
+          bBadge.className = 'text-[9px] font-black bg-emerald-600 text-white px-2 py-0.5 rounded-full';
+        } else if (hasInaph) {
+          bBadge.textContent = '📋 INAPH Tagged Breeder';
+          bBadge.className = 'text-[9px] font-black bg-blue-600 text-white px-2 py-0.5 rounded-full';
+        } else {
+          bBadge.textContent = '✓ Verified Phone Member';
+          bBadge.className = 'text-[9px] font-black bg-slate-600 text-white px-2 py-0.5 rounded-full';
+        }
+      }
+      if (bLoc) {
+        bLoc.textContent = (currentUser.village ? currentUser.village + ', ' : '') + (currentUser.district || 'Kashmir') + ' • ID: #' + currentUser.id;
+      }
+    }
+
+    function updateSellPriceGuidance() {
+      const pb = document.getElementById('postBreed')?.value || 'merino';
+      const wt = parseFloat(document.getElementById('postWeight')?.value) || 45;
+      const titleElem = document.getElementById('priceGuidanceTitle');
+      const textElem = document.getElementById('priceGuidanceText');
+      if (!textElem) return;
+
+      if (pb === 'fertilizer') {
+        if (titleElem) titleElem.textContent = '🌱 Apple Orchard Manure Price Guidance';
+        textElem.innerHTML = 'Standard Valley Rate: <strong>₹4,500 per Tractor Trolley (500 Kg)</strong> (~₹9/Kg delivered) or <strong>₹450 per 50 Kg dry screened bag</strong>. Rich in natural Nitrogen & Potash.';
+      } else if (pb === 'wool') {
+        if (titleElem) titleElem.textContent = '🧶 Pure Merino Wool Market Guidance';
+        textElem.innerHTML = 'SKUAST Benchmark: <strong>₹380–₹420 / Kg</strong> for 19–21 micron apparel raw fleece braid; <strong>₹1,200 / Kg</strong> for handspun pheran knitting yarn.';
+      } else {
+        if (titleElem) titleElem.textContent = '🐏 Live Sheep Mandi Live-Weight Guidance';
+        const low = Math.round(wt * 390);
+        const high = Math.round(wt * 430);
+        textElem.innerHTML = 'Mandi Live-Weight Benchmark: <strong>~₹410/Kg live weight</strong>. For a <strong>' + wt + ' Kg</strong> sheep, recommended fair farm-gate price is <strong>₹' + low.toLocaleString('en-IN') + ' – ₹' + high.toLocaleString('en-IN') + '</strong>.';
+      }
     }
 
     function closeSellModal() {
@@ -2502,7 +2604,14 @@
       const phone = document.getElementById('postPhone').value;
       const desc = document.getElementById('postDesc').value || 'High quality Kashmir sheep directly from shepherd flock.';
 
+      if (!currentUser) {
+        showToast('Please sign in or register before posting', '⚠️');
+        openAuthModal('register');
+        return;
+      }
+
       const payload = {
+        user_id: currentUser.id,
         title_en: title,
         title_ur: title,
         category: category,
@@ -3346,11 +3455,22 @@
             <p class="text-sm font-bold text-emerald-600 mt-1">₹${item.price.toLocaleString('en-IN')}</p>
             <p class="text-xs text-slate-500 mt-2 leading-relaxed">${desc}</p>
           </div>
-          <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl space-y-1 text-xs">
-            <div><strong>Breed / Spec:</strong> ${spec}</div>
-            <div><strong>District Range:</strong> ${item.districtEn || item.district}</div>
-            <div><strong>Seller / Shepherd:</strong> ${item.farmerEn || item.farmer_name}</div>
-            ${item.inaph_tag ? `<div><strong>12-Digit RFID:</strong> ${item.inaph_tag}</div>` : ''}
+          <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-2 text-xs">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700/60 pb-2">
+              <div>
+                <span class="text-[10px] text-slate-400 block uppercase font-black">Registered Shepherd / Producer</span>
+                <span class="font-bold text-sm text-slate-900 dark:text-slate-100">${item.farmerEn || item.farmer_name}</span>
+              </div>
+              <span class="text-[10px] font-bold bg-emerald-600/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40 px-2 py-1 rounded-full">
+                ${item.seller_verified_badge || '🛡️ Aadhaar Verified'}
+              </span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-[11px]">
+              <div><strong>📍 Location:</strong> ${item.districtEn || item.district} Mandi</div>
+              <div><strong>⚖️ Batch Weight:</strong> ${item.weight}</div>
+              <div><strong>✨ Specification:</strong> ${spec}</div>
+              ${item.inaph_tag ? `<div><strong>🏷️ RFID Passport:</strong> ${item.inaph_tag}</div>` : '<div><strong>🛡️ KYC Status:</strong> e-Aadhaar Verified</div>'}
+            </div>
           </div>
           <div class="grid grid-cols-2 gap-2 pt-1">
             <button onclick="addToCart(${item.id}); closeDetailModal();" class="py-3 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-100 font-bold text-xs transition flex items-center justify-center gap-1.5">

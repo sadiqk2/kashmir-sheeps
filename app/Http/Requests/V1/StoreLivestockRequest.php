@@ -14,6 +14,7 @@ class StoreLivestockRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => 'nullable|integer|exists:users,id',
             'title_en' => 'required|string|max:255',
             'title_ur' => 'nullable|string|max:255',
             'category' => 'required|string|max:100',
