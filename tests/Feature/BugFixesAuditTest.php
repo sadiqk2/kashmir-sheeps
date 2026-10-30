@@ -77,4 +77,59 @@ class BugFixesAuditTest extends TestCase
             $this->assertStringContainsString("{$key}:", $blade);
         }
     }
+
+    /**
+     * Test 6: Verify selectAuthRole has no null pointer exceptions and handles all roles safely.
+     */
+    public function test_select_auth_role_has_no_null_pointer_exceptions(): void
+    {
+        $blade = file_get_contents(resource_path('views/app.blade.php'));
+        
+        $this->assertStringNotContainsString('kkgFieldGroup', $blade);
+        $this->assertStringContainsString('if (dynBox)', $blade);
+        $this->assertStringContainsString('if (inaphGroup)', $blade);
+    }
+
+    /**
+     * Test 7: Verify zero duplicate DOM IDs exist in Blade.
+     */
+    public function test_zero_duplicate_dom_ids_exist_in_blade(): void
+    {
+        $blade = file_get_contents(resource_path('views/app.blade.php'));
+        
+        preg_match_all('/id=["\']([^"\']+)["\']/', $blade, $matches);
+        $this->assertNotEmpty($matches[1]);
+        
+        $counts = array_count_values($matches[1]);
+        $duplicates = array_filter($counts, fn ($count) => $count > 1);
+        
+        $this->assertEmpty($duplicates, "Found duplicate DOM IDs in app.blade.php: " . implode(', ', array_keys($duplicates)));
+        $this->assertStringContainsString('id="passportDistrict"', $blade);
+        $this->assertStringContainsString('id="regDistrict"', $blade);
+    }
+
+    /**
+     * Test 8: Verify Rates Estimator calcBreed is populated and calculateRate targets calcResult.
+     */
+    public function test_rates_estimator_is_properly_configured(): void
+    {
+        $blade = file_get_contents(resource_path('views/app.blade.php'));
+        
+        $this->assertStringContainsString("document.getElementById('calcResult')", $blade);
+        $this->assertStringContainsString("document.getElementById('calcBreed')", $blade);
+        $this->assertStringContainsString("Kashmir Merino (~₹420/Kg Live)", $blade);
+    }
+
+    /**
+     * Test 9: Verify Bank Transfer UI is properly hooked and replaces KCC.
+     */
+    public function test_bank_payment_box_is_properly_configured(): void
+    {
+        $blade = file_get_contents(resource_path('views/app.blade.php'));
+        
+        $this->assertStringContainsString('id="bankPaymentBox"', $blade);
+        $this->assertStringContainsString("togglePaymentUi('bank')", $blade);
+        $this->assertStringContainsString("method !== 'bank'", $blade);
+        $this->assertStringContainsString('JAKA0CHOPAN', $blade);
+    }
 }

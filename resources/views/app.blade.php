@@ -587,9 +587,9 @@
             <label class="flex flex-col p-2.5 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer">
               <div class="flex items-center gap-1.5 mb-1">
                 <input type="radio" name="paymentMethod" value="Direct Bank Transfer" onchange="togglePaymentUi('bank')">
-                <span class="font-bold text-xs">KCC / DBT</span>
+                <span class="font-bold text-xs">Bank Transfer</span>
               </div>
-              <span class="text-[10px] text-slate-500">Kisan Credit Card</span>
+              <span class="text-[10px] text-slate-500">NEFT / IMPS Direct</span>
             </label>
           </div>
         </div>
@@ -615,10 +615,15 @@
           <p class="text-[10px] text-slate-500">Live order confirmation triggers upon placing order.</p>
         </div>
 
-        <div id="kccPaymentBox" class="hidden p-3 bg-amber-50 dark:bg-amber-950/30 rounded-2xl border border-amber-200 dark:border-amber-800">
-          <label class="block font-bold text-xs text-amber-900 dark:text-amber-300 mb-1">Enter 16-Digit Kisan Credit Card (KCC) Number</label>
-          <input type="text" id="kccCardNumber" maxlength="19" placeholder="4129-XXXX-XXXX-9021" class="w-full bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-700 rounded-xl p-2.5 text-xs font-mono">
-          <p class="text-[10px] text-amber-700 dark:text-amber-400 mt-1">Direct farm-gate pricing with verified veterinary health clearance across all 10 Kashmir districts.</p>
+        <div id="bankPaymentBox" class="hidden p-3 bg-blue-50 dark:bg-blue-950/30 rounded-2xl border border-blue-200 dark:border-blue-800 text-xs">
+          <p class="font-bold text-blue-900 dark:text-blue-300 mb-1.5">Direct Shepherd Bank Transfer Details</p>
+          <div class="space-y-1 font-mono text-[11px] text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-blue-100 dark:border-blue-900">
+            <div>Bank: <strong>J&K Bank Ltd (Mandi Branch)</strong></div>
+            <div>A/C Name: <strong>Kashmir Sheeps Producer Escrow</strong></div>
+            <div>A/C No: <strong>0145040100089211</strong></div>
+            <div>IFSC Code: <strong>JAKA0CHOPAN</strong></div>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1.5">Zero intermediary fees. Shepherd receives 100% of fair farm-gate price upon live weight handover.</p>
         </div>
 
         <div class="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1 text-xs">
@@ -1072,7 +1077,7 @@
             </div>
             <div>
               <label class="block font-bold mb-1">District</label>
-              <input required type="text" id="regDistrict" placeholder="Pulwama" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5">
+              <input required type="text" id="passportDistrict" placeholder="Pulwama" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5">
             </div>
           </div>
           <div>
@@ -2187,9 +2192,9 @@
 
     function togglePaymentUi(method) {
       const upiBox = document.getElementById('upiPaymentBox');
-      const kccBox = document.getElementById('kccPaymentBox');
+      const bankBox = document.getElementById('bankPaymentBox') || document.getElementById('kccPaymentBox');
       if (upiBox) upiBox.classList.toggle('hidden', method !== 'upi');
-      if (kccBox) kccBox.classList.toggle('hidden', method !== 'kcc');
+      if (bankBox) bankBox.classList.toggle('hidden', method !== 'bank' && method !== 'kcc');
     }
 
     async function handlePlaceOrder(e) {
@@ -2904,7 +2909,7 @@
       const breed = document.getElementById('regBreed').value;
       const sex = document.getElementById('regSex').value;
       const teeth = document.getElementById('regTeeth').value;
-      const district = document.getElementById('regDistrict').value;
+      const district = document.getElementById('passportDistrict')?.value || document.getElementById('regDistrict')?.value;
       const owner = document.getElementById('regOwner').value;
 
       const payload = {
@@ -3209,9 +3214,16 @@
     }
 
     // Rate Estimator
-    function openEstimatorModal() {
-      document.getElementById('estimatorModal').classList.remove('hidden');
-      calculateRate();
+    function openEstimatorModal(defaultTab = 'sheep') {
+      const modal = document.getElementById('estimatorModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        if (typeof switchCalcTab === 'function') {
+          switchCalcTab(defaultTab);
+        } else {
+          calculateRate();
+        }
+      }
     }
 
     function closeEstimatorModal() {
@@ -3222,8 +3234,10 @@
       const wt = parseFloat(document.getElementById('calcWeight')?.value) || 45;
       const ratePerKg = parseFloat(document.getElementById('calcBreed')?.value) || 420;
       const estTotal = Math.round(wt * ratePerKg);
-      if (document.getElementById('estTotal')) document.getElementById('estTotal').textContent = '₹' + estTotal.toLocaleString('en-IN');
-      if (document.getElementById('estRatePerKg')) document.getElementById('estRatePerKg').textContent = '₹' + ratePerKg + ' / Kg';
+      const resElem = document.getElementById('calcResult') || document.getElementById('estTotal');
+      if (resElem) resElem.textContent = '₹' + estTotal.toLocaleString('en-IN');
+      const rateElem = document.getElementById('estRatePerKg');
+      if (rateElem) rateElem.textContent = '₹' + ratePerKg + ' / Kg';
     }
 
     // System Diagnostics & Test Runner
@@ -3432,6 +3446,16 @@
           <option value="fertilizer">${currentLang === 'en' ? 'Apple Orchard Manure (Khad)' : 'سیب باغات کی کھاد'}</option>
           <option value="wool">${currentLang === 'en' ? 'Merino Wool & Blankets' : 'میرینو اون و کمبل'}</option>
           <option value="supplies">${currentLang === 'en' ? 'Clippers, Salt & Feed' : 'اوزار و سالٹ لکس'}</option>
+        `;
+      }
+
+      const cb = document.getElementById('calcBreed');
+      if (cb) {
+        cb.innerHTML = `
+          <option value="420">${currentLang === 'en' ? 'Kashmir Merino (~₹420/Kg Live)' : 'کشمیر میرینو (~₹420 فی کلو زندہ)'}</option>
+          <option value="400">${currentLang === 'en' ? 'Bakarwali Mountain Breed (~₹400/Kg Live)' : 'بکروال نسل (~₹400 فی کلو زندہ)'}</option>
+          <option value="460">${currentLang === 'en' ? 'Qurbani Prime (2-4 Teeth) (~₹460/Kg Live)' : 'قربانی پرائم (~₹460 فی کلو زندہ)'}</option>
+          <option value="390">${currentLang === 'en' ? 'Commercial Ewe / Breeding Stock (~₹390/Kg Live)' : 'تجارتی بھیڑ / بریڈنگ (~₹390 فی کلو زندہ)'}</option>
         `;
       }
     }
@@ -3684,7 +3708,8 @@
     }
 
     function selectAuthRole(role) {
-      document.getElementById('regRole').value = role;
+      const roleInput = document.getElementById('regRole');
+      if (roleInput) roleInput.value = role;
       document.querySelectorAll('.role-btn').forEach(btn => {
         btn.className = "role-btn p-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-left transition hover:border-emerald-500";
       });
@@ -3694,19 +3719,14 @@
       }
 
       const dynBox = document.getElementById('dynamicCredsBox');
-      const kkgGroup = document.getElementById('kkgFieldGroup');
       const inaphGroup = document.getElementById('inaphFieldGroup');
 
-      if (role === 'farmer') {
-        dynBox.classList.remove('hidden');
-        kkgGroup.classList.remove('hidden');
-        inaphGroup.classList.add('hidden');
-      } else if (role === 'seller') {
-        dynBox.classList.remove('hidden');
-        kkgGroup.classList.add('hidden');
-        inaphGroup.classList.remove('hidden');
+      if (role === 'seller' || role === 'farmer') {
+        if (dynBox) dynBox.classList.remove('hidden');
+        if (inaphGroup) inaphGroup.classList.remove('hidden');
       } else {
-        dynBox.classList.add('hidden');
+        if (dynBox) dynBox.classList.add('hidden');
+        if (inaphGroup) inaphGroup.classList.add('hidden');
       }
     }
 
@@ -3715,7 +3735,7 @@
       const submitBtn = document.getElementById('btnSubmitRegister');
       const origText = submitBtn.innerHTML;
       submitBtn.disabled = true;
-      submitBtn.innerHTML = "⏳ Registering on J&K Ledger...";
+      submitBtn.innerHTML = "⏳ Registering Account...";
 
       const payload = {
         name: document.getElementById('regName').value.trim(),
@@ -3724,7 +3744,6 @@
         district: document.getElementById('regDistrict').value,
         role: document.getElementById('regRole').value,
         password: document.getElementById('regPassword').value,
-        kkg_id: document.getElementById('regKkgId')?.value?.trim() || null,
         inaph_breeder_code: document.getElementById('regInaphCode')?.value?.trim() || null,
       };
 
@@ -3923,16 +3942,6 @@
         document.getElementById('calcPaneSheep').classList.remove('hidden');
         document.getElementById('calcTabSheep').className = "flex-1 py-2 px-2 rounded-xl transition bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-sm text-center";
         calculateRate();
-      }
-    }
-
-    // Open Estimator with default tab
-    const origOpenEstimatorModal = typeof openEstimatorModal === 'function' ? openEstimatorModal : null;
-    function openEstimatorModal(defaultTab = 'sheep') {
-      const modal = document.getElementById('estimatorModal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        switchCalcTab(defaultTab);
       }
     }
 
